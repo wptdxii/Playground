@@ -1,0 +1,52 @@
+import static org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS
+import static org.apache.tools.ant.taskdefs.condition.Os.isFamily
+
+def keyStorePath
+def keyStoreFile
+def keyStoreProperties
+if (isFamily(FAMILY_WINDOWS)) {
+    keyStorePath = System.getenv('USERPROFILE')+ File.separator + '.ssh' + File.separator
+} else {
+    keyStorePath = System.getenv('HOME')+ File.separator + '.ssh' + File.separator
+}
+keyStoreFile = keyStorePath + 'playground.jks'
+keyStoreProperties = keyStorePath + 'playground.properties'
+Properties props = new Properties()
+if (new File(keyStoreProperties).exists()) {
+    props.load(new FileInputStream(file(keyStoreProperties)))
+}
+
+ext {
+
+    signing = [
+            storeFile    : keyStoreFile,
+            storePassword: props.getProperty('KEYSTORE_PWD'),
+            keyAlias     : props.getProperty('KEY_ALIAS'),
+            keyPassword  : props.getProperty('KEY_PWD'),
+    ]
+
+    versions = [
+            compileSdk: 27,
+            minSdk    : 14,
+            targetSdk : 27,
+            code      : 1,
+            name      : "1.0.0",
+            java      : JavaVersion.VERSION_1_8,
+            support   : "27.0.2",
+    ]
+
+    test = [
+            junit   : "junit:junit:4.12",
+            runner  : "com.android.support.test:runner:1.0.1",
+            espresso: "com.android.support.test.espresso:espresso-core:3.0.1",
+    ]
+
+    support = [
+            v4          : "com.android.support:support-v4:${versions.support}",
+            v7          : "com.android.support:appcompat-v7:${versions.support}",
+            design      : "com.android.support:design:${versions.support}",
+            annotations : "com.android.support:support-annotations:${versions.support}",
+            recyclerView: "com.android.support:recyclerview-v7:${versions.support}",
+            constraint  : "com.android.support.constraint:constraint-layout:1.1.0-beta4",
+    ]
+}
