@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToolbarTheme" parent="ToolbarBase">
+        <item name="android:dropDownVerticalOffset">@dimen/spacing_4</item>
+    </style>
+
+    <style name="ToolbarOverflowMenu" parent="ToolbarOverflowMenuBase">
+        <item name="android:dropDownVerticalOffset">@dimen/spacing_4</item>
+    </style>
+</resources>

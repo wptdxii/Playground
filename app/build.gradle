@@ -9,38 +9,37 @@ android {
         targetCompatibility versions.java
     }
 
+    signingConfigs {
+        config {
+            storeFile file(signing.storeFile)
+            storePassword signing.storePassword
+            keyAlias signing.keyAlias
+            keyPassword signing.keyPassword
+        }
+    }
+
     defaultConfig {
         applicationId "com.wptdxii.playground"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.code
         versionName versions.name
+        signingConfig signingConfigs.config
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        debug {
-            storeFile file(signing.storeFile)
-            storePassword signing.storePassword
-            keyAlias signing.keyAlias
-            keyPassword signing.keyPassword
-        }
-
-        release {
-            storeFile file(signing.storeFile)
-            storePassword signing.storePassword
-            keyAlias signing.keyAlias
-            keyPassword signing.keyPassword
-        }
-    }
 
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
+
         release {
             postprocessing {
-                removeUnusedCode false
-                removeUnusedResources false
-                obfuscate false
-                optimizeCode false
+                removeUnusedCode true
+                removeUnusedResources true
+                obfuscate true
+                optimizeCode true
                 proguardFile 'proguard-rules.pro'
             }
         }
@@ -71,8 +70,12 @@ dependencies {
     implementation project(':sdk:uikit')
     implementation support.v7
     implementation support.constraint
+    implementation support.design
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation test.junit
     androidTestImplementation test.runner
     androidTestImplementation test.espresso
+
+    implementation di.butterknife
+    annotationProcessor di.butterknifeProcessor
 }
