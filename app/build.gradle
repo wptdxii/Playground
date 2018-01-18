@@ -24,7 +24,6 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode versions.code
         versionName versions.name
-        signingConfig signingConfigs.config
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -32,16 +31,20 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
+            signingConfig signingConfigs.config
         }
 
         release {
-            postprocessing {
-                removeUnusedCode true
-                removeUnusedResources true
-                obfuscate true
-                optimizeCode true
-                proguardFile 'proguard-rules.pro'
-            }
+            signingConfig signingConfigs.config
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            postprocessing {
+//                removeUnusedCode true
+//                removeUnusedResources true
+//                obfuscate true
+//                optimizeCode true
+//                proguardFile 'proguard-rules.pro'
+//            }
         }
     }
 
