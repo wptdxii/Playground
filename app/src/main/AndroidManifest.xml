@@ -29,5 +29,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main.MainActivity"/>
         </activity>
+        <activity
+            android:name=".sample.LayoutActivity"
+            android:theme="@style/LayoutActivityTheme"/>
     </application>
+
 </manifest>

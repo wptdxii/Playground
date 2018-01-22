@@ -8,4 +8,8 @@
     <style name="ToolbarOverflowMenu" parent="ToolbarOverflowMenuBase">
         <item name="android:dropDownVerticalOffset">@dimen/spacing_4</item>
     </style>
+
+    <style name="LayoutActivityTheme" parent="AppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>

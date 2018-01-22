@@ -47,8 +47,9 @@ ext {
             v7          : "com.android.support:appcompat-v7:${versions.support}",
             design      : "com.android.support:design:${versions.support}",
             annotations : "com.android.support:support-annotations:${versions.support}",
-            recyclerView: "com.android.support:recyclerview-v7:${versions.support}",
             constraint  : "com.android.support.constraint:constraint-layout:1.1.0-beta4",
+            cardView : "com.android.support:cardview-v7:${versions.support}",
+            recyclerView: "com.android.support:recyclerview-v7:${versions.support}",
     ]
 
     di = [

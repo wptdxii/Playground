@@ -74,7 +74,7 @@ dependencies {
     implementation support.v7
     implementation support.constraint
     implementation support.design
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation support.cardView
     testImplementation test.junit
     androidTestImplementation test.runner
     androidTestImplementation test.espresso

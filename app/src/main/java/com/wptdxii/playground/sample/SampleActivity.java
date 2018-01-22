@@ -21,6 +21,8 @@ public class SampleActivity extends BaseListActivity {
     @NonNull
     @Override
     protected List<Module> createModules() {
-        return new ArrayList<>();
+        List<Module> modules = new ArrayList<>();
+        modules.add(new Module(getString(R.string.sample_layout_title), LayoutActivity.class));
+        return modules;
     }
 }

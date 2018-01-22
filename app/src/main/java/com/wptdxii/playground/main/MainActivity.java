@@ -26,7 +26,7 @@ public class MainActivity extends BaseListActivity {
 
     @Override
     protected void setupToolbar(Toolbar toolbar) {
-        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitle(R.string.module_main);
     }
 
     @Override

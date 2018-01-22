@@ -53,7 +53,9 @@ public abstract class BaseListActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         DividerItemDecoration decoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         Drawable divider = ContextCompat.getDrawable(this, R.drawable.shape_divider);
-        decoration.setDrawable(divider);
+        if (divider != null) {
+            decoration.setDrawable(divider);
+        }
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(decoration);
         recyclerView.setAdapter(new BaseListAdapter(createModules()));
