@@ -43,7 +43,9 @@ public class LayoutActivity extends BaseActivity {
 
         setupToolbar();
         setSupportActionBar(toolbar);
-        setupActionBar(getSupportActionBar());
+        if (getSupportActionBar() != null) {
+            setupActionBar(getSupportActionBar());
+        }
         setupNavigationView(nvDrawer);
     }
 

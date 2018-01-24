@@ -23,6 +23,7 @@ public class SampleActivity extends BaseListActivity {
     protected List<Module> createModules() {
         List<Module> modules = new ArrayList<>();
         modules.add(new Module(getString(R.string.sample_layout_title), LayoutActivity.class));
+        modules.add(new Module(getString(R.string.sample_drawer_title), DrawerActivity.class));
         return modules;
     }
 }

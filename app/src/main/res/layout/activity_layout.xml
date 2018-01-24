@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include layout="@layout/activity_layout_main"/>
+    <include layout="@layout/activity_layout_main" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nv_drawer"
@@ -19,5 +19,5 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/activity_layout_nav_header"
         app:itemTextColor="@color/black"
-        app:menu="@menu/sample_layout_nav_drawer"/>
+        app:menu="@menu/sample_layout_nav_drawer" />
 </android.support.v4.widget.DrawerLayout>

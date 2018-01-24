@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.wptdxii.playground">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.wptdxii.playground">
 
     <application
         android:name=".App"
@@ -15,24 +15,27 @@
             android:name=".main.SplashActivity"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity"/>
+        <activity android:name=".main.MainActivity" />
         <activity
             android:name=".sample.SampleActivity"
             android:parentActivityName=".main.MainActivity"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".main.MainActivity"/>
+                android:value=".main.MainActivity" />
         </activity>
         <activity
             android:name=".sample.LayoutActivity"
-            android:theme="@style/LayoutActivityTheme"/>
-        <activity android:name=".todo.tasks.TasksActivity"/>
+            android:theme="@style/TransparentStatusBarTheme" />
+        <activity
+            android:name=".sample.DrawerActivity"
+            android:theme="@style/TransparentStatusBarTheme" />
+        <activity android:name=".todo.tasks.TasksActivity" />
     </application>
 
 </manifest>

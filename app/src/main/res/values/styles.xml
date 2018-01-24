@@ -49,6 +49,6 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="LayoutActivityTheme" parent="AppTheme"/>
+    <style name="TransparentStatusBarTheme" parent="AppTheme"/>
 
 </resources>
