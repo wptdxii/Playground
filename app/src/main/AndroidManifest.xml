@@ -32,6 +32,7 @@
         <activity
             android:name=".sample.LayoutActivity"
             android:theme="@style/LayoutActivityTheme"/>
+        <activity android:name=".todo.tasks.TasksActivity"/>
     </application>
 
 </manifest>

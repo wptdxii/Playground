@@ -2,8 +2,9 @@
     <string name="app_name">Playground</string>
     <string name="des_placeholder">Placeholder</string>
     <string name="main_click_again">again to exit!</string>
-    <string name="module_sample">Sample</string>
     <string name="module_main">Playground</string>
+    <string name="module_sample">Sample</string>
+    <string name="module_to_do">To-Do</string>
     <string name="sample_layout_city">Singapore</string>
     <string name="sample_layout_camera">Camera</string>
     <string name="sample_layout_settings">Settings</string>
