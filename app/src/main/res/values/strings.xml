@@ -31,4 +31,5 @@
     <string name="todo_activity_tasks_nav_header_title">TO-DOs</string>
     <string name="todo_activity_tasks_drawer_action_list">TO-Do List</string>
     <string name="todo_activity_tasks_drawer_action_statistics">Statistics</string>
+    <string name="todo_no_tasks_all">You have no TO-DOs!</string>
 </resources>

@@ -14,7 +14,7 @@ public class DrawerActivity extends BaseDrawerActivity {
     @NonNull
     @Override
     protected Fragment onCreateFragment() {
-        return new DrawerFragment();
+        return DrawerFragment.newInstance();
     }
 
     @Override
