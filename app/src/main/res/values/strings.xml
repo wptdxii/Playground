@@ -28,4 +28,7 @@
     <string name="user_name">wptdxii</string>
     <string name="user_email">wptdxii@gmail.com</string>
     <string name="sample_drawer_title">Drawer</string>
+    <string name="todo_activity_tasks_nav_header_title">TO-DOs</string>
+    <string name="todo_activity_tasks_drawer_action_list">TO-Do List</string>
+    <string name="todo_activity_tasks_drawer_action_statistics">Statistics</string>
 </resources>

@@ -25,7 +25,7 @@
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/ToolbarTheme"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/ToolbarPopupTheme" />
+                app:popupTheme="@style/ToolbarPopupTheme"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -33,15 +33,15 @@
             android:id="@+id/fl_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nv_drawer"
-        android:fitsSystemWindows="true"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextColor="@color/black" />
+        android:fitsSystemWindows="true"
+        app:itemTextColor="@color/black"/>
 </android.support.v4.widget.DrawerLayout>

@@ -1,27 +1,37 @@
 package com.wptdxii.playground.todo.tasks;
 
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.Toast;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 
-import com.wptdxii.framekit.base.BaseActivity;
 import com.wptdxii.playground.R;
+import com.wptdxii.playground.base.BaseDrawerActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class TasksActivity extends BaseDrawerActivity {
+    @Override
+    protected void setupToolbar(Toolbar toolbar) {
 
-public class TasksActivity extends BaseActivity {
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    }
+
+    @NonNull
+    @Override
+    protected Fragment onCreateFragment() {
+        return new TasksFragment();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasks);
-        ButterKnife.bind(this);
+    protected int onCreateNavigationHeader() {
+        return R.layout.todo_activity_tasks_nav_header;
+    }
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.black, R.color.pink_light);
-        swipeRefreshLayout.setOnRefreshListener(() ->
-                Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show());
+    @Override
+    protected int onCreateNavigationMenu() {
+        return R.menu.todo_activity_tasks_drawer;
+    }
+
+    @Override
+    protected void setupNavigationView(NavigationView nvDrawer) {
+
     }
 }
