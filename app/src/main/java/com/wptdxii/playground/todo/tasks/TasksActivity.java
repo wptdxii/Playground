@@ -17,7 +17,7 @@ public class TasksActivity extends BaseDrawerActivity {
     @NonNull
     @Override
     protected Fragment onCreateFragment() {
-        return new TasksFragment();
+        return TasksFragment.newInstance();
     }
 
     @Override
