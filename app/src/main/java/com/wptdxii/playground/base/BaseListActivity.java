@@ -40,7 +40,6 @@ public abstract class BaseListActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         setupActionBar(getSupportActionBar());
         setupRecyclerView();
-
     }
 
     protected abstract void setupToolbar(Toolbar toolbar);
