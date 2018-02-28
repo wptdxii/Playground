@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'channel'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -15,6 +15,8 @@ android {
             storePassword signing.storePassword
             keyAlias signing.keyAlias
             keyPassword signing.keyPassword
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
 
@@ -26,7 +28,6 @@ android {
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
 
     buildTypes {
         debug {
@@ -58,12 +59,27 @@ android {
         prod {
             dimension "default"
         }
+
+    }
+
+    variantFilter { variant ->
+        if ('release' == variant.buildType.name
+                && 'mock' == variant.getFlavors().get(0).name) {
+            variant.setIgnore(true)
+        }
     }
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             outputFileName = "Playground-v${variant.versionName}.apk"
         }
+    }
+
+    // for VasDolly
+    channel {
+        channelFile = file(channels.file)
+        apkNameFormat = 'Playground-v${versionName}-${flavorName}-${buildType}'
+        isFastMode = false
     }
 }
 
@@ -86,4 +102,6 @@ dependencies {
     annotationProcessor room.compiler
     testImplementation room.test
 //    implementation room.rxjava
+
+    implementation channels.vasdolly
 }
