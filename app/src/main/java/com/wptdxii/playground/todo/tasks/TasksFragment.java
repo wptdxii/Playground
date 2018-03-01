@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +48,10 @@ public class TasksFragment extends BaseFragment {
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     Unbinder unbinder;
+
+    public static Fragment newInstance() {
+        return new TasksFragment();
+    }
 
     @Nullable
     @Override
