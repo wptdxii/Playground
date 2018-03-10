@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.todo.data.entity.Task;
+import com.wptdxii.playground.todo.data.model.Task;
 
 import java.util.List;
 
@@ -27,14 +27,22 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         this.mListener = listener;
     }
 
+    public void resetTasks(@NonNull List<Task> tasks) {
+        this.mTasks = tasks;
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(
                 parent.getContext()).inflate(R.layout.item_todo_tasks, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         viewHolder.cbCompleted.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) mListener.onCompleteTaskClick(viewHolder.mTask);
-            else mListener.onActivateTaskClick(viewHolder.mTask);
+            if (isChecked) {
+                mListener.onCompleteTaskClick(viewHolder.mTask);
+            } else {
+                mListener.onActivateTaskClick(viewHolder.mTask);
+            }
         });
 
         viewHolder.clTask.setOnClickListener(view -> {
@@ -81,6 +89,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     }
 
     public interface TaskItemListener {
+
         void onTaskClick(Task clickedTask);
 
         void onCompleteTaskClick(Task completedTask);

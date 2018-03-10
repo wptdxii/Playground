@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseDrawerActivity extends BaseActivity {
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @BindView(R.id.nv_drawer)
@@ -54,7 +55,6 @@ public abstract class BaseDrawerActivity extends BaseActivity {
         nvDrawer.inflateHeaderView(onCreateNavigationHeader());
         nvDrawer.inflateMenu(onCreateNavigationMenu());
         setupNavigationView(nvDrawer);
-
     }
 
     protected void attachContentFragment(@NonNull Fragment fragment) {
@@ -65,6 +65,7 @@ public abstract class BaseDrawerActivity extends BaseActivity {
     }
 
     protected abstract void setupToolbar(Toolbar toolbar);
+
 
     protected void setupActionBar(ActionBar actionBar) {
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -103,7 +104,7 @@ public abstract class BaseDrawerActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
+                toggleDrawer();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -117,6 +118,14 @@ public abstract class BaseDrawerActivity extends BaseActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public void toggleDrawer() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            drawerLayout.openDrawer(GravityCompat.START);
         }
     }
 }

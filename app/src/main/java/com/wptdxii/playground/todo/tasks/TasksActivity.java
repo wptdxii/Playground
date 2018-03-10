@@ -7,11 +7,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseDrawerActivity;
+import com.wptdxii.playground.todo.statistics.StatisticsActivity;
 
 public class TasksActivity extends BaseDrawerActivity {
     @Override
     protected void setupToolbar(Toolbar toolbar) {
-
+        toolbar.setTitle(R.string.todo_app_name);
     }
 
     @NonNull
@@ -32,6 +33,22 @@ public class TasksActivity extends BaseDrawerActivity {
 
     @Override
     protected void setupNavigationView(NavigationView nvDrawer) {
+        nvDrawer.setNavigationItemSelectedListener(item -> {
 
+            switch (item.getItemId()) {
+                case R.id.action_list:
+                    // Do nothing, we're already on that screen
+                    break;
+                case R.id.action_statistics:
+                    StatisticsActivity.start(this);
+                    break;
+                default:
+                    break;
+            }
+
+            item.setChecked(true);
+            toggleDrawer();
+            return true;
+        });
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.TasksActivity" parent="AppTheme">
+        <item name="colorPrimary">@color/todo_color_primary</item>
+        <item name="colorPrimaryDark">@color/todo_color_primary_dark</item>
+        <item name="colorAccent">@color/todo_color_accent</item>
+    </style>
+</resources>

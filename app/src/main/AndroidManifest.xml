@@ -25,6 +25,7 @@
             android:name=".sample.SampleActivity"
             android:parentActivityName=".main.MainActivity"
             tools:targetApi="jelly_bean">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main.MainActivity" />
@@ -35,7 +36,20 @@
         <activity
             android:name=".sample.DrawerActivity"
             android:theme="@style/TransparentStatusBarTheme" />
-        <activity android:name=".todo.tasks.TasksActivity" />
+        <activity
+            android:name=".todo.tasks.TasksActivity"
+            android:theme="@style/AppTheme.TasksActivity" />
+        <activity android:name=".todo.statistics.StatisticsActivity" />
+        <activity
+            android:name=".todo.addnewtask.AddNewTaskActivity"
+            android:parentActivityName=".todo.tasks.TasksActivity"
+            android:windowSoftInputMode="adjustResize"
+            tools:targetApi="jelly_bean" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".todo.tasks.TasksActivity" />
+        <activity android:name=".todo.taskdetail.TaskDetailActivity" />
     </application>
 
 </manifest>

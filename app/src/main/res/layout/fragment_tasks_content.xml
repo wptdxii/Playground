@@ -51,7 +51,7 @@
         android:layout_width="@dimen/size_48"
         android:layout_height="@dimen/size_48"
         android:contentDescription="@null"
-        android:src="@drawable/vector_ic_assignment_turned_in"
+        android:src="@drawable/todo_vector_ic_assignment_turned_in"
         app:layout_constraintBottom_toTopOf="@+id/tv_no_tasks"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

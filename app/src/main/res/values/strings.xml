@@ -33,4 +33,6 @@
     <string name="todo_activity_tasks_drawer_action_statistics">Statistics</string>
     <string name="todo_no_tasks_all">You have no TO-DOs!</string>
     <string name="todo_no_tasks_add">Add a TO-DO item +</string>
+    <string name="todo_tasks_fragment_menu_clear">Clear</string>
+    <string name="todo_tasks_fragment_menu_refresh">Refresh</string>
 </resources>
