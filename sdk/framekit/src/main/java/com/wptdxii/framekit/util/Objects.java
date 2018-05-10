@@ -2,6 +2,8 @@ package com.wptdxii.framekit.util;
 
 import android.support.annotation.Nullable;
 
+import com.wptdxii.framekit.exception.InstantiationException;
+
 import java.util.Arrays;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Arrays;
 public class Objects {
 
     private Objects() {
-        throw new UnsupportedOperationException("Can not be instantiated.");
+        throw new InstantiationException();
     }
 
     public static boolean equals(@Nullable Object a, @Nullable Object b) {

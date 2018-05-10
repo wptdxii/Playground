@@ -11,7 +11,7 @@ import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseListActivity;
 import com.wptdxii.playground.base.Module;
 import com.wptdxii.playground.sample.SampleActivity;
-import com.wptdxii.playground.todo.tasks.TasksActivity;
+import com.wptdxii.playground.todo.ToDoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class MainActivity extends BaseListActivity {
     protected List<Module> createModules() {
         List<Module> modules = new ArrayList<>();
         modules.add(new Module(getString(R.string.module_sample), SampleActivity.class));
-        modules.add(new Module(getString(R.string.module_to_do), TasksActivity.class));
+        modules.add(new Module(getString(R.string.module_to_do), ToDoActivity.class));
         return modules;
     }
 

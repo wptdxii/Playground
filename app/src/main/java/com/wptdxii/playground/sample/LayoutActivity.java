@@ -69,7 +69,7 @@ public class LayoutActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.fab_done)
+    @OnClick(R.id.fab_task_done)
     public void done(View view) {
         Snackbar.make(view, "Done", Snackbar.LENGTH_SHORT)
                 .setAction("Undo",

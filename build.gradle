@@ -1,14 +1,29 @@
 apply from: "config.gradle"
+apply plugin: "com.github.ben-manes.versions"
 
 buildscript {
+    ext.versions = [
+            compileSdk : 27,
+            minSdk     : 14,
+            targetSdk  : 27,
+            code       : 1,
+            name       : '1.0.0',
+            support    : '27.1.0',
+            butterknife: '8.8.1',
+            room       : '1.1.0-beta2',
+            channel    : '1.1.9',
+            java       : JavaVersion.VERSION_1_8
+    ]
+
     repositories {
         google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha04'
-        classpath 'com.leon.channel:plugin:1.1.7'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath "com.leon.channel:plugin:$versions.channel"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
     }
 }
 

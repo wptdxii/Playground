@@ -50,11 +50,23 @@ public abstract class BaseDrawerActivity extends BaseActivity {
             setupActionBar(getSupportActionBar());
         }
 
-        attachContentFragment(onCreateFragment());
+        if (getSupportFragmentManager().findFragmentById(R.id.fl_content) == null) {
+            attachContentFragment(onCreateFragment());
+        }
 
         nvDrawer.inflateHeaderView(onCreateNavigationHeader());
         nvDrawer.inflateMenu(onCreateNavigationMenu());
         setupNavigationView(nvDrawer);
+    }
+
+    protected abstract void setupToolbar(Toolbar toolbar);
+
+    protected void setupActionBar(ActionBar actionBar) {
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_drawer_open, R.string.nav_drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
     }
 
     protected void attachContentFragment(@NonNull Fragment fragment) {
@@ -62,18 +74,6 @@ public abstract class BaseDrawerActivity extends BaseActivity {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fl_content, fragment);
         transaction.commit();
-    }
-
-    protected abstract void setupToolbar(Toolbar toolbar);
-
-
-    protected void setupActionBar(ActionBar actionBar) {
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, R.string.nav_drawer_open, R.string.nav_drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
     }
 
     @NonNull
@@ -112,20 +112,20 @@ public abstract class BaseDrawerActivity extends BaseActivity {
         return true;
     }
 
+    public void toggleDrawer() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        }
-    }
-
-    public void toggleDrawer() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            drawerLayout.openDrawer(GravityCompat.START);
         }
     }
 }

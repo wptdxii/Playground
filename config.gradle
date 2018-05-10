@@ -20,55 +20,42 @@ channelFile = keyStorePath + 'channel.txt'
 
 ext {
 
-    signing = [
+    signings = [
             storeFile    : keyStoreFile,
             storePassword: props.getProperty('KEYSTORE_PWD'),
             keyAlias     : props.getProperty('KEY_ALIAS'),
             keyPassword  : props.getProperty('KEY_PWD'),
     ]
 
-    versions = [
-            compileSdk : 27,
-            minSdk     : 14,
-            targetSdk  : 27,
-            code       : 1,
-            name       : "1.0.0",
-            java       : JavaVersion.VERSION_1_8,
-            support    : "27.1.0",
-            butterknife: "8.8.1",
-            room       : "1.1.0-alpha1",
-    ]
-
-    test = [
+    testings = [
             junit   : "junit:junit:4.12",
             runner  : "com.android.support.test:runner:1.0.1",
             espresso: "com.android.support.test.espresso:espresso-core:3.0.1",
     ]
 
-    support = [
-            v4          : "com.android.support:support-v4:${versions.support}",
-            v7          : "com.android.support:appcompat-v7:${versions.support}",
-            design      : "com.android.support:design:${versions.support}",
-            annotations : "com.android.support:support-annotations:${versions.support}",
+    supports = [
+            v7          : "com.android.support:appcompat-v7:$versions.support",
+            design      : "com.android.support:design:$versions.support",
+            annotations : "com.android.support:support-annotations:$versions.support",
             constraint  : "com.android.support.constraint:constraint-layout:1.1.0-beta5",
-            cardView    : "com.android.support:cardview-v7:${versions.support}",
-            recyclerView: "com.android.support:recyclerview-v7:${versions.support}",
+            cardView    : "com.android.support:cardview-v7:$versions.support",
+            recyclerView: "com.android.support:recyclerview-v7:$versions.support",
     ]
 
     di = [
-            butterknife        : "com.jakewharton:butterknife:${versions.butterknife}",
-            butterknifeCompiler: "com.jakewharton:butterknife-compiler:${versions.butterknife}",
+            butterknife        : "com.jakewharton:butterknife:$versions.butterknife",
+            butterknifeCompiler: "com.jakewharton:butterknife-compiler:$versions.butterknife",
     ]
 
     room = [
-            runtime : "android.arch.persistence.room:runtime:${versions.room}",
-            compiler: "android.arch.persistence.room:compiler:${versions.room}",
-            rxjava  : "android.arch.persistence.room:rxjava2:${versions.room}",
-            test    : "android.arch.persistence.room:testing:${versions.room}",
+            runtime : "android.arch.persistence.room:runtime:$versions.room",
+            compiler: "android.arch.persistence.room:compiler:$versions.room",
+            rxjava  : "android.arch.persistence.room:rxjava2:$versions.room",
+            test    : "android.arch.persistence.room:testing:$versions.room",
     ]
 
     channels = [
-            vasdolly: "com.leon.channel:helper:1.1.7",
+            vasdolly: "com.leon.channel:helper:$versions.channel",
             file    : channelFile,
     ]
 }

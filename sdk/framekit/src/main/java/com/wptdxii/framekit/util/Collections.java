@@ -1,5 +1,9 @@
 package com.wptdxii.framekit.util;
 
+import android.support.annotation.NonNull;
+
+import com.wptdxii.framekit.exception.InstantiationException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,16 +12,20 @@ import java.util.List;
 public final class Collections {
 
     private Collections() {
-        throw new UnsupportedOperationException("Cannot be instantiated!");
+        throw new InstantiationException();
     }
 
-    public static <E> List<E> newArrayList(Iterator<? extends E> elements) {
-        ArrayList<E> list = new ArrayList<>();
+    public static <E> ArrayList<E> newArrayList() {
+        return new ArrayList<>();
+    }
+
+    public static <E> List<E> newArrayList(@NonNull Iterator<? extends E> elements) {
+        ArrayList<E> list = newArrayList();
         addAll(list, elements);
         return list;
     }
 
-    public static <E> List<E> newArrayList(Iterable<E> elements) {
+    public static <E> List<E> newArrayList(@NonNull Iterable<E> elements) {
         return (elements instanceof Collection) ?
                 new ArrayList<>(cast(elements)) : newArrayList(elements.iterator());
     }
@@ -29,7 +37,7 @@ public final class Collections {
         }
     }
 
-    public static <E> Collection<E> cast(Iterable<E> iterable) {
+    public static <E> Collection<E> cast(@NonNull Iterable<E> iterable) {
         return (Collection<E>) iterable;
     }
 }

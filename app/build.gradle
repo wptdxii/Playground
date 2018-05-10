@@ -9,24 +9,24 @@ android {
         targetCompatibility versions.java
     }
 
-    signingConfigs {
-        config {
-            storeFile file(signing.storeFile)
-            storePassword signing.storePassword
-            keyAlias signing.keyAlias
-            keyPassword signing.keyPassword
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
-    }
-
     defaultConfig {
-        applicationId "com.wptdxii.playground"
+        applicationId "com.wptdxii.java.playground"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.code
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        config {
+            storeFile file(signings.storeFile)
+            storePassword signings.storePassword
+            keyAlias signings.keyAlias
+            keyPassword signings.keyPassword
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     buildTypes {
@@ -87,14 +87,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':sdk:framekit')
     implementation project(':sdk:uikit')
-    implementation support.v7
-    implementation support.constraint
-    implementation support.design
-    implementation support.cardView
+
+    implementation supports.v7
+    implementation supports.constraint
+    implementation supports.design
+    implementation supports.cardView
+
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation test.junit
-    androidTestImplementation test.runner
-    androidTestImplementation test.espresso
+    implementation 'com.android.support:support-v4:27.0.2'
+    testImplementation testings.junit
+    androidTestImplementation testings.runner
+    androidTestImplementation testings.espresso
 
     implementation di.butterknife
     annotationProcessor di.butterknifeCompiler

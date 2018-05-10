@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".main.SplashActivity"
+            android:configChanges="locale|keyboardHidden|screenSize|orientation"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,36 +21,46 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity" />
+        <activity
+            android:name=".main.MainActivity"
+            android:configChanges="locale|keyboardHidden|screenSize|orientation" />
         <activity
             android:name=".sample.SampleActivity"
+            android:configChanges="locale|keyboardHidden|screenSize|orientation"
             android:parentActivityName=".main.MainActivity"
             tools:targetApi="jelly_bean">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main.MainActivity" />
         </activity>
         <activity
             android:name=".sample.LayoutActivity"
-            android:theme="@style/TransparentStatusBarTheme" />
+            android:configChanges="locale|keyboardHidden|screenSize|orientation"
+            android:theme="@style/AppTheme.Translucent" />
         <activity
             android:name=".sample.DrawerActivity"
-            android:theme="@style/TransparentStatusBarTheme" />
+            android:configChanges="locale|keyboardHidden|screenSize|orientation"
+            android:theme="@style/AppTheme.Translucent" />
         <activity
-            android:name=".todo.tasks.TasksActivity"
-            android:theme="@style/AppTheme.TasksActivity" />
-        <activity android:name=".todo.statistics.StatisticsActivity" />
+            android:name=".todo.todo_mvp.tasks.TasksActivity"
+            android:configChanges="locale|keyboardHidden|screenSize|orientation"
+            android:theme="@style/AppTheme.ToDo.OverlapSystemBar"
+            android:launchMode="singleTask"/>
         <activity
-            android:name=".todo.addnewtask.AddNewTaskActivity"
-            android:parentActivityName=".todo.tasks.TasksActivity"
-            android:windowSoftInputMode="adjustResize"
-            tools:targetApi="jelly_bean" />
+            android:name=".todo.todo_mvp.statistics.StatisticsActivity"
+            android:theme="@style/AppTheme.ToDo" />
+        <activity
+            android:name=".todo.todo_mvp.addedittask.AddEditActivity"
+            android:theme="@style/AppTheme.ToDo"
+            android:windowSoftInputMode="adjustResize" />
 
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".todo.tasks.TasksActivity" />
-        <activity android:name=".todo.taskdetail.TaskDetailActivity" />
+        <activity
+            android:name=".todo.todo_mvp.taskdetails.TaskDetailsActivity"
+            android:theme="@style/AppTheme.ToDo" />
+        <activity android:name=".todo.ToDoActivity" />
+        <activity
+            android:name=".sample.SystemBarActivity"
+            android:theme="@style/AppTheme.Translucent" />
     </application>
 
 </manifest>
