@@ -37,7 +37,7 @@ ext {
             v7          : "com.android.support:appcompat-v7:$versions.support",
             design      : "com.android.support:design:$versions.support",
             annotations : "com.android.support:support-annotations:$versions.support",
-            constraint  : "com.android.support.constraint:constraint-layout:1.1.0-beta5",
+            constraint  : "com.android.support.constraint:constraint-layout:1.1.0",
             cardView    : "com.android.support:cardview-v7:$versions.support",
             recyclerView: "com.android.support:recyclerview-v7:$versions.support",
     ]
@@ -45,6 +45,8 @@ ext {
     di = [
             butterknife        : "com.jakewharton:butterknife:$versions.butterknife",
             butterknifeCompiler: "com.jakewharton:butterknife-compiler:$versions.butterknife",
+            dagger             : "com.google.dagger:dagger:$versions.dagger",
+            daggerCompiler     : "com.google.dagger:dagger-compiler:$versions.dagger",
     ]
 
     room = [

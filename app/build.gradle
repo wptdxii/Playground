@@ -93,14 +93,14 @@ dependencies {
     implementation supports.design
     implementation supports.cardView
 
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:support-v4:27.0.2'
-    testImplementation testings.junit
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     androidTestImplementation testings.runner
     androidTestImplementation testings.espresso
 
     implementation di.butterknife
     annotationProcessor di.butterknifeCompiler
+    implementation di.dagger
+    annotationProcessor di.daggerCompiler
 
     implementation room.runtime
     annotationProcessor room.compiler
