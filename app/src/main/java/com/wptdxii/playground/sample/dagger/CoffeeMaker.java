@@ -2,10 +2,16 @@ package com.wptdxii.playground.sample.dagger;
 
 import android.util.Log;
 
+import com.wptdxii.playground.di.scope.ActivityScoped;
+
 import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import dagger.Lazy;
+import dagger.Provides;
 
+@Singleton
 public class CoffeeMaker {
     private static final String TAG = "CoffeeMaker";
     private final Lazy<Heater> heater;

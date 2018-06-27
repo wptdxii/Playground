@@ -33,11 +33,13 @@ android {
         debug {
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.config
+            useProguard false
         }
 
         release {
             signingConfig signingConfigs.config
             minifyEnabled false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            postprocessing {
 //                removeUnusedCode true
@@ -93,7 +95,6 @@ dependencies {
     implementation supports.design
     implementation supports.cardView
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     androidTestImplementation testings.runner
     androidTestImplementation testings.espresso
 
@@ -101,6 +102,9 @@ dependencies {
     annotationProcessor di.butterknifeCompiler
     implementation di.dagger
     annotationProcessor di.daggerCompiler
+//    implementation di.daggerAndroid
+//    implementation di.daggerAndroidSupport
+//    annotationProcessor di.daggerAndroidCompiler
 
     implementation room.runtime
     annotationProcessor room.compiler
