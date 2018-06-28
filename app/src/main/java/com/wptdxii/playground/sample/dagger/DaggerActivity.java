@@ -5,19 +5,21 @@ import android.util.Log;
 
 import com.wptdxii.framekit.base.BaseActivity;
 import com.wptdxii.playground.R;
+import com.wptdxii.playground.di.component.DaggerAppComponent;
 import com.wptdxii.playground.sample.dagger.di.component.DaggerCoffeeShopComponent;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
+
+import dagger.Lazy;
 
 public class DaggerActivity extends BaseActivity {
 
-    private static final String TAG = "DaggerActivity";
+    private static final String TAG = "Coffee";
+
 
     @Inject
-    CoffeeMaker mCoffeeMaker;
-
-    @Inject
-    CoffeeMaker mMaker;
+    Lazy<CoffeeMaker> mCoffeeMakerLazy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,9 @@ public class DaggerActivity extends BaseActivity {
 
         DaggerCoffeeShopComponent.create().inject(this);
 
-        mCoffeeMaker.brew();
+        mCoffeeMakerLazy.get().brew();
 
-        Log.e(TAG, "onCreate: " + mCoffeeMaker.toString());
-        Log.e(TAG, "onCreate: " + mMaker.toString());
+        Log.e(TAG, "onCreate: " + mCoffeeMakerLazy.get().toString());
+        Log.e(TAG, "onCreate: " + mCoffeeMakerLazy.get().toString());
     }
 }

@@ -5,6 +5,8 @@ import com.wptdxii.playground.sample.dagger.Heater;
 import com.wptdxii.playground.sample.dagger.Pump;
 import com.wptdxii.playground.sample.dagger.Thermosiphon;
 
+import javax.inject.Scope;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

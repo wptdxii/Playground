@@ -7,6 +7,8 @@ import com.leon.channel.helper.ChannelReaderUtil;
 import com.wptdxii.playground.di.component.AppComponent;
 import com.wptdxii.playground.di.component.DaggerAppComponent;
 import com.wptdxii.playground.di.module.AppModule;
+import com.wptdxii.playground.sample.dagger.CoffeeMaker;
+import com.wptdxii.playground.sample.dagger.di.component.DaggerCoffeeShopComponent;
 
 /**
  * Created by wptdxii on 2018/1/16

@@ -10,8 +10,9 @@ import javax.inject.Singleton;
 
 import dagger.Lazy;
 import dagger.Provides;
+import dagger.Reusable;
 
-@Singleton
+//@Singleton
 public class CoffeeMaker {
     private static final String TAG = "CoffeeMaker";
     private final Lazy<Heater> heater;
