@@ -9,12 +9,17 @@ import android.widget.Toast;
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseDrawerActivity;
 
+import javax.inject.Inject;
+
 public class DrawerActivity extends BaseDrawerActivity {
+
+    @Inject
+    DrawerFragment mDrawerFragment;
 
     @NonNull
     @Override
     protected Fragment onCreateFragment() {
-        return DrawerFragment.newInstance();
+        return mDrawerFragment;
     }
 
     @Override

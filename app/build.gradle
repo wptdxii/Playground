@@ -102,9 +102,9 @@ dependencies {
     annotationProcessor di.butterknifeCompiler
     implementation di.dagger
     annotationProcessor di.daggerCompiler
-//    implementation di.daggerAndroid
-//    implementation di.daggerAndroidSupport
-//    annotationProcessor di.daggerAndroidCompiler
+    implementation di.daggerAndroid
+    implementation di.daggerAndroidSupport
+    annotationProcessor di.daggerAndroidCompiler
 
     implementation room.runtime
     annotationProcessor room.compiler

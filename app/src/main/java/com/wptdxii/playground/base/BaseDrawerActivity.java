@@ -17,7 +17,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.wptdxii.framekit.base.BaseActivity;
 import com.wptdxii.playground.R;
 
 import butterknife.BindView;
@@ -27,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by wptdxii on 18-1-24
  */
 
-public abstract class BaseDrawerActivity extends BaseActivity {
+public abstract class BaseDrawerActivity extends BaseDaggerActivity {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;

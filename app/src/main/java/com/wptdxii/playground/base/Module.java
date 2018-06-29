@@ -1,7 +1,5 @@
 package com.wptdxii.playground.base;
 
-import com.wptdxii.framekit.base.BaseActivity;
-
 /**
  * Created by wptdxii on 2018/1/17 0017
  */

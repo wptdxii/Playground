@@ -12,7 +12,7 @@ import dagger.Lazy;
 import dagger.Provides;
 import dagger.Reusable;
 
-//@Singleton
+@ActivityScoped
 public class CoffeeMaker {
     private static final String TAG = "CoffeeMaker";
     private final Lazy<Heater> heater;

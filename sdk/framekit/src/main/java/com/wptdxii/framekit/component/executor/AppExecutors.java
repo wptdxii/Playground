@@ -5,7 +5,6 @@ import java.util.concurrent.Executor;
 /**
  * Created by wptdxii on 2018/1/24 0024 14:59
  */
-
 public class AppExecutors {
     private final Executor mDiskIO;
     private final Executor mNetworkIO;

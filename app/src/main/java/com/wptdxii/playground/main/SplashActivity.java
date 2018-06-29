@@ -1,21 +1,17 @@
 package com.wptdxii.playground.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 
-import com.wptdxii.framekit.base.BaseActivity;
+import com.wptdxii.playground.base.BaseActivity;
 import com.wptdxii.playground.R;
+import com.wptdxii.playground.base.BaseDaggerActivity;
 import com.wptdxii.playground.sample.dagger.CoffeeMaker;
-import com.wptdxii.playground.sample.dagger.di.component.DaggerCoffeeShopComponent;
 
 import javax.inject.Inject;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseDaggerActivity {
     private static final int RESIDENCE_TIME = 1000;
-
-    @Inject
-    CoffeeMaker mCoffeeMaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

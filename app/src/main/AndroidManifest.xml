@@ -42,25 +42,24 @@
             android:configChanges="locale|keyboardHidden|screenSize|orientation"
             android:theme="@style/AppTheme.Translucent" />
         <activity
-            android:name=".todo.todo_mvp.tasks.TasksActivity"
+            android:name=".todo.tasks.TasksActivity"
             android:configChanges="locale|keyboardHidden|screenSize|orientation"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.ToDo.OverlapSystemBar" />
         <activity
-            android:name=".todo.todo_mvp.statistics.StatisticsActivity"
+            android:name=".todo.statistics.StatisticsActivity"
             android:theme="@style/AppTheme.ToDo" />
         <activity
-            android:name=".todo.todo_mvp.addedittask.AddEditActivity"
+            android:name=".todo.addedittask.AddEditActivity"
             android:theme="@style/AppTheme.ToDo"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".todo.todo_mvp.taskdetails.TaskDetailsActivity"
+            android:name=".todo.taskdetails.TaskDetailsActivity"
             android:theme="@style/AppTheme.ToDo" />
-        <activity android:name=".todo.ToDoActivity" />
         <activity
             android:name=".sample.SystemBarActivity"
             android:theme="@style/AppTheme.Translucent" />
-        <activity android:name=".sample.dagger.DaggerActivity"></activity>
+        <activity android:name=".sample.dagger.DaggerSampleActivity"></activity>
     </application>
 
 </manifest>

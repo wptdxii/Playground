@@ -5,26 +5,13 @@ import android.content.Context;
 
 import com.wptdxii.playground.di.qualifier.AppContext;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 @Module
-public class AppModule {
-    private final Application mApplication;
+public abstract class AppModule {
 
-    public AppModule(Application application) {
-        this.mApplication = application;
-    }
-
-
-    @Provides
-    public Application provideApplication() {
-        return mApplication;
-    }
-
-    @Provides
     @AppContext
-    public Context provideContext() {
-        return mApplication;
-    }
+    @Binds
+    abstract Context provideContext(Application application);
 }

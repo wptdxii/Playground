@@ -8,6 +8,7 @@ import com.wptdxii.playground.sample.dagger.Thermosiphon;
 import javax.inject.Scope;
 
 import dagger.Binds;
+import dagger.BindsInstance;
 import dagger.Module;
 import dagger.Provides;
 import dagger.Reusable;

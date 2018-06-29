@@ -43,5 +43,5 @@
     <string name="todo_tasks_filter_completed">Completed TO-DOs</string>
     <string name="todo_loading_tasks_error">Error while loading tasks</string>
     <string name="sample_system_bar_title">SystemBar</string>
-    <string name="sample_dagger_title">Dagger</string>
+    <string name="sample_dagger_title">DaggerSample</string>
 </resources>

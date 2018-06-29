@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.wptdxii.framekit.base.BaseActivity;
+import com.wptdxii.playground.base.BaseActivity;
 import com.wptdxii.framekit.util.MenuUtil;
 import com.wptdxii.playground.R;
 

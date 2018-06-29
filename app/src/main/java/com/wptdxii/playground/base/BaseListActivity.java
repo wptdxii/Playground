@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.wptdxii.framekit.base.BaseActivity;
 import com.wptdxii.playground.R;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by wptdxii on 2018/1/17
  */
 
-public abstract class BaseListActivity extends BaseActivity {
+public abstract class BaseListActivity extends BaseDaggerActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
