@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.leon.channel.helper.ChannelReaderUtil;
+import com.wptdxii.playground.di.component.DaggerAppComponent;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,7 @@ public class App extends Application implements HasActivityInjector, HasSupportF
     @Override
     public void onCreate() {
         super.onCreate();
-//        DaggerAppComponent.builder().application(this).build().inject(this);
+        DaggerAppComponent.builder().application(this).build().inject(this);
 
         String channel = ChannelReaderUtil.getChannel(getApplicationContext());
         Log.e(TAG, "onCreate: " + channel);

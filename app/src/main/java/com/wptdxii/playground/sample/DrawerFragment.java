@@ -3,17 +3,13 @@ package com.wptdxii.playground.sample;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wptdxii.playground.base.BaseDaggerFragment;
-import com.wptdxii.playground.base.BaseFragment;
 import com.wptdxii.playground.R;
+import com.wptdxii.playground.base.BaseFragment;
 import com.wptdxii.playground.di.scope.ActivityScoped;
-import com.wptdxii.playground.sample.dagger.CoffeeMaker;
 
 import javax.inject.Inject;
 
@@ -22,7 +18,7 @@ import javax.inject.Inject;
  */
 
 @ActivityScoped
-public class DrawerFragment extends BaseDaggerFragment {
+public class DrawerFragment extends BaseFragment {
 
     //    @Inject
     //    CoffeeMaker mCoffeeMaker;

@@ -3,14 +3,10 @@ package com.wptdxii.playground.main;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.wptdxii.playground.base.BaseActivity;
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseDaggerActivity;
-import com.wptdxii.playground.sample.dagger.CoffeeMaker;
+import com.wptdxii.playground.base.BaseActivity;
 
-import javax.inject.Inject;
-
-public class SplashActivity extends BaseDaggerActivity {
+public class SplashActivity extends BaseActivity {
     private static final int RESIDENCE_TIME = 1000;
 
     @Override
@@ -23,7 +19,6 @@ public class SplashActivity extends BaseDaggerActivity {
             MainActivity.start(this);
             finish();
         }, RESIDENCE_TIME);
-
     }
 
     private void setFullScreen() {

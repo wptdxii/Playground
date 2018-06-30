@@ -10,9 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseDaggerFragment;
+import com.wptdxii.playground.base.BaseFragment;
 import com.wptdxii.playground.di.scope.ActivityScoped;
-import com.wptdxii.playground.di.scope.FragmentScoped;
 
 import javax.inject.Inject;
 
@@ -21,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 @ActivityScoped
-public class StatisticsFragment extends BaseDaggerFragment implements StatisticsContract.View {
+public class StatisticsFragment extends BaseFragment implements StatisticsContract.View {
 
     @BindView(R.id.tv_tasks_statistics)
     TextView tvTasksStatistics;

@@ -3,7 +3,7 @@ package com.wptdxii.playground.todo.taskdetails;
 import com.wptdxii.framekit.base.Contract;
 import com.wptdxii.playground.todo.data.source.Task;
 
-public class TaskDetailsContract {
+public interface TaskDetailsContract {
 
     interface View extends Contract.View {
 

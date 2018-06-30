@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseDrawerActivity;
@@ -17,7 +18,9 @@ import javax.inject.Inject;
 public class TasksActivity extends BaseDrawerActivity {
 
     @Inject
-    TasksFragment mTasksFragment;
+    Fragment mTasksFragment;
+
+    private static final String TAG = "Presenter";
 
     public static void start(Context context) {
         Intent intent = new Intent(context, TasksActivity.class);

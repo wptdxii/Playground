@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by wptdxii on 2018/1/17
  */
 
-public abstract class BaseListActivity extends BaseDaggerActivity {
+public abstract class BaseListActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)

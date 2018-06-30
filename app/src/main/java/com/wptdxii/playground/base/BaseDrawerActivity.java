@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by wptdxii on 18-1-24
  */
 
-public abstract class BaseDrawerActivity extends BaseDaggerActivity {
+public abstract class BaseDrawerActivity extends BaseActivity {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;

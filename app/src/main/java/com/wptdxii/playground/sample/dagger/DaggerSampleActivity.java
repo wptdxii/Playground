@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseDaggerActivity;
+import com.wptdxii.playground.base.BaseActivity;
 
 import javax.inject.Inject;
 
-public class DaggerSampleActivity extends BaseDaggerActivity {
+public class DaggerSampleActivity extends BaseActivity {
 
     private static final String TAG = "Coffee";
 

@@ -1,6 +1,9 @@
 package com.wptdxii.playground.todo.taskdetails;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.playground.todo.taskdetails.TaskDetailsActivity;
+import com.wptdxii.playground.todo.taskdetails.TaskDetailsContract;
+import com.wptdxii.playground.todo.taskdetails.TaskDetailsPresenter;
 
 import dagger.Binds;
 import dagger.Module;

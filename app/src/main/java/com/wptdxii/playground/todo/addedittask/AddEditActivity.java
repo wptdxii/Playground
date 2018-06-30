@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseActivity;
-import com.wptdxii.playground.base.BaseDaggerActivity;
 import com.wptdxii.playground.todo.data.source.Task;
 
 import javax.inject.Inject;
@@ -22,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddEditActivity extends BaseDaggerActivity implements AddEditContract.View {
+public class AddEditActivity extends BaseActivity implements AddEditContract.View {
 
     public static final String EXTRA_TASK_ID = "extra_task_id";
     public static final int REQUEST_CODE_TASK_ID = 1;

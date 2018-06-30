@@ -7,9 +7,11 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +23,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseDaggerFragment;
 import com.wptdxii.playground.base.BaseFragment;
 import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.playground.sample.dagger.CoffeeMaker;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.taskdetails.TaskDetailsActivity;
@@ -37,8 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-@ActivityScoped
-public class TasksFragment extends BaseDaggerFragment implements TasksContract.View {
+public class TasksFragment extends BaseFragment implements TasksContract.View {
 
     @BindView(R.id.tv_filtering_label)
     TextView tvFilteringLabel;
@@ -62,17 +63,31 @@ public class TasksFragment extends BaseDaggerFragment implements TasksContract.V
 
     @Inject
     TasksContract.Presenter mTaskPresenter;
-    private TasksAdapter mTasksAdapter;
 
     @Inject
-    public TasksFragment() {
+    CoffeeMaker mCoffeeMaker;
+
+    private TasksAdapter mTasksAdapter;
+
+    /**
+     * provide fragment instance in dagger module while need arguments
+     *
+     * @return
+     */
+    public static Fragment newInstance() {
+        return new TasksFragment();
     }
+
+    private static final String TAG = "Presenter";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //        mTaskPresenter = new TasksPresenter(Injection.provideTasksRepository(getContext()));
+
+        Log.e(TAG, "onCreate: " + mTaskPresenter);
+        Log.e(TAG, "coffeeMaker: " + mCoffeeMaker);
         mTaskPresenter.attach(this);
 
         mTasksAdapter = new TasksAdapter(new TasksAdapter.TaskItemListener() {

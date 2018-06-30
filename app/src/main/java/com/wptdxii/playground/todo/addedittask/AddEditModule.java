@@ -3,6 +3,9 @@ package com.wptdxii.playground.todo.addedittask;
 import android.support.annotation.Nullable;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.playground.todo.addedittask.AddEditActivity;
+import com.wptdxii.playground.todo.addedittask.AddEditContract;
+import com.wptdxii.playground.todo.addedittask.AddEditPresenter;
 
 import dagger.Binds;
 import dagger.Module;

@@ -3,16 +3,17 @@ package com.wptdxii.playground.todo.tasks;
 import android.support.annotation.NonNull;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.playground.di.scope.FragmentScoped;
+import com.wptdxii.playground.todo.data.TasksRepository;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
-import com.wptdxii.playground.todo.data.TasksRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-@ActivityScoped
+@FragmentScoped
 public final class TasksPresenter implements TasksContract.Presenter {
 
     private TasksContract.View mTaskView;

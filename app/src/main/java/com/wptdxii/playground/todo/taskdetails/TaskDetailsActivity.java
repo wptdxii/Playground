@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseActivity;
-import com.wptdxii.playground.base.BaseDaggerActivity;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.data.source.Task;
 
@@ -27,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class TaskDetailsActivity extends BaseDaggerActivity implements TaskDetailsContract.View {
+public class TaskDetailsActivity extends BaseActivity implements TaskDetailsContract.View {
 
     public static final String EXTRA_TASK_ID = "extra_task_id";
 
