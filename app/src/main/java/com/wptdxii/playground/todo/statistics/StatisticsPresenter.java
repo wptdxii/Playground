@@ -13,20 +13,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-@ActivityScoped
-public class StatisticsPresenter implements StatisticsContract.Presenter {
+final class StatisticsPresenter implements StatisticsContract.Presenter {
 
     private StatisticsContract.View mStatisticsView;
     private TasksRepository mTasksRepository;
 
     @Inject
-    public StatisticsPresenter(TasksRepository repository) {
+    StatisticsPresenter(TasksRepository repository) {
         mTasksRepository = repository;
     }
 
     @Override
     public void attach(StatisticsContract.View view) {
         mStatisticsView = view;
+        getTasksStatistics();
     }
 
     @Override
@@ -35,8 +35,8 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
     }
 
     private static final String TAG = "StatisticsPresenter";
-    @Override
-    public void getTasksStatistics() {
+
+    private void getTasksStatistics() {
         if (mStatisticsView != null) {
             mStatisticsView.showLoadingIndicator(true);
         }
@@ -65,7 +65,7 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                Log.e(TAG, "onDataNotAvailable: _--------" );
+                Log.e(TAG, "onDataNotAvailable: _--------");
                 if (mStatisticsView != null) {
                     mStatisticsView.showLoadingIndicator(false);
                     mStatisticsView.showLoadingStatisticsError();

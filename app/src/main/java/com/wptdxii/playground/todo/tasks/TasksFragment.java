@@ -7,7 +7,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseFragment;
-import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.sample.dagger.CoffeeMaker;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.data.source.Task;
@@ -64,9 +62,6 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
     @Inject
     TasksContract.Presenter mTaskPresenter;
 
-    @Inject
-    CoffeeMaker mCoffeeMaker;
-
     private TasksAdapter mTasksAdapter;
 
     /**
@@ -74,7 +69,7 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
      *
      * @return
      */
-    public static Fragment newInstance() {
+    public static TasksFragment newInstance() {
         return new TasksFragment();
     }
 
@@ -83,12 +78,6 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //        mTaskPresenter = new TasksPresenter(Injection.provideTasksRepository(getContext()));
-
-        Log.e(TAG, "onCreate: " + mTaskPresenter);
-        Log.e(TAG, "coffeeMaker: " + mCoffeeMaker);
-        mTaskPresenter.attach(this);
 
         mTasksAdapter = new TasksAdapter(new TasksAdapter.TaskItemListener() {
             @Override
@@ -182,6 +171,7 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
     @Override
     public void onResume() {
         super.onResume();
+        mTaskPresenter.attach(this);
         mTaskPresenter.loadTasks(false, false);
     }
 

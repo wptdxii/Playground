@@ -9,6 +9,7 @@ import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseListActivity;
 import com.wptdxii.playground.base.Module;
 import com.wptdxii.playground.sample.dagger.DaggerSampleActivity;
+import com.wptdxii.playground.sample.rx.RxSampleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,8 @@ public class SampleActivity extends BaseListActivity {
         modules.add(new Module(getString(R.string.sample_system_bar_title), SystemBarActivity.class));
         modules.add(new Module(getString(R.string.sample_layout_title), LayoutActivity.class));
         modules.add(new Module(getString(R.string.sample_drawer_title), DrawerActivity.class));
-        modules.add(new Module(getString(R.string.sample_dagger_title), DaggerSampleActivity.class));
+        modules.add(new Module(getString(R.string.sample_dagger_sample_title), DaggerSampleActivity.class));
+        modules.add(new Module(getString(R.string.sample_rx_sample_title), RxSampleActivity.class));
         return modules;
     }
 }

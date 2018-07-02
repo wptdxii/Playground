@@ -33,8 +33,6 @@ public interface TaskDetailsContract {
 
     interface Presenter extends Contract.Presenter<View> {
 
-        void getTask();
-
         void editTask();
 
         void deleteTask();

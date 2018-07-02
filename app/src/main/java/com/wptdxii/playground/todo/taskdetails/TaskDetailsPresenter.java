@@ -10,15 +10,14 @@ import com.wptdxii.playground.todo.data.TasksRepository;
 
 import javax.inject.Inject;
 
-@ActivityScoped
-public final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
+final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
 
     private final String mTaskId;
     private TaskDetailsContract.View mTaskDetailsView;
     private TasksRepository mTasksRepository;
 
     @Inject
-    public TaskDetailsPresenter(@NonNull String taskId, TasksRepository tasksRepository) {
+    TaskDetailsPresenter(@NonNull String taskId, TasksRepository tasksRepository) {
         mTaskId = taskId;
         mTasksRepository = tasksRepository;
     }
@@ -26,6 +25,7 @@ public final class TaskDetailsPresenter implements TaskDetailsContract.Presenter
     @Override
     public void attach(TaskDetailsContract.View view) {
         mTaskDetailsView = view;
+        getTask();
     }
 
     @Override
@@ -33,8 +33,7 @@ public final class TaskDetailsPresenter implements TaskDetailsContract.Presenter
         mTaskDetailsView = null;
     }
 
-    @Override
-    public void getTask() {
+    private void getTask() {
         if (checkTaskId()) return;
 
         if (mTaskDetailsView != null) {

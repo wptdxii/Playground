@@ -1,5 +1,6 @@
 package com.wptdxii.playground.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +14,6 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.DaggerAppCompatActivity;
 import dagger.android.support.HasSupportFragmentInjector;
 
 /**
@@ -24,7 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity implements HasSuppo
 
     @Inject
     DispatchingAndroidInjector<Fragment> mSupportFragmentInjector;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

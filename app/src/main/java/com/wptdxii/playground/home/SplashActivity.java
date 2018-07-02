@@ -1,4 +1,4 @@
-package com.wptdxii.playground.main;
+package com.wptdxii.playground.home;
 
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -12,11 +12,11 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.home_activity_splash);
 
         getWindow().getDecorView().postDelayed(() -> {
             cancelFullScreen();
-            MainActivity.start(this);
+            HomeActivity.start(this);
             finish();
         }, RESIDENCE_TIME);
     }

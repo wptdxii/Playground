@@ -3,30 +3,43 @@ package com.wptdxii.playground.todo.addedittask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.wptdxii.playground.di.qualifier.ActivityContext;
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.playground.todo.data.TasksRepository;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
-import com.wptdxii.playground.todo.data.TasksRepository;
 
 import javax.inject.Inject;
 
-@ActivityScoped
-public final class AddEditPresenter implements AddEditContract.Presenter {
+import dagger.Lazy;
 
-    private String mTaskId;
+/**
+ * Dagger generated code doesn't require public access to the constructor or class, and
+ * therefore, to ensure the developer doesn't instantiate the class manually bypassing Dagger,
+ * it's good practice minimise the visibility of the class/constructor as much as possible.
+ */
+final class AddEditPresenter implements AddEditContract.Presenter {
+
+    private final String mTaskId;
+    private final Lazy<Boolean> mIsDataMissingProvider;
+    private boolean mIsDataMissing;
     private AddEditContract.View mAddEditView;
     private TasksRepository mTasksRepository;
 
     @Inject
-    public AddEditPresenter(@Nullable String taskId, @NonNull TasksRepository tasksRepository) {
+    AddEditPresenter(@Nullable String taskId,
+                     @NonNull TasksRepository tasksRepository,
+                     Lazy<Boolean> shouldLoadDataFromRepo) {
         mTaskId = taskId;
         mTasksRepository = tasksRepository;
+        mIsDataMissingProvider = shouldLoadDataFromRepo;
     }
 
     @Override
     public void attach(AddEditContract.View view) {
         mAddEditView = view;
+        mIsDataMissing = mIsDataMissingProvider.get();
+        if (mIsDataMissing) {
+            getTask();
+        }
     }
 
     @Override
@@ -51,6 +64,7 @@ public final class AddEditPresenter implements AddEditContract.Presenter {
                 public void onTaskLoaded(@NonNull Task task) {
                     if (mAddEditView != null) {
                         mAddEditView.showTask(task);
+                        mIsDataMissing = false;
                     }
                 }
 
@@ -58,6 +72,7 @@ public final class AddEditPresenter implements AddEditContract.Presenter {
                 public void onDataNotAvailable() {
                     if (mAddEditView != null) {
                         mAddEditView.showEmptyTaskError();
+                        mIsDataMissing = false;
                     }
                 }
             });
@@ -84,5 +99,10 @@ public final class AddEditPresenter implements AddEditContract.Presenter {
         } else {
             mTasksRepository.saveTask(task);
         }
+    }
+
+    @Override
+    public boolean isDataMissing() {
+        return mIsDataMissing;
     }
 }

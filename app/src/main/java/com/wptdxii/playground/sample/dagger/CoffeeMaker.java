@@ -3,14 +3,11 @@ package com.wptdxii.playground.sample.dagger;
 import android.util.Log;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.playground.di.scope.FragmentScoped;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 
 import dagger.Lazy;
-import dagger.Provides;
-import dagger.Reusable;
 
 public class CoffeeMaker {
     private static final String TAG = "CoffeeMaker";

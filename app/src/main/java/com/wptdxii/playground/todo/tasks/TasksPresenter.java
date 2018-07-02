@@ -1,9 +1,9 @@
 package com.wptdxii.playground.todo.tasks;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
-import com.wptdxii.playground.di.scope.FragmentScoped;
 import com.wptdxii.playground.todo.data.TasksRepository;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
@@ -13,8 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-@FragmentScoped
-public final class TasksPresenter implements TasksContract.Presenter {
+final class TasksPresenter implements TasksContract.Presenter {
 
     private TasksContract.View mTaskView;
     private TasksFilterType mFilterType = TasksFilterType.ALL_TASKS;
@@ -22,7 +21,7 @@ public final class TasksPresenter implements TasksContract.Presenter {
     private boolean mFirstLoad = true;
 
     @Inject
-    public TasksPresenter(@NonNull TasksRepository tasksRepository) {
+    TasksPresenter(@NonNull TasksRepository tasksRepository) {
         this.mTasksRepository = tasksRepository;
     }
 
@@ -129,6 +128,7 @@ public final class TasksPresenter implements TasksContract.Presenter {
     @Override
     public void attach(TasksContract.View view) {
         this.mTaskView = view;
+        loadTasks(false, false);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.wptdxii.playground.main;
+package com.wptdxii.playground.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +16,12 @@ import com.wptdxii.playground.todo.tasks.TasksActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseListActivity {
+public class HomeActivity extends BaseListActivity {
     private static final int RESIDENCE_TIME = 1000;
     private boolean mIsExited = false;
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, MainActivity.class);
+        Intent starter = new Intent(context, HomeActivity.class);
         context.startActivity(starter);
     }
 

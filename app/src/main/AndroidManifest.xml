@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".main.SplashActivity"
+            android:name=".home.SplashActivity"
             android:configChanges="locale|keyboardHidden|screenSize|orientation"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
@@ -22,16 +22,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name=".home.HomeActivity"
             android:configChanges="locale|keyboardHidden|screenSize|orientation" />
         <activity
             android:name=".sample.SampleActivity"
             android:configChanges="locale|keyboardHidden|screenSize|orientation"
-            android:parentActivityName=".main.MainActivity"
+            android:parentActivityName=".home.HomeActivity"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".main.MainActivity" />
+                android:value=".home.HomeActivity" />
         </activity>
         <activity
             android:name=".sample.LayoutActivity"
@@ -51,15 +51,15 @@
             android:theme="@style/AppTheme.ToDo" />
         <activity
             android:name=".todo.addedittask.AddEditActivity"
-            android:theme="@style/AppTheme.ToDo"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/AppTheme.ToDo" />
         <activity
             android:name=".todo.taskdetails.TaskDetailsActivity"
             android:theme="@style/AppTheme.ToDo" />
         <activity
             android:name=".sample.SystemBarActivity"
             android:theme="@style/AppTheme.Translucent" />
-        <activity android:name=".sample.dagger.DaggerSampleActivity"></activity>
+        <activity android:name=".sample.dagger.DaggerSampleActivity" />
+        <activity android:name=".sample.rx.RxSampleActivity" />
     </application>
 
 </manifest>

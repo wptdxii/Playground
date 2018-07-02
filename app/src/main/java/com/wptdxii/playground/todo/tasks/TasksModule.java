@@ -1,18 +1,25 @@
 package com.wptdxii.playground.todo.tasks;
 
-import android.support.v4.app.Fragment;
-
 import com.wptdxii.playground.di.scope.ActivityScoped;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class TasksModule {
 
+    @ContributesAndroidInjector
+    abstract TasksFragment tasksFragment();
+
     @Provides
     @ActivityScoped
-    static Fragment provideTasksFragment() {
+    static TasksFragment provideTasksFragment() {
         return TasksFragment.newInstance();
     }
+
+    @Binds
+    @ActivityScoped
+    abstract TasksContract.Presenter providePresenter(TasksPresenter presenter);
 }

@@ -25,9 +25,7 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
 
     public static final String EXTRA_TASK_ID = "extra_task_id";
     public static final int REQUEST_CODE_TASK_ID = 1;
-
-    private static final String BUNDLE_KEY_TITLE = "bundle_key_title";
-    private static final String BUNDLE_KEY_DESCRIPTION = "bundle_key_description";
+    private static final String BUNDLE_SHOUD_LAOD_DATA_FROM_REPO = "shoud_load_data_from_repo";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,13 +39,22 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
     @Inject
     @Nullable
     String mTaskId;
-
     @Inject
     AddEditContract.Presenter mAddEditPresenter;
+
+    private boolean mIsDataMissing = true;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, AddEditActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void showTasksList() {
+        if (mTaskId != null) {
+            setResult(RESULT_OK);
+        }
+        finish();
     }
 
     public static void start(Activity activity, String taskId) {
@@ -68,25 +75,26 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
         setContentView(R.layout.todo_activity_add_edit);
         ButterKnife.bind(this);
 
-        //        String taskId = getIntent().getStringExtra(EXTRA_TASK_ID);
         setupAppBar(mTaskId);
+    }
 
-        //        mAddEditPresenter = new AddEditPresenter(mTaskId, Injection.provideTasksRepository(this));
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mIsDataMissing = savedInstanceState.getBoolean(BUNDLE_SHOUD_LAOD_DATA_FROM_REPO);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mAddEditPresenter.attach(this);
-
-        if (savedInstanceState != null) {
-            etTaskTitle.setText(savedInstanceState.getString(BUNDLE_KEY_TITLE));
-            etTaskDescription.setText(savedInstanceState.getString(BUNDLE_KEY_DESCRIPTION));
-        } else {
-            mAddEditPresenter.getTask();
-        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(BUNDLE_SHOUD_LAOD_DATA_FROM_REPO,
+                mAddEditPresenter.isDataMissing());
         super.onSaveInstanceState(outState);
-        outState.putString(BUNDLE_KEY_TITLE, etTaskTitle.getText().toString().trim());
-        outState.putString(BUNDLE_KEY_DESCRIPTION, etTaskDescription.getText().toString().trim());
     }
 
     @Override
@@ -111,8 +119,6 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
     public void saveTask() {
         mAddEditPresenter.saveTask(etTaskTitle.getText().toString().trim(),
                 etTaskDescription.getText().toString().trim());
-        setResult(RESULT_OK);
-        finish();
     }
 
     @Override
@@ -124,5 +130,9 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
     protected void onDestroy() {
         super.onDestroy();
         mAddEditPresenter.detach();
+    }
+
+    boolean isDataMissing() {
+        return mIsDataMissing;
     }
 }

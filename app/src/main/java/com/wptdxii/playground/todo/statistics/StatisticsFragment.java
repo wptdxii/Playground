@@ -29,6 +29,7 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
     @Inject
     StatisticsContract.Presenter mStatisticsPresenter;
 
+
     @Inject
     public StatisticsFragment() {
     }
@@ -36,9 +37,6 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //        mStatisticsPresenter = new StatisticsPresenter(Injection.provideTasksRepository(getContext()));
-        mStatisticsPresenter.attach(this);
     }
 
     @Nullable
@@ -53,7 +51,7 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
     @Override
     public void onResume() {
         super.onResume();
-        mStatisticsPresenter.getTasksStatistics();
+        mStatisticsPresenter.attach(this);
     }
 
     @Override

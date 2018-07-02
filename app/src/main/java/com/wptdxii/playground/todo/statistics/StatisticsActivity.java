@@ -13,10 +13,12 @@ import com.wptdxii.playground.todo.tasks.TasksActivity;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
+
 public class StatisticsActivity extends BaseDrawerActivity {
 
     @Inject
-    StatisticsFragment mStatisticsFragment;
+    Lazy<StatisticsFragment> mStatisticsFragment;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, StatisticsActivity.class);
@@ -31,7 +33,7 @@ public class StatisticsActivity extends BaseDrawerActivity {
     @NonNull
     @Override
     protected Fragment onCreateFragment() {
-        return mStatisticsFragment;
+        return mStatisticsFragment.get();
     }
 
     @Override

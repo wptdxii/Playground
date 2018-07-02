@@ -13,8 +13,5 @@ public interface StatisticsContract {
         void showLoadingStatisticsError();
     }
 
-    interface Presenter extends Contract.Presenter<View> {
-
-        void getTasksStatistics();
-    }
+    interface Presenter extends Contract.Presenter<View> {}
 }

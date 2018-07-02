@@ -10,6 +10,8 @@ public interface AddEditContract {
         void showEmptyTaskError();
 
         void showTask(Task task);
+
+        void showTasksList();
     }
 
     interface Presenter extends Contract.Presenter<View> {
@@ -17,5 +19,7 @@ public interface AddEditContract {
         void saveTask(String title, String description);
 
         void getTask();
+
+        boolean isDataMissing();
     }
 }

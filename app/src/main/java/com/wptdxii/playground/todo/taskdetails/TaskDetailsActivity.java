@@ -59,9 +59,6 @@ public class TaskDetailsActivity extends BaseActivity implements TaskDetailsCont
         ButterKnife.bind(this);
 
         setupAppBar();
-        String taskId = getIntent().getStringExtra(EXTRA_TASK_ID);
-        //        mTaskDetailsPresenter = new TaskDetailsPresenter(taskId, Injection.provideTasksRepository(this));
-        mTaskDetailsPresenter.attach(this);
     }
 
     private void setupAppBar() {
@@ -105,7 +102,7 @@ public class TaskDetailsActivity extends BaseActivity implements TaskDetailsCont
     @Override
     protected void onResume() {
         super.onResume();
-        mTaskDetailsPresenter.getTask();
+        mTaskDetailsPresenter.attach(this);
     }
 
     @Override

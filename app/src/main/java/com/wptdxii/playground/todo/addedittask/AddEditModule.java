@@ -3,9 +3,6 @@ package com.wptdxii.playground.todo.addedittask;
 import android.support.annotation.Nullable;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
-import com.wptdxii.playground.todo.addedittask.AddEditActivity;
-import com.wptdxii.playground.todo.addedittask.AddEditContract;
-import com.wptdxii.playground.todo.addedittask.AddEditPresenter;
 
 import dagger.Binds;
 import dagger.Module;
@@ -21,7 +18,13 @@ public abstract class AddEditModule {
         return addEditActivity.getIntent().getStringExtra(AddEditActivity.EXTRA_TASK_ID);
     }
 
-    @ActivityScoped
     @Binds
+    @ActivityScoped
     abstract AddEditContract.Presenter providePresenter(AddEditPresenter presenter);
+
+    @Provides
+    @ActivityScoped
+    static boolean provideStatusDataMissing(AddEditActivity addEditActivity) {
+        return addEditActivity.isDataMissing();
+    }
 }
