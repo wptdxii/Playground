@@ -1,14 +1,13 @@
 package com.wptdxii.playground.sample.di;
 
 import com.wptdxii.playground.di.scope.ActivityScoped;
-import com.wptdxii.playground.di.scope.FragmentScoped;
 import com.wptdxii.playground.sample.DrawerActivity;
 import com.wptdxii.playground.sample.DrawerFragment;
+import com.wptdxii.playground.sample.LayoutActivity;
 import com.wptdxii.playground.sample.SampleActivity;
-import com.wptdxii.playground.sample.dagger.DaggerSampleActivity;
-import com.wptdxii.playground.sample.dagger.DaggerSampleFragment;
-import com.wptdxii.playground.sample.dagger.DaggerSampleFragmentModule;
-import com.wptdxii.playground.sample.dagger.DaggerSampleModule;
+import com.wptdxii.playground.sample.SystemBarActivity;
+import com.wptdxii.playground.sample.dagger.DaggerActivity;
+import com.wptdxii.playground.sample.dagger.DaggerActivityModule;
 import com.wptdxii.playground.sample.rx.RxSampleActivity;
 
 import dagger.Module;
@@ -17,18 +16,9 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class SampleBindingModule {
 
-    /**
-     * Subcomponent of AppComponent not Activity
-     *
-     * @return
-     */
-    @FragmentScoped
-    @ContributesAndroidInjector(modules = DaggerSampleFragmentModule.class)
-    abstract DaggerSampleFragment daggerSampleFragment();
-
     @ActivityScoped
-    @ContributesAndroidInjector(modules = DaggerSampleModule.class)
-    abstract DaggerSampleActivity daggerSampleActivity();
+    @ContributesAndroidInjector(modules = DaggerActivityModule.class)
+    abstract DaggerActivity daggerActivity();
 
     @ActivityScoped
     @ContributesAndroidInjector
@@ -43,4 +33,10 @@ public abstract class SampleBindingModule {
 
     @ContributesAndroidInjector
     abstract RxSampleActivity rxSampleActivity();
+
+    @ContributesAndroidInjector
+    abstract LayoutActivity layoutActivity();
+
+    @ContributesAndroidInjector
+    abstract SystemBarActivity systemBarActivity();
 }

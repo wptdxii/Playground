@@ -113,4 +113,7 @@ dependencies {
 //    implementation room.rxjava
 
     implementation channels.vasdolly
+
+    implementation rx.java
+    implementation rx.android
 }

@@ -63,4 +63,9 @@ ext {
             vasdolly: "com.leon.channel:helper:$versions.channel",
             file    : channelFile,
     ]
+
+    rx = [
+            android: "io.reactivex.rxjava2:rxandroid:2.0.2",
+            java   : "io.reactivex.rxjava2:rxjava:2.1.16",
+    ]
 }

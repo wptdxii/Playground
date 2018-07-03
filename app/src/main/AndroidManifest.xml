@@ -58,7 +58,7 @@
         <activity
             android:name=".sample.SystemBarActivity"
             android:theme="@style/AppTheme.Translucent" />
-        <activity android:name=".sample.dagger.DaggerSampleActivity" />
+        <activity android:name=".sample.dagger.DaggerActivity" />
         <activity android:name=".sample.rx.RxSampleActivity" />
     </application>
 

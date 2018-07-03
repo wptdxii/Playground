@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.base.BaseFragment;
-import com.wptdxii.playground.sample.dagger.CoffeeMaker;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.taskdetails.TaskDetailsActivity;
