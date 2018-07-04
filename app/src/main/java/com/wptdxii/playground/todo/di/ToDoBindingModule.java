@@ -1,5 +1,6 @@
 package com.wptdxii.playground.todo.di;
 
+import com.wptdxii.playground.di.module.RxModule;
 import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.addedittask.AddEditModule;
@@ -21,7 +22,7 @@ public abstract class ToDoBindingModule {
     abstract TasksActivity tasksActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = TaskDetailsModule.class)
+    @ContributesAndroidInjector(modules = {TaskDetailsModule.class})
     abstract TaskDetailsActivity taskDetailsActivity();
 
     @ActivityScoped

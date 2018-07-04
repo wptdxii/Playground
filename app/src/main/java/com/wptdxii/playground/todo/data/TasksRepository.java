@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
+
 @Singleton
 public final class TasksRepository implements TasksDataSource {
 
@@ -95,77 +97,72 @@ public final class TasksRepository implements TasksDataSource {
         mTasksLocalDataSource.updateTask(task);
     }
 
+
     @Override
-    public void getTask(@NonNull String taskId, @NonNull LoadTaskCallback callback) {
-        Task task = mTasksCachedDataSource.get(taskId);
-        if (task != null) {
-            callback.onTaskLoaded(task);
-            return;
+    public Flowable<Task> getTak(@NonNull String taskId) {
+        final Task cachedTask = mTasksCachedDataSource.get(taskId);
+        if (cachedTask != null) {
+            return Flowable.just(cachedTask);
         }
 
-        mTasksLocalDataSource.getTask(taskId, new LoadTaskCallback() {
-            @Override
-            public void onTaskLoaded(@NonNull Task task) {
-                callback.onTaskLoaded(task);
-                mTasksCachedDataSource.put(taskId, task);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                mTasksRemoteDataSource.getTask(taskId, new LoadTaskCallback() {
-                    @Override
-                    public void onTaskLoaded(@NonNull Task task) {
-                        callback.onTaskLoaded(task);
-                        mTasksCachedDataSource.put(taskId, task);
-                        mTasksLocalDataSource.saveTask(task);
-                    }
-
-                    @Override
-                    public void onDataNotAvailable() {
-                        callback.onDataNotAvailable();
-                    }
-                });
-            }
-        });
+        Flowable<Task> localTaskFlowable = mTasksLocalDataSource.getTak(taskId);
+        Flowable<Task> remoteTaskFlowable =
+                mTasksRemoteDataSource.getTak(taskId)
+                        .doOnNext(task -> {
+                            if (task != null) {
+                                mTasksCachedDataSource.put(taskId, task);
+                                mTasksLocalDataSource.saveTask(task);
+                            }
+                        });
+        return Flowable.concat(localTaskFlowable, remoteTaskFlowable)
+                .firstElement()
+                .toFlowable();
     }
 
     @Override
-    public void getTasks(@NonNull LoadTasksCallback callback) {
-        if (!mCacheDirty) {
-            callback.onTasksLoaded(Collections.newArrayList(mTasksCachedDataSource.values()));
-        } else {
-            getTasksFromRemote(callback);
+    public Flowable<List<Task>> getTasks() {
+        if (!mTasksCachedDataSource.isEmpty() && !mCacheDirty) {
+            return Flowable.fromIterable(Collections.newArrayList(mTasksCachedDataSource.values()))
+                    .toList()
+                    .toFlowable();
         }
+
+        Flowable<List<Task>> remoteTasks = getTasksFromRemote();
+        if (mCacheDirty) {
+            return remoteTasks;
+        }
+
+        Flowable<List<Task>> localTasks = getTasksFromLocal();
+        return Flowable
+                .concat(localTasks, remoteTasks)
+                .filter(tasks -> !tasks.isEmpty())
+                .firstOrError()
+                .toFlowable();
+
+
     }
 
-    private void getTasksFromRemote(@NonNull LoadTasksCallback callback) {
-        mTasksRemoteDataSource.getTasks(new LoadTasksCallback() {
-            @Override
-            public void onTasksLoaded(@NonNull List<Task> tasks) {
-                callback.onTasksLoaded(tasks);
-                refreshCache(tasks);
-                refreshLocal(tasks);
-                mCacheDirty = false;
-            }
+    private Flowable<List<Task>> getTasksFromRemote() {
+        return mTasksRemoteDataSource
+                .getTasks()
+                .flatMap(tasks -> Flowable.fromIterable(tasks)
+                        .doOnNext(task -> {
+                            mTasksCachedDataSource.put(task.getId(), task);
+                            mTasksLocalDataSource.saveTask(task);
+                        }))
+                .toList()
+                .toFlowable()
+                .doOnComplete(() -> mCacheDirty = false);
+    }
 
-            @Override
-            public void onDataNotAvailable() {
-                mTasksLocalDataSource.getTasks(new LoadTasksCallback() {
-                    @Override
-                    public void onTasksLoaded(@NonNull List<Task> tasks) {
-                        callback.onTasksLoaded(tasks);
-                        refreshCache(tasks);
-                        mCacheDirty = false;
-                    }
-
-                    @Override
-                    public void onDataNotAvailable() {
-                        callback.onDataNotAvailable();
-                        mCacheDirty = false;
-                    }
-                });
-            }
-        });
+    private Flowable<List<Task>> getTasksFromLocal() {
+        return mTasksLocalDataSource
+                .getTasks()
+                .flatMap(tasks -> Flowable
+                        .fromIterable(tasks)
+                        .doOnNext(task -> mTasksCachedDataSource.put(task.getId(), task))
+                        .toList()
+                        .toFlowable());
     }
 
     private void refreshLocal(List<Task> tasks) {

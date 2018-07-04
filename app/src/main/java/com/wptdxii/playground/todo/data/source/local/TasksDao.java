@@ -2,9 +2,12 @@ package com.wptdxii.playground.todo.data.source.local;
 
 import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
+
 import com.wptdxii.playground.todo.data.source.Task;
 
 import java.util.List;
+
+import io.reactivex.Flowable;
 
 @Dao
 public interface TasksDao {
@@ -31,8 +34,9 @@ public interface TasksDao {
     void updateTask(@NonNull Task task);
 
     @Query("SELECT * FROM TODO WHERE entryid = :taskId")
-    Task getTask(@NonNull String taskId);
+    Flowable<Task> getTask(@NonNull String taskId);
 
     @Query("SELECT * FROM TODO")
-    List<Task> getTasks();
+    Flowable<List<Task>> getTasks();
+
 }

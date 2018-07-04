@@ -11,6 +11,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
+
 @Singleton
 public final class TasksLocalDataSource implements TasksDataSource {
 
@@ -74,33 +76,12 @@ public final class TasksLocalDataSource implements TasksDataSource {
     }
 
     @Override
-    public void getTask(@NonNull String taskId, @NonNull LoadTaskCallback callback) {
-        mAppExecutors.getDiskIO().execute(() -> {
-            final Task task = mTasksDao.getTask(taskId);
-
-            mAppExecutors.getMainThread().execute(() -> {
-                if (task != null) {
-                    callback.onTaskLoaded(task);
-                } else {
-                    callback.onDataNotAvailable();
-                }
-            });
-        });
+    public Flowable<List<Task>> getTasks() {
+        return mTasksDao.getTasks();
     }
 
     @Override
-    public void getTasks(@NonNull LoadTasksCallback callback) {
-        mAppExecutors.getDiskIO().execute(() -> {
-            final List<Task> tasks = mTasksDao.getTasks();
-
-            mAppExecutors.getMainThread().execute(() -> {
-                if (!tasks.isEmpty()) {
-                    callback.onTasksLoaded(tasks);
-                } else {
-                    callback.onDataNotAvailable();
-                }
-
-            });
-        });
+    public Flowable<Task> getTak(@NonNull String taskId) {
+        return mTasksDao.getTask(taskId);
     }
 }

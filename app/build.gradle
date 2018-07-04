@@ -51,15 +51,16 @@ android {
         }
     }
 
+    flavorDimensions "buildType"
     productFlavors {
-        flavorDimensions "default"
 
         mock {
-            dimension "default"
+            dimension "buildType"
+            applicationIdSuffix = ".mock"
         }
 
         prod {
-            dimension "default"
+            dimension "buildType"
         }
 
     }
@@ -95,7 +96,6 @@ dependencies {
     implementation supports.design
     implementation supports.cardView
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     androidTestImplementation testings.runner
     androidTestImplementation testings.espresso
 
@@ -110,7 +110,7 @@ dependencies {
     implementation room.runtime
     annotationProcessor room.compiler
     testImplementation room.test
-//    implementation room.rxjava
+    implementation room.rxjava
 
     implementation channels.vasdolly
 

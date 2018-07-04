@@ -1,5 +1,6 @@
 package com.wptdxii.playground.todo.data.source.remote;
 
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
@@ -11,9 +12,13 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Flowable;
 
 @Singleton
 public final class TasksRemoteDataSource implements TasksDataSource {
@@ -21,7 +26,8 @@ public final class TasksRemoteDataSource implements TasksDataSource {
     private static final Map<String, Task> mTasksMap = new LinkedHashMap<>();
 
     @Inject
-    public TasksRemoteDataSource() {}
+    public TasksRemoteDataSource() {
+    }
 
     @Override
     public void saveTask(@NonNull Task task) {
@@ -63,27 +69,20 @@ public final class TasksRemoteDataSource implements TasksDataSource {
     }
 
     @Override
-    public void getTask(@NonNull String taskId, @NonNull LoadTaskCallback callback) {
-        final Task task = mTasksMap.get(taskId);
-
-        new Handler().postDelayed(() -> {
-            if (task != null) {
-                callback.onTaskLoaded(task);
-            } else {
-                callback.onDataNotAvailable();
-            }
-        }, SERVICE_LATENCY_IN_MILLIS);
+    public Flowable<List<Task>> getTasks() {
+        return Flowable.fromIterable(Collections.newArrayList(mTasksMap.values()))
+                .delay(SERVICE_LATENCY_IN_MILLIS, TimeUnit.MILLISECONDS)
+                .toList()
+                .toFlowable();
     }
 
     @Override
-    public void getTasks(@NonNull LoadTasksCallback callback) {
-        final List<Task> tasks = Collections.newArrayList(mTasksMap.values());
-        new Handler().postDelayed(() -> {
-            if (!tasks.isEmpty()) {
-                callback.onTasksLoaded(tasks);
-            } else {
-                callback.onDataNotAvailable();
-            }
-        }, SERVICE_LATENCY_IN_MILLIS);
+    public Flowable<Task> getTak(@NonNull String taskId) {
+        final Task task = mTasksMap.get(taskId);
+        if (task != null) {
+            return Flowable.just(task).delay(SERVICE_LATENCY_IN_MILLIS, TimeUnit.MILLISECONDS);
+        } else {
+            return Flowable.empty();
+        }
     }
 }

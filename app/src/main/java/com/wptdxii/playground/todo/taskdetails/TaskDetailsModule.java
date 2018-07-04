@@ -1,5 +1,6 @@
 package com.wptdxii.playground.todo.taskdetails;
 
+import com.wptdxii.playground.di.module.RxModule;
 import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.taskdetails.TaskDetailsActivity;
 import com.wptdxii.playground.todo.taskdetails.TaskDetailsContract;
@@ -9,7 +10,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
-@Module
+@Module(includes = RxModule.class)
 public abstract class TaskDetailsModule {
 
     @Binds

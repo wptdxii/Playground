@@ -3,6 +3,7 @@ package com.wptdxii.playground.todo.taskdetails;
 import android.support.annotation.NonNull;
 
 import com.wptdxii.framekit.util.Strings;
+import com.wptdxii.playground.base.schedulers.ISchedulerProvider;
 import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
@@ -10,16 +11,26 @@ import com.wptdxii.playground.todo.data.TasksRepository;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
 
     private final String mTaskId;
+    private final TasksRepository mTasksRepository;
+    private final CompositeDisposable mCompositeDisposable;
+    private final ISchedulerProvider mSchedulerProvider;
     private TaskDetailsContract.View mTaskDetailsView;
-    private TasksRepository mTasksRepository;
 
     @Inject
-    TaskDetailsPresenter(@NonNull String taskId, TasksRepository tasksRepository) {
+    TaskDetailsPresenter(@NonNull String taskId,
+                         @NonNull TasksRepository tasksRepository,
+                         @NonNull ISchedulerProvider schedulerProvider,
+                         @NonNull CompositeDisposable compositeDisposable) {
         mTaskId = taskId;
         mTasksRepository = tasksRepository;
+        mSchedulerProvider = schedulerProvider;
+        mCompositeDisposable = compositeDisposable;
     }
 
     @Override
@@ -31,6 +42,7 @@ final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
     @Override
     public void detach() {
         mTaskDetailsView = null;
+        mCompositeDisposable.clear();
     }
 
     private void getTask() {
@@ -39,21 +51,23 @@ final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
         if (mTaskDetailsView != null) {
             mTaskDetailsView.showLoadingIndicator();
         }
-        mTasksRepository.getTask(mTaskId, new TasksDataSource.LoadTaskCallback() {
-            @Override
-            public void onTaskLoaded(@NonNull Task task) {
-                if (mTaskDetailsView != null) {
-                    showTask(task);
-                }
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-                if (mTaskDetailsView != null) {
-                    mTaskDetailsView.showMissingTask();
-                }
-            }
-        });
+        mCompositeDisposable.clear();
+        Disposable disposable = mTasksRepository
+                .getTak(mTaskId)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(task -> {
+                    if (mTaskDetailsView != null) {
+                        showTask(task);
+                    }
+                }, throwable -> {
+                    if (mTaskDetailsView != null) {
+                        mTaskDetailsView.showMissingTask();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+
     }
 
     private boolean checkTaskId() {

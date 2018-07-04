@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public interface TasksDataSource {
 
     void saveTask(@NonNull Task task);
@@ -20,22 +22,7 @@ public interface TasksDataSource {
 
     void updateTask(@NonNull Task task);
 
-    void getTask(@NonNull String taskId, @NonNull LoadTaskCallback callback);
+    Flowable<List<Task>> getTasks();
 
-    void getTasks(@NonNull LoadTasksCallback callback);
-
-
-    interface LoadTaskCallback {
-
-        void onTaskLoaded(@NonNull Task task);
-
-        void onDataNotAvailable();
-    }
-
-    interface LoadTasksCallback {
-
-        void onTasksLoaded(@NonNull List<Task> tasks);
-
-        void onDataNotAvailable();
-    }
+    Flowable<Task> getTak(@NonNull String taskId);
 }

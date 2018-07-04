@@ -3,6 +3,8 @@ package com.wptdxii.playground.todo.tasks;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.wptdxii.playground.base.schedulers.ISchedulerProvider;
+import com.wptdxii.playground.base.schedulers.SchedulerProvider;
 import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.TasksRepository;
 import com.wptdxii.playground.todo.data.source.Task;
@@ -13,16 +15,26 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 final class TasksPresenter implements TasksContract.Presenter {
 
     private TasksContract.View mTaskView;
     private TasksFilterType mFilterType = TasksFilterType.ALL_TASKS;
-    private TasksRepository mTasksRepository;
+    private final TasksRepository mTasksRepository;
+    private final ISchedulerProvider mSchedulerProvider;
+    private final CompositeDisposable mCompositeDisposable;
     private boolean mFirstLoad = true;
 
     @Inject
-    TasksPresenter(@NonNull TasksRepository tasksRepository) {
-        this.mTasksRepository = tasksRepository;
+    TasksPresenter(@NonNull TasksRepository tasksRepository,
+                   @NonNull ISchedulerProvider schedulerProvider,
+                   @NonNull CompositeDisposable compositeDisposable) {
+        mTasksRepository = tasksRepository;
+        mSchedulerProvider = schedulerProvider;
+        mCompositeDisposable = compositeDisposable;
     }
 
     @Override
@@ -61,47 +73,49 @@ final class TasksPresenter implements TasksContract.Presenter {
             mTaskView.showLoadingIndicator(true);
         }
 
-        mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {
-            @Override
-            public void onTasksLoaded(@NonNull List<Task> tasks) {
-                List<Task> taskList = new ArrayList<>();
-                for (Task task : tasks) {
+        mCompositeDisposable.clear();
+        Disposable disposable = mTasksRepository
+                .getTasks()
+                .flatMap(Flowable::fromIterable)
+                .filter(task -> {
                     switch (mFilterType) {
-                        case ALL_TASKS:
-                            taskList.add(task);
-                            break;
                         case ACTIVE_TASKS:
-                            if (!task.isCompleted()) taskList.add(task);
-                            break;
+                            return !task.isCompleted();
                         case COMPLETED_TASKS:
-                            if (task.isCompleted()) taskList.add(task);
-                            break;
+                            return task.isCompleted();
+                        case ALL_TASKS:
                         default:
-                            taskList.add(task);
-                            break;
+                            return true;
                     }
-                }
+                }).toList()
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(tasks -> {
+                    showSuccess(showLoadingIndicator);
+                    processTasks(tasks);
+                }, throwable -> {
+                    showError(showLoadingIndicator);
+                });
 
-                if (mTaskView != null && (showLoadingIndicator || mFirstLoad)) {
-                    mTaskView.showLoadingIndicator(false);
-                    mFirstLoad = false;
-                }
+        mCompositeDisposable.add(disposable);
+    }
 
-                processTasks(taskList);
+    private void showSuccess(boolean showLoadingIndicator) {
+        if (mTaskView != null && (showLoadingIndicator || mFirstLoad)) {
+            mTaskView.showLoadingIndicator(false);
+            mFirstLoad = false;
+        }
+    }
+
+    private void showError(boolean showLoadingIndicator) {
+        if (mTaskView != null) {
+            if (showLoadingIndicator || mFirstLoad) {
+                mTaskView.showLoadingError();
+                mTaskView.showLoadingIndicator(false);
+                mFirstLoad = false;
             }
-
-            @Override
-            public void onDataNotAvailable() {
-                if (mTaskView != null) {
-                    if (showLoadingIndicator || mFirstLoad) {
-                        mTaskView.showLoadingError();
-                        mTaskView.showLoadingIndicator(false);
-                        mFirstLoad = false;
-                    }
-                    mTaskView.showNoTasks(mFilterType);
-                }
-            }
-        });
+            mTaskView.showNoTasks(mFilterType);
+        }
     }
 
     private void processTasks(List<Task> tasks) {
@@ -134,5 +148,6 @@ final class TasksPresenter implements TasksContract.Presenter {
     @Override
     public void detach() {
         mTaskView = null;
+        mCompositeDisposable.clear();
     }
 }
