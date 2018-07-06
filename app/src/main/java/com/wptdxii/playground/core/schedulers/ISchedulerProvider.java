@@ -1,4 +1,4 @@
-package com.wptdxii.playground.base.schedulers;
+package com.wptdxii.playground.core.schedulers;
 
 import android.support.annotation.NonNull;
 

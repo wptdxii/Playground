@@ -3,8 +3,8 @@ package com.wptdxii.playground.di.module;
 import android.app.Application;
 import android.content.Context;
 
-import com.wptdxii.playground.base.schedulers.ISchedulerProvider;
-import com.wptdxii.playground.base.schedulers.SchedulerProvider;
+import com.wptdxii.playground.core.schedulers.ISchedulerProvider;
+import com.wptdxii.playground.core.schedulers.SchedulerProvider;
 import com.wptdxii.playground.di.qualifier.AppContext;
 import com.wptdxii.playground.home.di.HomeBindingModule;
 import com.wptdxii.playground.sample.di.SampleBindingModule;

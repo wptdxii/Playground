@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseActivity;
+import com.wptdxii.playground.core.BaseActivity;
 
 public class SplashActivity extends BaseActivity {
     private static final int RESIDENCE_TIME = 1000;

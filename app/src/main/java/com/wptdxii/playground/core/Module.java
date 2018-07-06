@@ -1,4 +1,4 @@
-package com.wptdxii.playground.base;
+package com.wptdxii.playground.core;
 
 /**
  * Created by wptdxii on 2018/1/17 0017

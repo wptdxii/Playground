@@ -3,15 +3,18 @@ package com.wptdxii.playground.todo.addedittask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.wptdxii.playground.base.schedulers.ISchedulerProvider;
+import com.wptdxii.playground.core.schedulers.ISchedulerProvider;
 import com.wptdxii.playground.todo.data.TasksRepository;
 import com.wptdxii.playground.todo.data.source.Task;
+
+import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Dagger generated code doesn't require public access to the constructor or class, and

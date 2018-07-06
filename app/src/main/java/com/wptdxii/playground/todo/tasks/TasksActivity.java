@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseDrawerActivity;
+import com.wptdxii.playground.core.BaseDrawerActivity;
 import com.wptdxii.playground.todo.statistics.StatisticsActivity;
 
 import javax.inject.Inject;

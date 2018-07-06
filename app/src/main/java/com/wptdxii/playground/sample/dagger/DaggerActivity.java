@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseActivity;
+import com.wptdxii.playground.core.BaseActivity;
 import com.wptdxii.playground.di.qualifier.AppContext;
 import com.wptdxii.playground.todo.data.TasksRepository;
 

@@ -21,7 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseFragment;
+import com.wptdxii.playground.core.BaseFragment;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.taskdetails.TaskDetailsActivity;

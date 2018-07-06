@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseListActivity;
-import com.wptdxii.playground.base.Module;
+import com.wptdxii.playground.core.BaseListActivity;
+import com.wptdxii.playground.core.Module;
 import com.wptdxii.playground.sample.dagger.DaggerActivity;
 import com.wptdxii.playground.sample.rx.RxSampleActivity;
 

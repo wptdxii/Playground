@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseDrawerActivity;
+import com.wptdxii.playground.core.BaseDrawerActivity;
 
 import javax.inject.Inject;
 

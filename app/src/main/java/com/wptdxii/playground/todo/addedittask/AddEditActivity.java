@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.base.BaseActivity;
+import com.wptdxii.playground.core.BaseActivity;
 import com.wptdxii.playground.todo.data.source.Task;
 
 import javax.inject.Inject;

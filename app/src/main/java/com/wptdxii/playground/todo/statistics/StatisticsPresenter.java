@@ -3,7 +3,7 @@ package com.wptdxii.playground.todo.statistics;
 import android.support.annotation.NonNull;
 import android.util.Pair;
 
-import com.wptdxii.playground.base.schedulers.ISchedulerProvider;
+import com.wptdxii.playground.core.schedulers.ISchedulerProvider;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.TasksRepository;
 

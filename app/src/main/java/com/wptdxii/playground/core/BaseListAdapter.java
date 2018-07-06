@@ -1,4 +1,4 @@
-package com.wptdxii.playground.base;
+package com.wptdxii.playground.core;
 
 import android.content.Context;
 import android.content.Intent;
