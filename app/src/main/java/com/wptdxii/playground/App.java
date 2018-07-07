@@ -5,6 +5,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.leon.channel.helper.ChannelReaderUtil;
+import com.wptdxii.playground.di.component.DaggerAppComponent;
 
 import javax.inject.Inject;
 
@@ -25,11 +26,18 @@ public class App extends Application implements HasActivityInjector {
     @Override
     public void onCreate() {
         super.onCreate();
-//        DaggerAppComponent.builder().application(this).build().inject(this);
+        initInjector();
 
         String channel = ChannelReaderUtil.getChannel(getApplicationContext());
         Log.e(TAG, "onCreate: " + channel);
 
+    }
+
+    private void initInjector() {
+        DaggerAppComponent.builder()
+                .application(this)
+                .build()
+                .inject(this);
     }
 
     @Override

@@ -22,7 +22,7 @@ public final class TasksLocalDataSource implements TasksDataSource {
     private final TasksDao mTasksDao;
 
     @Inject
-    public TasksLocalDataSource(final AppExecutors appExecutors, final TasksDao tasksDao) {
+    TasksLocalDataSource(final AppExecutors appExecutors, final TasksDao tasksDao) {
         this.mAppExecutors = appExecutors;
         this.mTasksDao = tasksDao;
     }
@@ -77,11 +77,15 @@ public final class TasksLocalDataSource implements TasksDataSource {
 
     @Override
     public Flowable<List<Task>> getTasks() {
-        return mTasksDao.getTasks();
+        return mTasksDao
+                .getTasks()
+                .toFlowable();
     }
 
     @Override
     public Flowable<Task> getTak(@NonNull String taskId) {
-        return mTasksDao.getTask(taskId);
+        return mTasksDao
+                .getTask(taskId)
+                .toFlowable();
     }
 }

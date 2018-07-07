@@ -1,36 +1,32 @@
 package com.wptdxii.playground.todo.tasks.usecase;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.wptdxii.playground.core.Executor;
-import com.wptdxii.playground.core.UseCase;
+import com.wptdxii.playground.core.executor.PostExecutionThread;
+import com.wptdxii.playground.core.executor.ThreadExecutor;
+import com.wptdxii.playground.core.interactor.CompletableUseCase;
+import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.TasksRepository;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.Completable;
 
-public class ClearAllTasks extends UseCase<ClearAllTasks.Reqeust, Void> {
+@ActivityScoped
+public class ClearAllTasks extends CompletableUseCase<Void> {
 
     private final TasksRepository mTasksRepository;
 
     @Inject
     ClearAllTasks(@NonNull TasksRepository tasksRepository,
-                  @NonNull CompositeDisposable compositeDisposable,
-                  @NonNull Executor<Void> executor) {
-        super(compositeDisposable, executor);
+                  @NonNull ThreadExecutor threadExecutor,
+                  @NonNull PostExecutionThread executionThread) {
+        super(threadExecutor, executionThread);
         mTasksRepository = tasksRepository;
     }
 
     @Override
-    public Flowable<Void> buildUseCase(@Nullable ClearAllTasks.Reqeust request) {
-        mTasksRepository.deleteAllTasks();
-        return Flowable.empty();
+    protected Completable buildUseCase(Void aVoid) {
+        return Completable.fromAction(mTasksRepository::deleteAllTasks);
     }
-
-    public static final class Reqeust implements UseCase.Request {
-    }
-
 }

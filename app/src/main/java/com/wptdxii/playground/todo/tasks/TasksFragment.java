@@ -170,7 +170,6 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
     public void onResume() {
         super.onResume();
         mTaskPresenter.attach(this);
-        mTaskPresenter.loadTasks(false, false);
     }
 
     @Override

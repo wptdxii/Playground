@@ -1,32 +1,38 @@
 package com.wptdxii.playground.core.interactor;
 
-import com.wptdxii.playground.core.schedulers.SchedulerProvider;
+import com.wptdxii.playground.core.executor.PostExecutionThread;
+import com.wptdxii.playground.core.executor.ThreadExecutor;
 
 import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class SingleUseCase<Request, Response> {
-    private final SchedulerProvider mSchedulerProvider;
 
-    private DisposableSingleObserver<Response> mDisposable;
+    private final ThreadExecutor mThreadExecutor;
+    private final PostExecutionThread mExecutionThread;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    public SingleUseCase(SchedulerProvider schedulerProvider) {
-        mSchedulerProvider = schedulerProvider;
+    public SingleUseCase(ThreadExecutor threadExecutor, PostExecutionThread executionThread) {
+        mThreadExecutor = threadExecutor;
+        mExecutionThread = executionThread;
     }
+
 
     protected abstract Single<Response> buildUseCase(Request request);
 
     public void subscribe(Request request, DisposableSingleObserver<Response> observer) {
-        mDisposable = buildUseCase(request)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
+        DisposableSingleObserver mDisposable = buildUseCase(request)
+                .subscribeOn(Schedulers.from(mThreadExecutor))
+                .observeOn(mExecutionThread.getScheduler())
                 .subscribeWith(observer);
+        mCompositeDisposable.add(mDisposable);
     }
 
-    @Override
     public void unsubscribe() {
-        if (!mDisposable.isDisposed()) {
-            mDisposable.dispose();
+        if (!mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.dispose();
         }
     }
 }

@@ -94,7 +94,7 @@ public final class TasksRepository implements TasksDataSource {
     public void updateTask(@NonNull Task task) {
         mTasksCachedDataSource.put(task.getId(), task);
         mTasksLocalDataSource.updateTask(task);
-        mTasksLocalDataSource.updateTask(task);
+        mTasksRemoteDataSource.updateTask(task);
     }
 
 
@@ -121,25 +121,21 @@ public final class TasksRepository implements TasksDataSource {
 
     @Override
     public Flowable<List<Task>> getTasks() {
-        if (!mTasksCachedDataSource.isEmpty() && !mCacheDirty) {
-            return Flowable.fromIterable(Collections.newArrayList(mTasksCachedDataSource.values()))
+
+        if (!mCacheDirty) {
+            Flowable<List<Task>> cachedTasks = Flowable
+                    .fromIterable(Collections.newArrayList(mTasksCachedDataSource.values()))
                     .toList()
+                    .toFlowable();
+            Flowable<List<Task>> localTasks = getTasksFromLocal();
+            return Flowable
+                    .concat(cachedTasks, localTasks)
+                    .filter(tasks -> !tasks.isEmpty())
+                    .firstOrError()
                     .toFlowable();
         }
 
-        Flowable<List<Task>> remoteTasks = getTasksFromRemote();
-        if (mCacheDirty) {
-            return remoteTasks;
-        }
-
-        Flowable<List<Task>> localTasks = getTasksFromLocal();
-        return Flowable
-                .concat(localTasks, remoteTasks)
-                .filter(tasks -> !tasks.isEmpty())
-                .firstOrError()
-                .toFlowable();
-
-
+        return getTasksFromRemote();
     }
 
     private Flowable<List<Task>> getTasksFromRemote() {

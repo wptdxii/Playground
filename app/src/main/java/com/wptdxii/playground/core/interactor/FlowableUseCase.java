@@ -1,34 +1,38 @@
 package com.wptdxii.playground.core.interactor;
 
-import com.wptdxii.playground.core.schedulers.SchedulerProvider;
+import com.wptdxii.playground.core.executor.PostExecutionThread;
+import com.wptdxii.playground.core.executor.ThreadExecutor;
 
 import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public abstract class FlowableUseCase<Request extends UseCase.Reqeust, Response> implements UseCase {
+public abstract class FlowableUseCase<Request, Response> {
 
-    private final SchedulerProvider mSchedulerProvider;
-    private DisposableSubscriber<Response> mDisposable;
+    private final ThreadExecutor mThreadExecutor;
+    private final PostExecutionThread mExecutionThread;
+    private final CompositeDisposable mCompositeDisposable;
 
-    public FlowableUseCase(SchedulerProvider schedulerProvider) {
-        mSchedulerProvider = schedulerProvider;
+    public FlowableUseCase(ThreadExecutor threadExecutor, PostExecutionThread executionThread) {
+        mThreadExecutor = threadExecutor;
+        mExecutionThread = executionThread;
+        mCompositeDisposable = new CompositeDisposable();
     }
-
 
     protected abstract Flowable<Response> buildUseCase(Request request);
 
     public void subscribe(Request request, DisposableSubscriber<Response> subscriber) {
-
-        mDisposable = buildUseCase(request)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
+        DisposableSubscriber disposable = buildUseCase(request)
+                .subscribeOn(Schedulers.from(mThreadExecutor))
+                .observeOn(mExecutionThread.getScheduler())
                 .subscribeWith(subscriber);
+        mCompositeDisposable.add(disposable);
     }
 
-    @Override
     public void unsubscribe() {
-        if (!mDisposable.isDisposed()) {
-            mDisposable.dispose();
+        if (!mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.dispose();
         }
     }
 }

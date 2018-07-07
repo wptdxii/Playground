@@ -8,6 +8,7 @@ import com.wptdxii.playground.todo.data.source.Task;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface TasksDao {
@@ -34,9 +35,9 @@ public interface TasksDao {
     void updateTask(@NonNull Task task);
 
     @Query("SELECT * FROM TODO WHERE entryid = :taskId")
-    Flowable<Task> getTask(@NonNull String taskId);
+    Single<Task> getTask(@NonNull String taskId);
 
     @Query("SELECT * FROM TODO")
-    Flowable<List<Task>> getTasks();
+    Single<List<Task>> getTasks();
 
 }

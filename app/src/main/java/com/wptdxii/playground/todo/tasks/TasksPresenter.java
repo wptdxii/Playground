@@ -1,241 +1,106 @@
 package com.wptdxii.playground.todo.tasks;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.source.Task;
-import com.wptdxii.playground.todo.tasks.usecase.CheckTasks;
+import com.wptdxii.playground.todo.tasks.usecase.CheckTask;
 import com.wptdxii.playground.todo.tasks.usecase.ClearAllTasks;
 import com.wptdxii.playground.todo.tasks.usecase.ClearCompletedTasks;
-import com.wptdxii.playground.todo.tasks.usecase.GetTaskss;
+import com.wptdxii.playground.todo.tasks.usecase.GetTasks;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.functions.Action;
 import io.reactivex.subscribers.DisposableSubscriber;
 
+@ActivityScoped
 final class TasksPresenter implements TasksContract.Presenter {
 
     private TasksContract.View mTaskView;
     private TasksFilterType mFilterType = TasksFilterType.ALL_TASKS;
-    //    private final TasksRepository mTasksRepository;
-    //    private final ISchedulerProvider mSchedulerProvider;
-    //    private final CompositeDisposable mCompositeDisposable;
     private boolean mFirstLoad = true;
 
-    //    private final GetTasks mGetTasks;
+    private final CheckTask mCheckTask;
     private final ClearAllTasks mClearAllTasks;
-    //    private final CheckTask mCheckTask;
-    private final CheckTasks mCheckTasks;
     private final ClearCompletedTasks mClearCompletedTasks;
-
-    private final GetTaskss mGetTaskss;
+    private final GetTasks mGetTasks;
 
     @Inject
-    TasksPresenter(@NonNull GetTaskss getTaskss,
-                   //                   @NonNull CheckTask checkTask,
-                   @NonNull CheckTasks checkTasks,
+    TasksPresenter(@NonNull CheckTask checkTask,
                    @NonNull ClearAllTasks clearAllTasks,
-                   @NonNull ClearCompletedTasks clearCompletedTasks) {
-        mGetTaskss = getTaskss;
-        mCheckTasks = checkTasks;
+                   @NonNull ClearCompletedTasks clearCompletedTasks,
+                   @NonNull GetTasks getTasks) {
+        mCheckTask = checkTask;
         mClearAllTasks = clearAllTasks;
         mClearCompletedTasks = clearCompletedTasks;
+        mGetTasks = getTasks;
     }
-
-    //    @Inject
-    //    TasksPresenter(@NonNull TasksRepository tasksRepository,
-    //                   @NonNull ISchedulerProvider schedulerProvider,
-    //                   @NonNull CompositeDisposable compositeDisposable) {
-    //        mTasksRepository = tasksRepository;
-    //        mSchedulerProvider = schedulerProvider;
-    //        mCompositeDisposable = compositeDisposable;
-    //    }
 
     @Override
     public void checkTask(@NonNull Task task) {
-        //        mTasksRepository.updateTask(task);
-        //        Flowable<Void> voidFlowable = mCheckTask.buildUseCase(new CheckTask.Request(task));
-        //        voidFlowable.subscribe(aVoid -> mTaskView.showTaskChecked(task.isCompleted()));
-        //        CheckTask.Request request = new CheckTask.Request(task);
-        //        mCheckTask.subscribe(request, new DisposableSubscriber<Void>() {
-        //            @Override
-        //            public void onNext(Void aVoid) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onError(Throwable t) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onComplete() {
-        //                mTaskView.showTaskChecked(task.isCompleted());
-        //            }
-        //        });
-
-        CheckTasks.Request request = new CheckTasks.Request(task);
-        mCheckTasks.subscribe(request);
-
-        loadTasks(false, false);
-        //        if (mTaskView != null) {
-        //            mTaskView.showTaskChecked(task.isCompleted());
-        //        }
+        CheckTask.Request request = new CheckTask.Request(task);
+        mCheckTask.subscribe(request, () -> loadTasks(false, false));
     }
 
     @Override
     public void clearCompletedTasks() {
-        //        mTasksRepository.deleteCompletedTasks();
-        //        loadTasks(false, false);
-        //        if (mTaskView != null) {
-        //            mTaskView.showCompletedTasksCleared();
-        //        }
-
-        mClearCompletedTasks.subscribe(new ClearCompletedTasks.Request(), new DisposableSubscriber<Void>() {
-            @Override
-            public void onNext(Void aVoid) {
-
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                loadTasks(false, false);
-                mTaskView.showCompletedTasksCleared();
-            }
+        mClearCompletedTasks.subscribe(null, () -> {
+            loadTasks(false, false);
+            mTaskView.showCompletedTasksCleared();
         });
     }
 
     @Override
     public void clearAllTasks() {
-        //        mTasksRepository.deleteAllTasks();
-        //        if (mTaskView != null) {
-        //        }
-
-        mClearAllTasks.subscribe(new ClearAllTasks.Reqeust(), new DisposableSubscriber<Void>() {
-            @Override
-            public void onNext(Void aVoid) {
-
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                mTaskView.showAllTasksCleared();
-                mTaskView.showNoTasks(mFilterType);
-            }
+        mClearAllTasks.subscribe(null, () -> {
+            mTaskView.showAllTasksCleared();
+            mTaskView.showNoTasks(mFilterType);
         });
     }
 
 
     @Override
     public void loadTasks(boolean forceUpdate, boolean showLoadingIndicator) {
-        //        if (forceUpdate || mFirstLoad) mTasksRepository.refreshTasks();
+        GetTasks.Request request = new GetTasks.Request(forceUpdate, mFilterType);
+        mGetTasks.subscribe(request, new DisposableSubscriber<List<Task>>() {
+            @Override
+            protected void onStart() {
+                super.onStart();
+                mTaskView.showLoadingIndicator(showLoadingIndicator || mFirstLoad);
+                mFirstLoad = false;
+            }
 
-        //        if (mTaskView != null && (showLoadingIndicator || mFirstLoad)) {
-        //            mTaskView.showLoadingIndicator(true);
-        //        }
-        GetTaskss.Reqeust reqeust = new GetTaskss.Request(forceUpdate, showLoadingIndicator, mFilterType);
-        mGetTaskss.subscribe(reqeust, new DisposableSubscriber<List<Task>>() {
             @Override
             public void onNext(List<Task> tasks) {
-
+                processTasks(tasks);
             }
 
             @Override
             public void onError(Throwable t) {
-
+                Log.e(TAG, "onError: " + t.getStackTrace());
+                mTaskView.showLoadingIndicator(false);
+                mTaskView.showNoTasks(mFilterType);
             }
 
             @Override
             public void onComplete() {
-
+                mTaskView.showLoadingIndicator(false);
             }
         });
-
-        //        GetTasks.Request request = new GetTasks.Request(forceUpdate, showLoadingIndicator, mFilterType);
-        //        mGetTasks.subscribe(request, new DisposableSubscriber<List<Task>>() {
-        //            @Override
-        //            protected void onStart() {
-        //                super.onStart();
-        //                mTaskView.showLoadingIndicator(true);
-        //            }
-        //
-        //            @Override
-        //            public void onNext(List<Task> tasks) {
-        //                mTaskView.showLoadingIndicator(false);
-        //                processTasks(tasks);
-        //                mFirstLoad = false;
-        //            }
-        //
-        //            @Override
-        //            public void onError(Throwable t) {
-        //                showError(showLoadingIndicator);
-        //            }
-        //
-        //            @Override
-        //            public void onComplete() {
-        //                showSuccess(showLoadingIndicator);
-        //            }
-        //        });
-
-        //        mCompositeDisposable.clear();
-        //        Disposable disposable = mTasksRepository
-        //                .getTasks()
-        //                .flatMap(Flowable::fromIterable)
-        //                .filter(task -> {
-        //                    switch (mFilterType) {
-        //                        case ACTIVE_TASKS:
-        //                            return !task.isCompleted();
-        //                        case COMPLETED_TASKS:
-        //                            return task.isCompleted();
-        //                        case ALL_TASKS:
-        //                        default:
-        //                            return true;
-        //                    }
-        //                }).toList()
-        //                .subscribeOn(mSchedulerProvider.io())
-        //                .observeOn(mSchedulerProvider.ui())
-        //                .subscribe(tasks -> {
-        //                }, throwable -> {
-        //                });
-        //
-        //        mCompositeDisposable.add(disposable);
     }
 
-    private void showSuccess(boolean showLoadingIndicator) {
-        if ((showLoadingIndicator || mFirstLoad)) {
-            mTaskView.showLoadingIndicator(false);
-            mFirstLoad = false;
-        }
-    }
-
-    private void showError(boolean showLoadingIndicator) {
-        if (showLoadingIndicator || mFirstLoad) {
-            mTaskView.showLoadingError();
-            mTaskView.showLoadingIndicator(false);
-            mFirstLoad = false;
-        }
-        mTaskView.showNoTasks(mFilterType);
-    }
+    private static final String TAG = "TasksPresenter";
 
     private void processTasks(List<Task> tasks) {
-        if (mTaskView != null) {
-            if (tasks.isEmpty()) {
-                mTaskView.showNoTasks(mFilterType);
-            } else {
-                mTaskView.showTasks(tasks);
-                mTaskView.showFilterLabel(mFilterType);
-            }
+        if (tasks.isEmpty()) {
+            mTaskView.showNoTasks(mFilterType);
+        } else {
+            mTaskView.showTasks(tasks);
+            mTaskView.showFilterLabel(mFilterType);
         }
     }
 
@@ -257,11 +122,10 @@ final class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void detach() {
+        mCheckTask.unsubscribe();
         mGetTasks.unsubscribe();
-        //        mCheckTask.unsubscribe();
-        mCheckTasks.unsubscribe();
+        mClearCompletedTasks.unsubscribe();
         mClearAllTasks.unsubscribe();
         mTaskView = null;
-        //        mCompositeDisposable.clear();
     }
 }
