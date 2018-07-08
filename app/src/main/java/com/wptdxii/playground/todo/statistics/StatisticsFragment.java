@@ -19,20 +19,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-@ActivityScoped
 public class StatisticsFragment extends BaseFragment implements StatisticsContract.View {
 
     @BindView(R.id.tv_tasks_statistics)
     TextView tvTasksStatistics;
     Unbinder unbinder;
 
+    public static StatisticsFragment newInstance() {
+        return new StatisticsFragment();
+    }
+
     @Inject
     StatisticsContract.Presenter mStatisticsPresenter;
-
-
-    @Inject
-    public StatisticsFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,8 +39,7 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.todo_fragment_statistics, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -72,8 +69,7 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
 
     @Override
     public void showTasksStatistics(String active, String completed) {
-        String statistics = String.format(getString(R.string.todo_statistics_active_tasks), active) +
-                "\n" + String.format(getString(R.string.todo_statistics_completed_tasks), completed);
+        String statistics = String.format(getString(R.string.todo_statistics_active_tasks), active) + "\n" + String.format(getString(R.string.todo_statistics_completed_tasks), completed);
         tvTasksStatistics.setText(statistics);
     }
 

@@ -4,6 +4,7 @@ import com.wptdxii.playground.core.executor.PostExecutionThread;
 import com.wptdxii.playground.core.executor.ThreadExecutor;
 
 import io.reactivex.Completable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -15,7 +16,8 @@ public abstract class CompletableUseCase<Request> {
     private final PostExecutionThread mExecutionThread;
     private final CompositeDisposable mCompositeDisposable;
 
-    public CompletableUseCase(ThreadExecutor threadExecutor, PostExecutionThread executionThread) {
+    public CompletableUseCase(@NonNull ThreadExecutor threadExecutor,
+                              @NonNull PostExecutionThread executionThread) {
         mThreadExecutor = threadExecutor;
         mExecutionThread = executionThread;
         mCompositeDisposable = new CompositeDisposable();
