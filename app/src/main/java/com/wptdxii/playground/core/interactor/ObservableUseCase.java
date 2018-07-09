@@ -1,34 +1,34 @@
 package com.wptdxii.playground.core.interactor;
 
+import android.support.annotation.NonNull;
+
 import com.wptdxii.playground.core.executor.PostExecutionThread;
 import com.wptdxii.playground.core.executor.ThreadExecutor;
 
-import io.reactivex.Flowable;
-import io.reactivex.annotations.NonNull;
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
-public abstract class FlowableUseCase<Request, Response> {
-
+public abstract class ObservableUseCase<Request, Response> {
     private final ThreadExecutor mThreadExecutor;
     private final PostExecutionThread mExecutionThread;
     private final CompositeDisposable mCompositeDisposable;
 
-    public FlowableUseCase(@NonNull ThreadExecutor threadExecutor, @NonNull PostExecutionThread
-            executionThread) {
+    public ObservableUseCase(@NonNull ThreadExecutor threadExecutor,
+                             @NonNull PostExecutionThread executionThread) {
         mThreadExecutor = threadExecutor;
         mExecutionThread = executionThread;
         mCompositeDisposable = new CompositeDisposable();
     }
 
-    protected abstract Flowable<Response> buildUseCase(Request request);
+    protected abstract Observable<Response> buildUseCase(Request request);
 
-    public void subscribe(Request request, DisposableSubscriber<Response> subscriber) {
-        DisposableSubscriber disposable = buildUseCase(request)
+    public void subscribe(Request request, DisposableObserver<Response> observer) {
+        DisposableObserver<Response> disposable = buildUseCase(request)
                 .subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mExecutionThread.getScheduler())
-                .subscribeWith(subscriber);
+                .subscribeWith(observer);
         mCompositeDisposable.add(disposable);
     }
 

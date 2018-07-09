@@ -1,51 +1,52 @@
-package com.wptdxii.playground.todo.tasks.usecase;
+package com.wptdxii.playground.todo.taskdetails.usecase;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.wptdxii.playground.core.Executor;
-import com.wptdxii.playground.core.UseCase;
 import com.wptdxii.playground.core.executor.PostExecutionThread;
 import com.wptdxii.playground.core.executor.ThreadExecutor;
 import com.wptdxii.playground.core.interactor.CompletableUseCase;
 import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.TasksRepository;
-import com.wptdxii.playground.todo.data.source.Task;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.disposables.CompositeDisposable;
 
 @ActivityScoped
 public class CheckTask extends CompletableUseCase<CheckTask.Request> {
+
     private final TasksRepository mTasksRepository;
 
     @Inject
     CheckTask(ThreadExecutor threadExecutor, PostExecutionThread executionThread,
               @NonNull TasksRepository tasksRepository) {
         super(threadExecutor, executionThread);
-
         mTasksRepository = tasksRepository;
     }
 
     @Override
     protected Completable buildUseCase(Request request) {
-        return Completable.fromAction(() -> mTasksRepository.updateTask(request.getTask()));
+        String taskId = request.getTaskId();
+        boolean taskCompelted = request.isTaskCompleted();
+        return Completable.fromAction(() -> mTasksRepository.updateTask(taskId, taskCompelted));
     }
 
     public static final class Request {
-        private final Task mTask;
+        private final String mTaskId;
+        private final boolean mTaskCompleted;
 
-        public Request(@NonNull Task task) {
-            mTask = task;
+        public Request(@NonNull String taskId, boolean taskCompleted) {
+            mTaskId = taskId;
+            mTaskCompleted = taskCompleted;
         }
 
-        @NonNull
-        public Task getTask() {
-            return mTask;
+        public String getTaskId() {
+            return mTaskId;
+        }
+
+        public boolean isTaskCompleted() {
+            return mTaskCompleted;
         }
     }
+
 }

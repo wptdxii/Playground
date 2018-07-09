@@ -9,8 +9,6 @@ public interface TaskDetailsContract {
 
         void showMissingTask();
 
-        void showTask(Task task);
-
         void hideTaskTitle();
 
         void showTaskTitle(String title);

@@ -25,7 +25,7 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
 
     public static final String EXTRA_TASK_ID = "extra_task_id";
     public static final int REQUEST_CODE_TASK_ID = 1;
-    private static final String BUNDLE_SHOUD_LAOD_DATA_FROM_REPO = "shoud_load_data_from_repo";
+    private static final String BUNDLE_SHOUlD_LOAD_DATA_FROM_REPO = "should_load_data_from_repo";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -81,7 +81,7 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mIsDataMissing = savedInstanceState.getBoolean(BUNDLE_SHOUD_LAOD_DATA_FROM_REPO);
+        mIsDataMissing = savedInstanceState.getBoolean(BUNDLE_SHOUlD_LOAD_DATA_FROM_REPO);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class AddEditActivity extends BaseActivity implements AddEditContract.Vie
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(BUNDLE_SHOUD_LAOD_DATA_FROM_REPO,
+        outState.putBoolean(BUNDLE_SHOUlD_LOAD_DATA_FROM_REPO,
                 mAddEditPresenter.isDataMissing());
         super.onSaveInstanceState(outState);
     }

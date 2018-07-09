@@ -22,9 +22,8 @@ public class GetTasks extends FlowableUseCase<GetTasks.Request, List<Task>> {
     private final TasksRepository mTasksRepository;
 
     @Inject
-    GetTasks(@NonNull TasksRepository tasksRepository,
-             @NonNull ThreadExecutor threadExecutor,
-             @NonNull PostExecutionThread executionThread) {
+    GetTasks(ThreadExecutor threadExecutor, PostExecutionThread executionThread,
+             @NonNull TasksRepository tasksRepository) {
         super(threadExecutor, executionThread);
         mTasksRepository = tasksRepository;
     }

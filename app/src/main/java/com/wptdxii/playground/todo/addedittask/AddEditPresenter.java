@@ -3,15 +3,18 @@ package com.wptdxii.playground.todo.addedittask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.wptdxii.playground.core.schedulers.ISchedulerProvider;
-import com.wptdxii.playground.todo.data.TasksRepository;
+import com.wptdxii.framekit.util.Strings;
+import com.wptdxii.playground.todo.addedittask.usecase.SaveTask;
+import com.wptdxii.playground.todo.addedittask.usecase.UpdateTask;
 import com.wptdxii.playground.todo.data.source.Task;
+import com.wptdxii.playground.todo.usecase.GetTask;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Dagger generated code doesn't require public access to the constructor or class, and
@@ -20,24 +23,21 @@ import io.reactivex.disposables.Disposable;
  */
 final class AddEditPresenter implements AddEditContract.Presenter {
 
+    private AddEditContract.View mAddEditView;
     private final String mTaskId;
     private final Lazy<Boolean> mIsDataMissingProvider;
     private boolean mIsDataMissing;
-    private AddEditContract.View mAddEditView;
-    private final TasksRepository mTasksRepository;
-    private final CompositeDisposable mCompositeDisposable;
-    private final ISchedulerProvider mSchedulerProvider;
+    private final GetTask mGetTask;
+    private final SaveTask mSaveTask;
+    private final UpdateTask mUpdateTask;
 
     @Inject
-    AddEditPresenter(@Nullable String taskId,
-                     @NonNull TasksRepository tasksRepository,
-                     @NonNull ISchedulerProvider schedulerProvider,
-                     @NonNull CompositeDisposable compositeDisposable,
-                     Lazy<Boolean> shouldLoadDataFromRepo) {
+    AddEditPresenter(@Nullable String taskId, @NonNull GetTask getTask, @NonNull SaveTask saveTask,
+                     @NonNull UpdateTask updateTask, Lazy<Boolean> shouldLoadDataFromRepo) {
         mTaskId = taskId;
-        mTasksRepository = tasksRepository;
-        mCompositeDisposable = compositeDisposable;
-        mSchedulerProvider = schedulerProvider;
+        mGetTask = getTask;
+        mSaveTask = saveTask;
+        mUpdateTask = updateTask;
         mIsDataMissingProvider = shouldLoadDataFromRepo;
     }
 
@@ -45,15 +45,17 @@ final class AddEditPresenter implements AddEditContract.Presenter {
     public void attach(AddEditContract.View view) {
         mAddEditView = view;
         mIsDataMissing = mIsDataMissingProvider.get();
-        if (mIsDataMissing) {
+        if (!Strings.isEmpty(mTaskId) && mIsDataMissing) {
             getTask();
         }
     }
 
     @Override
     public void detach() {
+        mGetTask.unsubscribe();
+        mSaveTask.unsubscribe();
+        mUpdateTask.unsubscribe();
         mAddEditView = null;
-        mCompositeDisposable.clear();
     }
 
     @Override
@@ -68,51 +70,45 @@ final class AddEditPresenter implements AddEditContract.Presenter {
     @Override
     public void getTask() {
         if (mTaskId != null) {
-            mCompositeDisposable.clear();
-            Disposable disposable = mTasksRepository
-                    .getTak(mTaskId)
-                    .subscribeOn(mSchedulerProvider.io())
-                    .observeOn(mSchedulerProvider.ui())
-                    .subscribe(task -> {
-                        if (mAddEditView != null) {
-                            mAddEditView.showTask(task);
-                        }
-                    }, throwable -> {
-                        if (mAddEditView != null) {
-                            mAddEditView.showEmptyTaskError();
-                            mIsDataMissing = false;
-                        }
-                    });
-            mCompositeDisposable.add(disposable);
+            GetTask.Request request = new GetTask.Request(mTaskId);
+            mGetTask.subscribe(request, new DisposableSubscriber<Task>() {
+                @Override
+                public void onNext(Task task) {
+                    mAddEditView.showTask(task);
+                    mIsDataMissing = false;
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    mAddEditView.showEmptyTaskError();
+                }
+
+                @Override
+                public void onComplete() {}
+            });
         }
     }
 
     private void updateTask(String title, String description) {
-        Task task = Task.createNewTaskWithId(mTaskId, title, description);
+        Task task = Task.createNewTaskWithId(Objects.requireNonNull(mTaskId), title, description);
         if (task.isEmpty()) {
-            if (mAddEditView != null) {
-                mAddEditView.showEmptyTaskError();
-            }
-        } else {
-            mTasksRepository.updateTask(task);
-            if (mAddEditView != null) {
-                mAddEditView.showTasksList();
-            }
+            mAddEditView.showEmptyTaskError();
+            return;
         }
+
+        UpdateTask.Request request = new UpdateTask.Request(task);
+        mUpdateTask.subscribe(request, () -> mAddEditView.showTasksList());
     }
 
     private void createTask(String title, String description) {
-        Task task = Task.createNewTask(title, description);
-        if (task.isEmpty()) {
-            if (mAddEditView != null) {
-                mAddEditView.showEmptyTaskError();
-            }
-        } else {
-            mTasksRepository.saveTask(task);
-            if (mAddEditView != null) {
-                mAddEditView.showTasksList();
-            }
+        Task newTask = Task.createNewTask(title, description);
+        if (newTask.isEmpty()) {
+            mAddEditView.showEmptyTaskError();
+            return;
         }
+
+        SaveTask.Request request = new SaveTask.Request(newTask);
+        mSaveTask.subscribe(request, () -> mAddEditView.showTasksList());
     }
 
     @Override

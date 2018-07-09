@@ -1,6 +1,7 @@
 package com.wptdxii.playground.todo.data;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.wptdxii.framekit.util.Collections;
 import com.wptdxii.playground.todo.data.di.qualifier.Local;
@@ -62,7 +63,8 @@ public final class TasksRepository implements TasksDataSource {
     @Override
     public void deleteCompletedTasks() {
         if (!mTasksCachedDataSource.isEmpty()) {
-            Iterator<Map.Entry<String, Task>> iterator = mTasksCachedDataSource.entrySet().iterator();
+            Iterator<Map.Entry<String, Task>> iterator = mTasksCachedDataSource.entrySet()
+                    .iterator();
             while (iterator.hasNext()) {
                 if (iterator.next().getValue().isCompleted()) iterator.remove();
             }
@@ -97,7 +99,6 @@ public final class TasksRepository implements TasksDataSource {
         mTasksRemoteDataSource.updateTask(task);
     }
 
-
     @Override
     public Flowable<Task> getTak(@NonNull String taskId) {
         final Task cachedTask = mTasksCachedDataSource.get(taskId);
@@ -105,7 +106,15 @@ public final class TasksRepository implements TasksDataSource {
             return Flowable.just(cachedTask);
         }
 
-        Flowable<Task> localTaskFlowable = mTasksLocalDataSource.getTak(taskId);
+        Flowable<Task> localTaskFlowable = mTasksLocalDataSource.getTak(taskId)
+                .doOnNext(task -> {
+                    if (task != null) {
+                        mTasksCachedDataSource.put(task.getId(), task);
+                    }
+                })
+                .firstElement()
+                .toFlowable();
+
         Flowable<Task> remoteTaskFlowable =
                 mTasksRemoteDataSource.getTak(taskId)
                         .doOnNext(task -> {

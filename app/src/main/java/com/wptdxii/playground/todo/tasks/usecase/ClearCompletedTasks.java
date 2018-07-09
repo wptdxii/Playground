@@ -22,9 +22,8 @@ public class ClearCompletedTasks extends CompletableUseCase<Void> {
     private final TasksRepository mTasksRepository;
 
     @Inject
-    ClearCompletedTasks(@NonNull TasksRepository tasksRepository,
-                        @NonNull ThreadExecutor threadExecutor,
-                        @NonNull PostExecutionThread executionThread) {
+    ClearCompletedTasks(ThreadExecutor threadExecutor, PostExecutionThread executionThread,
+                        @NonNull TasksRepository tasksRepository) {
         super(threadExecutor, executionThread);
         mTasksRepository = tasksRepository;
     }

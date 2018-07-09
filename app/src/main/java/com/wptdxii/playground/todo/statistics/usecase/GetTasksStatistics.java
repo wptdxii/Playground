@@ -1,6 +1,5 @@
 package com.wptdxii.playground.todo.statistics.usecase;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.wptdxii.playground.core.executor.PostExecutionThread;
@@ -21,8 +20,7 @@ public class GetTasksStatistics extends FlowableUseCase<Void, Pair<Long, Long>> 
     private final TasksRepository mTasksRepository;
 
     @Inject
-    GetTasksStatistics(@NonNull ThreadExecutor threadExecutor,
-                       @NonNull PostExecutionThread executionThread,
+    GetTasksStatistics(ThreadExecutor threadExecutor, PostExecutionThread executionThread,
                        @NonNull TasksRepository tasksRepository) {
         super(threadExecutor, executionThread);
         mTasksRepository = tasksRepository;

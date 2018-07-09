@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.core.BaseFragment;
-import com.wptdxii.playground.di.scope.ActivityScoped;
 
 import javax.inject.Inject;
 
@@ -21,6 +20,8 @@ import butterknife.Unbinder;
 
 public class StatisticsFragment extends BaseFragment implements StatisticsContract.View {
 
+    @BindView(R.id.tv_loading_indicator)
+    TextView tvLoadingIndicator;
     @BindView(R.id.tv_tasks_statistics)
     TextView tvTasksStatistics;
     Unbinder unbinder;
@@ -39,7 +40,8 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.todo_fragment_statistics, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -60,21 +62,23 @@ public class StatisticsFragment extends BaseFragment implements StatisticsContra
 
     @Override
     public void showLoadingIndicator(boolean show) {
-        if (show) {
-            tvTasksStatistics.setText(R.string.todo_loading);
-        } else {
-            tvTasksStatistics.setText("");
-        }
+        tvLoadingIndicator.setText(R.string.todo_loading);
+        tvLoadingIndicator.setVisibility(show ? View.VISIBLE : View.GONE);
+        tvTasksStatistics.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void showTasksStatistics(String active, String completed) {
-        String statistics = String.format(getString(R.string.todo_statistics_active_tasks), active) + "\n" + String.format(getString(R.string.todo_statistics_completed_tasks), completed);
+        String statistics = String.format(getString(R.string.todo_statistics_active_tasks),
+                active) + "\n" + String.format(getString(R.string
+                .todo_statistics_completed_tasks), completed);
         tvTasksStatistics.setText(statistics);
+        tvTasksStatistics.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showLoadingStatisticsError() {
-        Toast.makeText(getContext(), R.string.todo_statistics_error_loading, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.todo_statistics_error_loading, Toast.LENGTH_SHORT)
+                .show();
     }
 }

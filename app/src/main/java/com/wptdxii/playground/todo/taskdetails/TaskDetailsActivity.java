@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +18,11 @@ import android.widget.TextView;
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.core.BaseActivity;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
-import com.wptdxii.playground.todo.data.source.Task;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class TaskDetailsActivity extends BaseActivity implements TaskDetailsContract.View {
@@ -111,21 +110,16 @@ public class TaskDetailsActivity extends BaseActivity implements TaskDetailsCont
         mTaskDetailsPresenter.detach();
     }
 
-    @OnCheckedChanged(R.id.cb_completed)
-    public void checkTask(boolean checked) {
-        mTaskDetailsPresenter.checkTask(checked);
+    @OnClick(R.id.cb_completed)
+    public void checkTask(View view) {
+        CheckBox checkBox = (CheckBox) view;
+        mTaskDetailsPresenter.checkTask(checkBox.isChecked());
     }
 
     @Override
     public void showMissingTask() {
         tvTitle.setText("");
         tvDescription.setText(R.string.todo_task_details_no_data);
-    }
-
-    @Override
-    public void showTask(Task task) {
-        tvTitle.setText(task.getTitleForList());
-        tvDescription.setText(task.getDescription());
     }
 
     @Override

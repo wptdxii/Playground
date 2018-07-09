@@ -1,5 +1,7 @@
 package com.wptdxii.playground.core.interactor;
 
+import android.support.annotation.NonNull;
+
 import com.wptdxii.playground.core.executor.PostExecutionThread;
 import com.wptdxii.playground.core.executor.ThreadExecutor;
 
@@ -14,7 +16,8 @@ public abstract class SingleUseCase<Request, Response> {
     private final PostExecutionThread mExecutionThread;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    public SingleUseCase(ThreadExecutor threadExecutor, PostExecutionThread executionThread) {
+    public SingleUseCase(@NonNull ThreadExecutor threadExecutor,
+                         @NonNull PostExecutionThread executionThread) {
         mThreadExecutor = threadExecutor;
         mExecutionThread = executionThread;
     }

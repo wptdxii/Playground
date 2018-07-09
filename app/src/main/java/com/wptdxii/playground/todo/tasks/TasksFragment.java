@@ -62,16 +62,9 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
 
     private TasksAdapter mTasksAdapter;
 
-    /**
-     * provide fragment instance in dagger module while need arguments
-     *
-     * @return
-     */
     public static TasksFragment newInstance() {
         return new TasksFragment();
     }
-
-    private static final String TAG = "Presenter";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +93,8 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mTasksAdapter);
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.todo_color_primary, R.color.todo_color_primary_dark);
+        swipeRefreshLayout.setColorSchemeResources(R.color.todo_color_primary, R.color
+                .todo_color_primary_dark);
         swipeRefreshLayout.setOnRefreshListener(() ->
                 mTaskPresenter.loadTasks(false, true));
 
@@ -143,7 +137,8 @@ public class TasksFragment extends BaseFragment implements TasksContract.View {
         if (getActivity() != null) {
             View anchor = getActivity().findViewById(R.id.action_filter);
             PopupMenu popupMenu = new PopupMenu(getActivity(), anchor);
-            popupMenu.getMenuInflater().inflate(R.menu.todo_tasks_fragment_filter, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.todo_tasks_fragment_filter, popupMenu
+                    .getMenu());
             popupMenu.show();
 
             popupMenu.setOnMenuItemClickListener(item -> {

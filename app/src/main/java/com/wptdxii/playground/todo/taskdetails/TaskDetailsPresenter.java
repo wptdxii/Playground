@@ -3,34 +3,30 @@ package com.wptdxii.playground.todo.taskdetails;
 import android.support.annotation.NonNull;
 
 import com.wptdxii.framekit.util.Strings;
-import com.wptdxii.playground.core.schedulers.ISchedulerProvider;
-import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.source.Task;
-import com.wptdxii.playground.todo.data.source.TasksDataSource;
-import com.wptdxii.playground.todo.data.TasksRepository;
+import com.wptdxii.playground.todo.taskdetails.usecase.CheckTask;
+import com.wptdxii.playground.todo.taskdetails.usecase.DeleteTask;
+import com.wptdxii.playground.todo.usecase.GetTask;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
 
-    private final String mTaskId;
-    private final TasksRepository mTasksRepository;
-    private final CompositeDisposable mCompositeDisposable;
-    private final ISchedulerProvider mSchedulerProvider;
     private TaskDetailsContract.View mTaskDetailsView;
+    private final String mTaskId;
+    private final GetTask mGetTask;
+    private final DeleteTask mDeleteTask;
+    private final CheckTask mCheckTask;
 
     @Inject
-    TaskDetailsPresenter(@NonNull String taskId,
-                         @NonNull TasksRepository tasksRepository,
-                         @NonNull ISchedulerProvider schedulerProvider,
-                         @NonNull CompositeDisposable compositeDisposable) {
+    TaskDetailsPresenter(@NonNull String taskId, @NonNull GetTask getTask,
+                         @NonNull DeleteTask deleteTask, @NonNull CheckTask checkTask) {
         mTaskId = taskId;
-        mTasksRepository = tasksRepository;
-        mSchedulerProvider = schedulerProvider;
-        mCompositeDisposable = compositeDisposable;
+        mGetTask = getTask;
+        mDeleteTask = deleteTask;
+        mCheckTask = checkTask;
     }
 
     @Override
@@ -41,44 +37,44 @@ final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
 
     @Override
     public void detach() {
+        mGetTask.unsubscribe();
+        mDeleteTask.unsubscribe();
+        mCheckTask.unsubscribe();
         mTaskDetailsView = null;
-        mCompositeDisposable.clear();
     }
+
+    private static final String TAG = "TaskDetailsPresenter";
 
     private void getTask() {
-        if (checkTaskId()) return;
 
-        if (mTaskDetailsView != null) {
-            mTaskDetailsView.showLoadingIndicator();
-        }
+        GetTask.Request request = new GetTask.Request(mTaskId);
+        mGetTask.subscribe(request, new DisposableSubscriber<Task>() {
+            @Override
+            protected void onStart() {
+                super.onStart();
+                mTaskDetailsView.showLoadingIndicator();
+            }
 
-        mCompositeDisposable.clear();
-        Disposable disposable = mTasksRepository
-                .getTak(mTaskId)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(task -> {
-                    if (mTaskDetailsView != null) {
-                        showTask(task);
-                    }
-                }, throwable -> {
-                    if (mTaskDetailsView != null) {
-                        mTaskDetailsView.showMissingTask();
-                    }
-                });
-        mCompositeDisposable.add(disposable);
+            @Override
+            public void onNext(Task task) {
+                showTask(task);
+            }
 
-    }
+            @Override
+            public void onError(Throwable t) {
+                mTaskDetailsView.showMissingTask();
+            }
 
-    private boolean checkTaskId() {
-        if (Strings.isEmpty(mTaskId) && mTaskDetailsView != null) {
-            mTaskDetailsView.showMissingTask();
-            return true;
-        }
-        return false;
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     private void showTask(Task task) {
+        mTaskDetailsView.showTaskCompletionStatus(task.isCompleted());
+
         String title = task.getTitle();
         String description = task.getDescription();
         if (Strings.isEmpty(task.getTitle())) {
@@ -93,36 +89,23 @@ final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
             mTaskDetailsView.showTaskDescription(description);
         }
 
-        mTaskDetailsView.showTaskCompletionStatus(task.isCompleted());
+
     }
 
     @Override
     public void editTask() {
-
-        if (checkTaskId()) return;
-        if (mTaskDetailsView != null) {
-            mTaskDetailsView.showEditTask(mTaskId);
-        }
-
+        mTaskDetailsView.showEditTask(mTaskId);
     }
 
     @Override
     public void deleteTask() {
-        if (checkTaskId()) return;
-        mTasksRepository.deleteTask(mTaskId);
-        if (mTaskDetailsView != null) {
-            mTaskDetailsView.showTaskDeleted();
-        }
+        DeleteTask.Request request = new DeleteTask.Request(mTaskId);
+        mDeleteTask.subscribe(request, () -> mTaskDetailsView.showTaskDeleted());
     }
 
     @Override
     public void checkTask(boolean checked) {
-        if (checkTaskId()) return;
-
-        mTasksRepository.updateTask(mTaskId, checked);
-
-        if (mTaskDetailsView != null) {
-            mTaskDetailsView.showTaskChecked(checked);
-        }
+        CheckTask.Request request = new CheckTask.Request(mTaskId, checked);
+        mCheckTask.subscribe(request, () -> mTaskDetailsView.showTaskChecked(checked));
     }
 }
