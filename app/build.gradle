@@ -116,4 +116,9 @@ dependencies {
 
     implementation rx.java
     implementation rx.android
+
+    implementation net.gson
+    implementation net.retrofit
+    implementation net.rxjavaAdapter
+    implementation net.gsonConverter
 }

@@ -68,4 +68,11 @@ ext {
             android: "io.reactivex.rxjava2:rxandroid:2.0.2",
             java   : "io.reactivex.rxjava2:rxjava:2.1.16",
     ]
+
+    net = [
+            gson         : "com.google.code.gson:gson:2.8.5",
+            retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+            rxjavaAdapter: "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+            gsonConverter: "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+    ]
 }
