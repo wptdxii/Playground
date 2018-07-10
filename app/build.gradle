@@ -16,6 +16,9 @@ android {
         versionCode versions.code
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "BASE_URL_GANK", "\"${BASE_URL_GANK}\""
+        buildConfigField "String", "BASE_URL_DOUBAN", "\"${BASE_URL_DOUBAN}\""
     }
 
     signingConfigs {
@@ -121,4 +124,10 @@ dependencies {
     implementation net.retrofit
     implementation net.rxjavaAdapter
     implementation net.gsonConverter
+    implementation(net.loggingInterceptor) {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    implementation log.logger
+    implementation log.timber
 }

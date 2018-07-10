@@ -1,4 +1,4 @@
-package com.wptdxii.playground.core;
+package com.wptdxii.playground.core.executor;
 
 import io.reactivex.FlowableTransformer;
 

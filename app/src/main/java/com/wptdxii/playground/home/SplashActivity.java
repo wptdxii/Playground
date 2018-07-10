@@ -7,6 +7,7 @@ import com.wptdxii.playground.R;
 import com.wptdxii.playground.core.BaseActivity;
 
 public class SplashActivity extends BaseActivity {
+
     private static final int RESIDENCE_TIME = 1000;
 
     @Override

@@ -3,6 +3,7 @@ package com.wptdxii.playground.di.component;
 import android.app.Application;
 
 import com.wptdxii.playground.App;
+import com.wptdxii.playground.di.module.ApiModule;
 import com.wptdxii.playground.di.module.AppModule;
 import com.wptdxii.playground.home.di.HomeBindingModule;
 import com.wptdxii.playground.sample.di.SampleBindingModule;
@@ -19,6 +20,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Singleton
 @Component(modules = {AppModule.class,
         TasksRepositoryModule.class,
+        ApiModule.class,
         HomeBindingModule.class,
         SampleBindingModule.class,
         ToDoBindingModule.class,

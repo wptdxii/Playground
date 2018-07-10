@@ -70,9 +70,15 @@ ext {
     ]
 
     net = [
-            gson         : "com.google.code.gson:gson:2.8.5",
-            retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit",
-            rxjavaAdapter: "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
-            gsonConverter: "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+            gson              : "com.google.code.gson:gson:2.8.5",
+            retrofit          : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+            rxjavaAdapter     : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+            gsonConverter     : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+            loggingInterceptor: "com.github.ihsanbal:LoggingInterceptor:2.0.6",
+    ]
+
+    log = [
+            logger: "com.orhanobut:logger:2.2.0",
+            timber: "com.jakewharton.timber:timber:4.7.1",
     ]
 }
