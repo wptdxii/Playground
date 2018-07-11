@@ -38,4 +38,13 @@ dependencies {
     testImplementation testings.junit
     androidTestImplementation testings.runner
     androidTestImplementation testings.espresso
+
+//    api di.dagger
+//    annotationProcessor di.daggerCompiler
+//    api di.daggerAndroid
+//    api di.daggerAndroidSupport
+//    annotationProcessor di.daggerAndroidCompiler
+
+//    api log.logger
+//    api log.timber
 }

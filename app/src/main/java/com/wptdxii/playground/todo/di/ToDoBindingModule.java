@@ -3,6 +3,7 @@ package com.wptdxii.playground.todo.di;
 import com.wptdxii.playground.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.addedittask.AddEditModule;
+import com.wptdxii.playground.todo.data.di.module.TasksRepositoryModule;
 import com.wptdxii.playground.todo.statistics.StatisticsActivity;
 import com.wptdxii.playground.todo.statistics.StatisticsModule;
 import com.wptdxii.playground.todo.taskdetails.TaskDetailsActivity;
@@ -13,7 +14,7 @@ import com.wptdxii.playground.todo.tasks.TasksModule;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
-@Module
+@Module(includes = TasksRepositoryModule.class)
 public abstract class ToDoBindingModule {
 
     @ActivityScoped

@@ -18,6 +18,5 @@ public interface MovieApi {
 
     @GET("top250")
     Observable<BaseMovieResponse<List<MovieModel>>> getMove(@Query("start") int start,
-                                                            @Query("count") int count
-    );
+                                                            @Query("count") int count);
 }

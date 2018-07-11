@@ -104,6 +104,7 @@ dependencies {
 
     implementation di.butterknife
     annotationProcessor di.butterknifeCompiler
+
     implementation di.dagger
     annotationProcessor di.daggerCompiler
     implementation di.daggerAndroid

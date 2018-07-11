@@ -8,8 +8,6 @@ import android.util.Log;
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.core.BaseActivity;
 
-import java.util.Optional;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
