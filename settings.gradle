@@ -1,1 +1,1 @@
-include ':app', ':sdk:framekit', ':sdk:uikit'
+include ':app', ':sdk:framekit'

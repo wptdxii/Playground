@@ -2,10 +2,10 @@ package com.wptdxii.playground.todo.tasks.usecase;
 
 import android.support.annotation.NonNull;
 
-import com.wptdxii.playground.core.executor.PostExecutionThread;
-import com.wptdxii.playground.core.executor.ThreadExecutor;
-import com.wptdxii.playground.core.interactor.CompletableUseCase;
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.executor.PostExecutionThread;
+import com.wptdxii.framekit.executor.ThreadExecutor;
+import com.wptdxii.framekit.interactor.CompletableUseCase;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.TasksRepository;
 
 import javax.inject.Inject;

@@ -3,7 +3,7 @@ package com.wptdxii.playground.todo.tasks;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.tasks.usecase.CheckTask;
 import com.wptdxii.playground.todo.tasks.usecase.ClearAllTasks;
@@ -14,7 +14,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Action;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 @ActivityScoped

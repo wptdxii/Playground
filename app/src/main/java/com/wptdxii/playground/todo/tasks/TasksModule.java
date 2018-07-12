@@ -1,6 +1,6 @@
 package com.wptdxii.playground.todo.tasks;
 
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 
 import dagger.Binds;
 import dagger.Module;

@@ -92,43 +92,27 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':sdk:framekit')
-    implementation project(':sdk:uikit')
-
-    implementation supports.v7
-    implementation supports.constraint
-    implementation supports.design
-    implementation supports.cardView
-
-    androidTestImplementation testings.runner
-    androidTestImplementation testings.espresso
 
     implementation di.butterknife
     annotationProcessor di.butterknifeCompiler
 
-    implementation di.dagger
+//    implementation di.dagger
     annotationProcessor di.daggerCompiler
-    implementation di.daggerAndroid
-    implementation di.daggerAndroidSupport
+//    implementation di.daggerAndroid
+//    implementation di.daggerAndroidSupport
     annotationProcessor di.daggerAndroidCompiler
 
     implementation room.runtime
+    implementation room.rxjava
     annotationProcessor room.compiler
     testImplementation room.test
-    implementation room.rxjava
+
+//    implementation rx.java
+//    implementation rx.android
 
     implementation channels.vasdolly
 
-    implementation rx.java
-    implementation rx.android
-
-    implementation net.gson
-    implementation net.retrofit
-    implementation net.rxjavaAdapter
-    implementation net.gsonConverter
-    implementation(net.loggingInterceptor) {
-        exclude group: 'org.json', module: 'json'
-    }
-
-    implementation log.logger
-    implementation log.timber
+    testImplementation testings.junit
+    androidTestImplementation testings.runner
+    androidTestImplementation testings.espresso
 }

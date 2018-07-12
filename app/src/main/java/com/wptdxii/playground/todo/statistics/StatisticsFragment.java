@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.core.BaseFragment;
+import com.wptdxii.framekit.base.BaseFragment;
 
 import javax.inject.Inject;
 

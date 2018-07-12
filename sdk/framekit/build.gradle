@@ -33,18 +33,29 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation supports.v7
+    api supports.v7
+    api supports.constraint
+    api supports.design
+    api supports.cardView
 
-    testImplementation testings.junit
-    androidTestImplementation testings.runner
-    androidTestImplementation testings.espresso
+    api di.dagger
+    annotationProcessor di.daggerCompiler
+    api di.daggerAndroid
+    api di.daggerAndroidSupport
+    annotationProcessor di.daggerAndroidCompiler
 
-//    api di.dagger
-//    annotationProcessor di.daggerCompiler
-//    api di.daggerAndroid
-//    api di.daggerAndroidSupport
-//    annotationProcessor di.daggerAndroidCompiler
+    api net.gson
+    api net.retrofit
+    api net.rxjavaAdapter
+    api net.gsonConverter
+    api(net.loggingInterceptor) {
+        exclude group: 'org.json', module: 'json'
+    }
 
-//    api log.logger
-//    api log.timber
+    api rx.java
+    api rx.android
+
+    api log.logger
+    api log.timber
+
 }

@@ -2,8 +2,8 @@ package com.wptdxii.playground.sample.dagger;
 
 import android.content.Context;
 
-import com.wptdxii.playground.di.qualifier.ActivityContext;
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.di.qualifier.ActivityContext;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 
 import javax.inject.Inject;
 

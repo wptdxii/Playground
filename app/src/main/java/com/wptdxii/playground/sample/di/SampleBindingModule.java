@@ -1,6 +1,6 @@
 package com.wptdxii.playground.sample.di;
 
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 import com.wptdxii.playground.sample.DrawerActivity;
 import com.wptdxii.playground.sample.DrawerFragment;
 import com.wptdxii.playground.sample.LayoutActivity;

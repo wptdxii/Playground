@@ -1,9 +1,8 @@
 package com.wptdxii.playground.todo.statistics;
 
-import com.wptdxii.playground.di.scope.ActivityScoped;
-import com.wptdxii.playground.di.scope.FragmentScoped;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
+import com.wptdxii.framekit.di.scope.FragmentScoped;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;

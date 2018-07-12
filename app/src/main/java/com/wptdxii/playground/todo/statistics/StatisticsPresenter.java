@@ -3,7 +3,7 @@ package com.wptdxii.playground.todo.statistics;
 import android.support.annotation.NonNull;
 import android.util.Pair;
 
-import com.wptdxii.playground.di.scope.FragmentScoped;
+import com.wptdxii.framekit.di.scope.FragmentScoped;
 import com.wptdxii.playground.todo.statistics.usecase.GetTasksStatistics;
 
 import javax.inject.Inject;

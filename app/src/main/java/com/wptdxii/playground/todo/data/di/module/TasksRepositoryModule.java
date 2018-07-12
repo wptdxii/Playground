@@ -2,10 +2,8 @@ package com.wptdxii.playground.todo.data.di.module;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 
-import com.wptdxii.framekit.component.executor.AppExecutors;
-import com.wptdxii.playground.di.qualifier.AppContext;
+import com.wptdxii.framekit.di.qualifier.AppContext;
 import com.wptdxii.playground.todo.data.di.qualifier.Local;
 import com.wptdxii.playground.todo.data.di.qualifier.Remote;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
@@ -23,7 +21,6 @@ import dagger.Provides;
 @Module
 public abstract class TasksRepositoryModule {
 
-
     @Binds
     @Singleton
     @Local
@@ -34,13 +31,6 @@ public abstract class TasksRepositoryModule {
     @Singleton
     @Remote
     abstract TasksDataSource provideTasksRemoteDataSource(TasksRemoteDataSource dataSource);
-
-
-    @Singleton
-    @Provides
-    static AppExecutors provideAppExecutors() {
-        return new AppExecutors();
-    }
 
     @Singleton
     @Provides

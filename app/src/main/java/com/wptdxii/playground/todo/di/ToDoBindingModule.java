@@ -1,6 +1,6 @@
 package com.wptdxii.playground.todo.di;
 
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 import com.wptdxii.playground.todo.addedittask.AddEditModule;
 import com.wptdxii.playground.todo.data.di.module.TasksRepositoryModule;

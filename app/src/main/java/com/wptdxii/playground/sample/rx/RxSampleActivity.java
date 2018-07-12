@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.core.BaseActivity;
+import com.wptdxii.framekit.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

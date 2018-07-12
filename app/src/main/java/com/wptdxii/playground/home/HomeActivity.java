@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.core.BaseListActivity;
-import com.wptdxii.playground.core.Module;
+import com.wptdxii.playground.core.base.BaseListActivity;
+import com.wptdxii.playground.core.base.Module;
 import com.wptdxii.playground.sample.SampleActivity;
 import com.wptdxii.playground.todo.tasks.TasksActivity;
 

@@ -15,7 +15,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.core.BaseActivity;
+import com.wptdxii.framekit.base.BaseActivity;
 import com.wptdxii.playground.todo.addedittask.AddEditActivity;
 
 import javax.inject.Inject;

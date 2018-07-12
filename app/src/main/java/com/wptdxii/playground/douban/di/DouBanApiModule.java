@@ -1,7 +1,7 @@
 package com.wptdxii.playground.douban.di;
 
 import com.wptdxii.playground.BuildConfig;
-import com.wptdxii.playground.core.network.HttpServiceManager;
+import com.wptdxii.framekit.network.HttpServiceManager;
 import com.wptdxii.playground.douban.api.MovieApi;
 
 import javax.inject.Singleton;

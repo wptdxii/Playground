@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wptdxii.playground.R;
-import com.wptdxii.playground.core.BaseFragment;
-import com.wptdxii.playground.di.scope.ActivityScoped;
+import com.wptdxii.framekit.base.BaseFragment;
+import com.wptdxii.framekit.di.scope.ActivityScoped;
 
 import javax.inject.Inject;
 
