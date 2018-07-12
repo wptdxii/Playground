@@ -91,7 +91,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':sdk:framekit')
+
+    if (asLibrary.toBoolean()) {
+        implementation project(':features:todo')
+    } else {
+        implementation project(':sdk:framekit')
+    }
 
     implementation di.butterknife
     annotationProcessor di.butterknifeCompiler
