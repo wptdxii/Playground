@@ -1,6 +1,7 @@
 package com.wptdxii.framekit.exception;
 
-public class InstantiationException extends UnsupportedOperationException {
+public final class InstantiationException extends UnsupportedOperationException {
+
     private static final String MSG_EXCEPTION = "Cannot be instantiated!";
 
     public InstantiationException() {

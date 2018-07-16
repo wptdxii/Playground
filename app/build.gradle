@@ -91,20 +91,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    if (asLibrary.toBoolean()) {
-        implementation project(':features:todo')
-    } else {
-        implementation project(':sdk:framekit')
-    }
+    implementation project(':sdk:framekit')
 
     implementation di.butterknife
     annotationProcessor di.butterknifeCompiler
 
-//    implementation di.dagger
     annotationProcessor di.daggerCompiler
-//    implementation di.daggerAndroid
-//    implementation di.daggerAndroidSupport
     annotationProcessor di.daggerAndroidCompiler
 
     implementation room.runtime

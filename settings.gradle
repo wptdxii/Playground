@@ -1,1 +1,1 @@
-include ':app', ':sdk:framekit', 'features:todo'
+include ':app', ':sdk:framekit'

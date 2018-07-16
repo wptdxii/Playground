@@ -2,8 +2,8 @@ package com.wptdxii.playground.di.component;
 
 import android.app.Application;
 
-import com.wptdxii.playground.App;
 import com.wptdxii.framekit.di.AppModule;
+import com.wptdxii.playground.App;
 import com.wptdxii.playground.douban.di.DouBanBindingModule;
 import com.wptdxii.playground.gank.di.GankBindingModule;
 import com.wptdxii.playground.home.di.HomeBindingModule;
@@ -24,6 +24,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         SampleBindingModule.class,
         ToDoBindingModule.class,
         AppModule.class,
+        //        ToBindingModule.class,
         AndroidSupportInjectionModule.class})
 public interface AppComponent extends AndroidInjector<App> {
 
