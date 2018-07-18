@@ -3,7 +3,7 @@ package com.wptdxii.playground.todo.addedittask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.wptdxii.framekit.util.Strings;
+import com.wptdxii.framekit.util.StringUtils;
 import com.wptdxii.playground.todo.addedittask.usecase.SaveTask;
 import com.wptdxii.playground.todo.addedittask.usecase.UpdateTask;
 import com.wptdxii.playground.todo.data.source.Task;
@@ -45,7 +45,7 @@ final class AddEditPresenter implements AddEditContract.Presenter {
     public void attach(AddEditContract.View view) {
         mAddEditView = view;
         mIsDataMissing = mIsDataMissingProvider.get();
-        if (!Strings.isEmpty(mTaskId) && mIsDataMissing) {
+        if (!StringUtils.isEmpty(mTaskId) && mIsDataMissing) {
             getTask();
         }
     }

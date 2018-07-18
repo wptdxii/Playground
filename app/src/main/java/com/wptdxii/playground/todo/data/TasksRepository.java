@@ -1,9 +1,8 @@
 package com.wptdxii.playground.todo.data;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.wptdxii.framekit.util.Collections;
+import com.wptdxii.framekit.util.CollectionUtils;
 import com.wptdxii.playground.todo.data.di.qualifier.Local;
 import com.wptdxii.playground.todo.data.di.qualifier.Remote;
 import com.wptdxii.playground.todo.data.source.Task;
@@ -133,7 +132,7 @@ public final class TasksRepository implements TasksDataSource {
 
         if (!mCacheDirty) {
             Flowable<List<Task>> cachedTasks = Flowable
-                    .fromIterable(Collections.newArrayList(mTasksCachedDataSource.values()))
+                    .fromIterable(CollectionUtils.newArrayList(mTasksCachedDataSource.values()))
                     .toList()
                     .toFlowable();
             Flowable<List<Task>> localTasks = getTasksFromLocal();

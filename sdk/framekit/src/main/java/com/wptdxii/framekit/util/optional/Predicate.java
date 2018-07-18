@@ -28,7 +28,7 @@ import android.support.annotation.Nullable;
  * Predicate}</a>.
  *
  * @author Kevin Bourrillion
- * @since 2.0 (imported from Google Collections Library)
+ * @since 2.0 (imported from Google CollectionUtils Library)
  */
 public interface Predicate<T> {
     /**

@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.support.v7.view.menu.MenuBuilder;
 import android.view.Menu;
 
-/**
- * Created by wptdxii on 17-11-21 下午10:38
- */
+import com.wptdxii.framekit.exception.InstantiationException;
 
 public final class MenuUtil {
     private MenuUtil() {
-        throw new UnsupportedOperationException("cannot be instantiated");
+        throw new InstantiationException();
     }
 
     public static void showOptionalIcons(Menu menu) {

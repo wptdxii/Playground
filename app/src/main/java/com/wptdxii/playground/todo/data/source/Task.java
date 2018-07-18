@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.wptdxii.framekit.util.Objects;
-import com.wptdxii.framekit.util.Strings;
+import com.wptdxii.framekit.util.StringUtils;
 
 import java.util.UUID;
 
@@ -47,7 +47,7 @@ public final class Task {
 
     @Nullable
     public String getTitleForList() {
-        if (!Strings.isEmpty(mTitle)) {
+        if (!StringUtils.isEmpty(mTitle)) {
             return mTitle;
         } else {
             return mDescription;
@@ -89,7 +89,7 @@ public final class Task {
     }
 
     public boolean isEmpty() {
-        return Strings.isEmpty(mTitle) && Strings.isEmpty(mDescription);
+        return StringUtils.isEmpty(mTitle) && StringUtils.isEmpty(mDescription);
     }
 
     @Override

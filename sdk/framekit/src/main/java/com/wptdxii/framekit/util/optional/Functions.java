@@ -34,7 +34,7 @@ import static com.wptdxii.framekit.util.Preconditions.checkNotNull;
  *
  * @author Mike Bostock
  * @author Jared Levy
- * @since 2.0 (imported from Google Collections Library)
+ * @since 2.0 (imported from Google CollectionUtils Library)
  * <p>
  * <p><b>This class contains code derived from <a href="https://github.com/google/guava">Google
  * Guava</a></b>

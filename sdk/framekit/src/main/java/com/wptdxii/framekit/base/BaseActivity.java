@@ -8,6 +8,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.wptdxii.framekit.util.ActivityStack;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -28,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity implements HasSuppo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        ActivityStack.getInstance().addActivity(this);
     }
 
     @Override
@@ -44,6 +47,12 @@ public abstract class BaseActivity extends AppCompatActivity implements HasSuppo
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityStack.getInstance().removeActivity(this);
+        super.onDestroy();
     }
 
     @Override

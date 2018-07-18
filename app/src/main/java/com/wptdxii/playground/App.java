@@ -24,6 +24,7 @@ public class App extends BaseApplication {
     @Override
     protected Extension initExtension() {
         return new Extension.Builder()
+                .application(this)
                 .buildType(BuildConfig.DEBUG)
                 .build();
     }

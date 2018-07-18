@@ -2,7 +2,7 @@ package com.wptdxii.playground.todo.data.source.remote;
 
 import android.support.annotation.NonNull;
 
-import com.wptdxii.framekit.util.Collections;
+import com.wptdxii.framekit.util.CollectionUtils;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
 
@@ -77,7 +77,7 @@ public final class TasksRemoteDataSource implements TasksDataSource {
 
     @Override
     public Flowable<List<Task>> getTasks() {
-        return Flowable.fromIterable(Collections.newArrayList(mTasksMap.values()))
+        return Flowable.fromIterable(CollectionUtils.newArrayList(mTasksMap.values()))
                 .delay(SERVICE_LATENCY_IN_MILLIS, TimeUnit.MILLISECONDS)
                 .toList()
                 .toFlowable();

@@ -1,138 +1,469 @@
 package com.wptdxii.framekit.util;
 
+import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
+import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Bundle;
-import android.text.TextUtils;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 
+import com.wptdxii.framekit.Extension;
+import com.wptdxii.framekit.exception.InstantiationException;
+
+import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
-/**
- * Created by wptdxii on 2016/9/13 0013.
- */
-public class AppUtils {
-
-    private static Bundle sOwnAppMetaInfo;
+public final class AppUtils {
 
     private AppUtils() {
-        throw new UnsupportedOperationException("cannot be instantiated");
+        throw new InstantiationException();
     }
 
-    public static String getAppName(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
-            int labelRes = packageInfo.applicationInfo.labelRes;
-            return context.getResources().getString(labelRes);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
+    /**
+     * Return whether the app is installed.
+     *
+     * @param action   The Intent action, such as ACTION_VIEW.
+     * @param category The desired category.
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isAppInstalled(@NonNull final String action,
+                                         @NonNull final String category) {
+        Intent intent = new Intent(action);
+        intent.addCategory(category);
+        PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+        ResolveInfo info = pm.resolveActivity(intent, 0);
+        return info != null;
+    }
+
+    /**
+     * Install the app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
+     *
+     * @param filePath The path of file.
+     */
+    public static void installApp(final String filePath) {
+        installApp(getFileByPath(filePath));
+    }
+
+    /**
+     * Install the app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
+     *
+     * @param file The file.
+     */
+    public static void installApp(final File file) {
+        if (!isFileExists(file)) return;
+        Intent intent = getInstallAppIntent(file);
+        Extension.getExtension().getApplication().startActivity(intent);
+    }
+
+    private static Intent getInstallAppIntent(File file) {
+        if (file == null) return null;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data;
+        String type = "application/vnd.android.package-archive";
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            data = Uri.fromFile(file);
+        } else {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            String authority = Extension.getExtension().getApplication().getPackageName() + ".provider";
+            data = FileProvider.getUriForFile(Extension.getExtension().getApplication(), authority, file);
         }
-        return null;
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(data, type);
+        return intent;
     }
 
-    public static String getVersionName(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
-            return packageInfo.versionName;
+    /**
+     * Install the app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
+     *
+     * @param activity    The activity.
+     * @param filePath    The path of file.
+     * @param requestCode If &gt;= 0, this code will be returned in
+     *                    onActivityResult() when the activity exits.
+     */
+    public static void installApp(final Activity activity,
+                                  final String filePath,
+                                  final int requestCode) {
+        installApp(activity, getFileByPath(filePath), requestCode);
+    }
 
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
+    /**
+     * Install the app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
+     *
+     * @param activity    The activity.
+     * @param file        The file.
+     * @param requestCode If &gt;= 0, this code will be returned in
+     *                    onActivityResult() when the activity exits.
+     */
+    public static void installApp(final Activity activity,
+                                  final File file,
+                                  final int requestCode) {
+        if (!isFileExists(file)) return;
+        activity.startActivityForResult(getInstallAppIntent(file), requestCode);
+    }
+
+    /**
+     * Install the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param filePath The path of file.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean installAppSilent(final String filePath) {
+        return installAppSilent(getFileByPath(filePath), null);
+    }
+
+    /**
+     * Install the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param file The file.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean installAppSilent(final File file) {
+        return installAppSilent(file, null);
+    }
+
+
+    /**
+     * Install the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param filePath The path of file.
+     * @param params   The params of installation(e.g.,<code>-r</code>, <code>-s</code>).
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean installAppSilent(final String filePath, final String params) {
+        return installAppSilent(getFileByPath(filePath), params);
+    }
+
+    /**
+     * Install the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param file   The file.
+     * @param params The params of installation(e.g.,<code>-r</code>, <code>-s</code>).
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean installAppSilent(final File file, final String params) {
+        return installAppSilent(file, params, isDeviceRooted());
+    }
+
+    /**
+     * Install the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param file     The file.
+     * @param params   The params of installation(e.g.,<code>-r</code>, <code>-s</code>).
+     * @param isRooted True to use root, false otherwise.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean installAppSilent(final File file,
+                                           final String params,
+                                           final boolean isRooted) {
+        if (!isFileExists(file)) return false;
+        String filePath = '"' + file.getAbsolutePath() + '"';
+        String command = "LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm install " +
+                (params == null ? "" : params + " ")
+                + filePath;
+        ShellUtils.CommandResult commandResult = ShellUtils.execCmd(command, isRooted);
+        return commandResult.successMsg != null
+                && commandResult.successMsg.toLowerCase().contains("success");
+    }
+
+    /**
+     * Uninstall the app.
+     *
+     * @param packageName The name of the package.
+     */
+    public static void uninstallApp(final String packageName) {
+        if (isSpace(packageName)) return;
+        Extension.getExtension().getApplication().startActivity(getUninstallAppIntent(packageName, true));
+    }
+
+    private static Intent getUninstallAppIntent(String packageName, boolean isNewTask) {
+        Intent intent = new Intent(Intent.ACTION_DELETE);
+        if (isNewTask) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        return null;
+        intent.setData(Uri.parse("package:" + packageName));
+        return intent;
     }
 
-    public static boolean isForeground(Context context) {
-        if (isScreenLocked(context)) {
+    /**
+     * Uninstall the app.
+     *
+     * @param activity    The activity.
+     * @param packageName The name of the package.
+     * @param requestCode If &gt;= 0, this code will be returned in
+     *                    onActivityResult() when the activity exits.
+     */
+    public static void uninstallApp(final Activity activity,
+                                    final String packageName,
+                                    final int requestCode) {
+        if (isSpace(packageName)) return;
+        activity.startActivityForResult(getUninstallAppIntent(
+                packageName, false), requestCode
+        );
+    }
+
+    /**
+     * Uninstall the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.DELETE_PACKAGES" />}</p>
+     *
+     * @param packageName The name of the package.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean uninstallAppSilent(final String packageName) {
+        return uninstallAppSilent(packageName, false);
+    }
+
+    /**
+     * Uninstall the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.DELETE_PACKAGES" />}</p>
+     *
+     * @param packageName The name of the package.
+     * @param isKeepData  Is keep the data.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean uninstallAppSilent(final String packageName, final boolean isKeepData) {
+        return uninstallAppSilent(packageName, isKeepData, isDeviceRooted());
+    }
+
+    /**
+     * Uninstall the app silently.
+     * <p>Without root permission must hold
+     * {@code <uses-permission android:name="android.permission.DELETE_PACKAGES" />}</p>
+     *
+     * @param packageName The name of the package.
+     * @param isKeepData  Is keep the data.
+     * @param isRooted    True to use root, false otherwise.
+     * @return {@code true}: success<br>{@code false}: fail
+     */
+    public static boolean uninstallAppSilent(final String packageName,
+                                             final boolean isKeepData,
+                                             final boolean isRooted) {
+        if (isSpace(packageName)) return false;
+        String command = "LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm uninstall "
+                + (isKeepData ? "-k " : "")
+                + packageName;
+        ShellUtils.CommandResult commandResult = ShellUtils.execCmd(command, isRooted);
+        return commandResult.successMsg != null
+                && commandResult.successMsg.toLowerCase().contains("success");
+    }
+
+    /**
+     * Return whether the app is installed.
+     *
+     * @param packageName The name of the package.
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isAppInstalled(@NonNull final String packageName) {
+        Intent intent = Extension.getExtension().getApplication().getPackageManager()
+                .getLaunchIntentForPackage(packageName);
+        return !isSpace(packageName) && intent != null;
+    }
+
+    /**
+     * Return whether it is a debug application.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isAppDebug() {
+        return isAppDebug(Extension.getExtension().getApplication().getPackageName());
+    }
+
+    /**
+     * Return whether it is a debug application.
+     *
+     * @param packageName The name of the package.
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isAppDebug(final String packageName) {
+        if (isSpace(packageName)) return false;
+        try {
+            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
+            return ai != null && (ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
             return false;
-        }
-        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> runningTaskInfos = Objects.requireNonNull(mActivityManager).getRunningTasks(1);
-        return context.getPackageName().equals(runningTaskInfos.get(0).baseActivity.getPackageName())
-                && context.getPackageName().equals(runningTaskInfos.get(0).topActivity.getPackageName());
-    }
-
-    private static boolean isScreenLocked(Context context) {
-        KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        return Objects.requireNonNull(mKeyguardManager).inKeyguardRestrictedInputMode();
-    }
-
-    public static int getVersionCode(Context context) {
-        if (context == null) {
-            return 0;
-        }
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return info.versionCode;
-        } catch (Throwable e) {
-            return 0;
         }
     }
 
     /**
-     * 获取带有指定配置信息的ApplicationInfo
+     * Return whether application is foreground.
      *
-     * @param flags 比如 {@link PackageManager#GET_META_DATA}
-     * @see #getSimpleAppInfo(Context)
-     * @see <a href="https://code.google.com/p/android/issues/detail?id=37968" >why this method</a>
+     * @return {@code true}: yes<br>{@code false}: no
      */
-    public static ApplicationInfo getAppInfoWithFlags(Context ctx, int flags) {
-        try {
-            return ctx == null ? null : ctx.getPackageManager().getApplicationInfo(ctx.getPackageName(), PackageManager.GET_META_DATA);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static ApplicationInfo getSimpleAppInfo(Context ctx) {
-        return ctx == null ? null : ctx.getApplicationInfo();
-    }
-
-    public static boolean isPackageInstalled(Context context, String packageName) {
-        if (!TextUtils.isEmpty(packageName)) {
-            try {
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-                return packageInfo != null;
-            } catch (NameNotFoundException e) {
-                System.out.print(e);
+    public static boolean isAppForeground() {
+        ActivityManager am =
+                (ActivityManager) Extension.getExtension().getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) return false;
+        List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
+        if (info == null || info.size() == 0) return false;
+        for (ActivityManager.RunningAppProcessInfo aInfo : info) {
+            if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return aInfo.processName.equals(Extension.getExtension().getApplication().getPackageName());
             }
         }
         return false;
     }
 
-    public static Bundle getApplicationMetaInfo(Context context) {
-        if (sOwnAppMetaInfo == null) {
-            synchronized (AppUtils.class) {
-                if (sOwnAppMetaInfo == null) {
-                    sOwnAppMetaInfo = getApplicationMetaInfo(context, context.getPackageName());
-                }
-            }
-        }
-        return sOwnAppMetaInfo != null ? new Bundle(sOwnAppMetaInfo) : null;
+    /**
+     * Relaunch the application.
+     */
+    public static void relaunchApp() {
+        Application application = Extension.getExtension().getApplication();
+        PackageManager packageManager = application.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(application.getPackageName());
+        if (intent == null) return;
+        ComponentName componentName = intent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+        application.startActivity(mainIntent);
+        System.exit(0);
     }
 
-    public static Bundle getApplicationMetaInfo(Context context, String packageName) {
-        ApplicationInfo appInfo = packageName.equals(context.getPackageName()) ?
-                context.getApplicationInfo() : null;
-        Bundle metaInfo = appInfo != null ? appInfo.metaData : null;
-        if (metaInfo == null) {
-            try {
-                appInfo = context.getPackageManager().getApplicationInfo(
-                        packageName, PackageManager.GET_META_DATA);
-                metaInfo = appInfo.metaData;
-            } catch (Throwable e) {
-                e.printStackTrace();
+    /**
+     * Return the application's package name.
+     *
+     * @return the application's package name
+     */
+    public static String getAppPackageName() {
+        return Extension.getExtension().getApplication().getPackageName();
+    }
+
+    /**
+     * Return the application's name.
+     *
+     * @return the application's name
+     */
+    public static String getAppName() {
+        return getAppName(Extension.getExtension().getApplication().getPackageName());
+    }
+
+    /**
+     * Return the application's name.
+     *
+     * @param packageName The name of the package.
+     * @return the application's name
+     */
+    public static String getAppName(final String packageName) {
+        if (isSpace(packageName)) return "";
+        try {
+            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(packageName, 0);
+            return pi == null ? null : pi.applicationInfo.loadLabel(pm).toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    /**
+     * Return the application's version name.
+     *
+     * @return the application's version name
+     */
+    public static String getAppVersionName() {
+        return getAppVersionName(Extension.getExtension().getApplication().getPackageName());
+    }
+
+    /**
+     * Return the application's version name.
+     *
+     * @param packageName The name of the package.
+     * @return the application's version name
+     */
+    public static String getAppVersionName(final String packageName) {
+        if (isSpace(packageName)) return "";
+        try {
+            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(packageName, 0);
+            return pi == null ? null : pi.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    /**
+     * Return the application's version code.
+     *
+     * @return the application's version code
+     */
+    public static int getAppVersionCode() {
+        return getAppVersionCode(Extension.getExtension().getApplication().getPackageName());
+    }
+
+    /**
+     * Return the application's version code.
+     *
+     * @param packageName The name of the package.
+     * @return the application's version code
+     */
+    public static int getAppVersionCode(final String packageName) {
+        if (isSpace(packageName)) return -1;
+        try {
+            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(packageName, 0);
+            return pi == null ? -1 : pi.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
+    private static boolean isFileExists(final File file) {
+        return file != null && file.exists();
+    }
+
+    private static File getFileByPath(final String filePath) {
+        return isSpace(filePath) ? null : new File(filePath);
+    }
+
+    private static boolean isSpace(final String s) {
+        if (s == null) return true;
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
             }
         }
-        return metaInfo;
+        return true;
+    }
+
+    private static boolean isDeviceRooted() {
+        String su = "su";
+        String[] locations = {"/system/bin/", "/system/xbin/", "/sbin/", "/system/sd/xbin/",
+                "/system/bin/failsafe/", "/data/local/xbin/", "/data/local/bin/", "/data/local/"};
+        for (String location : locations) {
+            if (new File(location + su).exists()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

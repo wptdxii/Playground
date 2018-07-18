@@ -1,123 +1,336 @@
 package com.wptdxii.framekit.util;
 
 import android.app.Activity;
+import android.app.Application.ActivityLifecycleCallbacks;
+import android.app.KeyguardManager;
+import android.content.ComponentCallbacks;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
+import android.graphics.Point;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.util.DisplayMetrics;
+import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
-/**
- * 获得屏幕相关的辅助类
- */
-public class ScreenUtils
-{
-	private ScreenUtils()
-	{
-		/* cannot be instantiated */
-		throw new UnsupportedOperationException("cannot be instantiated");
-	}
+import com.wptdxii.framekit.Extension;
 
-	/**
-	 * 获得屏幕宽度
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static int getScreenWidth(Context context)
-	{
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		wm.getDefaultDisplay().getMetrics(outMetrics);
-		return outMetrics.widthPixels;
-	}
+import static android.Manifest.permission.WRITE_SETTINGS;
 
-	/**
-	 * 获得屏幕高度
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static int getScreenHeight(Context context)
-	{
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		wm.getDefaultDisplay().getMetrics(outMetrics);
-		return outMetrics.heightPixels;
-	}
+public final class ScreenUtils {
 
-	/**
-	 * 获得状态栏的高度
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static int getStatusHeight(Context context)
-	{
+    private ScreenUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
-		int statusHeight = -1;
-		try
-		{
-			Class<?> clazz = Class.forName("com.android.internal.R$dimen");
-			Object object = clazz.newInstance();
-			int height = Integer.parseInt(clazz.getField("status_bar_height")
-					.get(object).toString());
-			statusHeight = context.getResources().getDimensionPixelSize(height);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return statusHeight;
-	}
+    /**
+     * Return the width of screen, in pixel.
+     *
+     * @return the width of screen, in pixel
+     */
+    public static int getScreenWidth() {
+        WindowManager wm = (WindowManager) Extension.getExtension().getApplication().getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return Extension.getExtension().getApplication().getResources().getDisplayMetrics().widthPixels;
+        }
+        Point point = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            wm.getDefaultDisplay().getRealSize(point);
+        } else {
+            wm.getDefaultDisplay().getSize(point);
+        }
+        return point.x;
+    }
 
-	/**
-	 * 获取当前屏幕截图，包含状态栏
-	 * 
-	 * @param activity
-	 * @return
-	 */
-	public static Bitmap snapShotWithStatusBar(Activity activity)
-	{
-		View view = activity.getWindow().getDecorView();
-		view.setDrawingCacheEnabled(true);
-		view.buildDrawingCache();
-		Bitmap bmp = view.getDrawingCache();
-		int width = getScreenWidth(activity);
-		int height = getScreenHeight(activity);
-		Bitmap bp = null;
-		bp = Bitmap.createBitmap(bmp, 0, 0, width, height);
-		view.destroyDrawingCache();
-		return bp;
+    /**
+     * Return the height of screen, in pixel.
+     *
+     * @return the height of screen, in pixel
+     */
+    public static int getScreenHeight() {
+        WindowManager wm = (WindowManager) Extension.getExtension().getApplication().getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return Extension.getExtension().getApplication().getResources().getDisplayMetrics().heightPixels;
+        }
+        Point point = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            wm.getDefaultDisplay().getRealSize(point);
+        } else {
+            wm.getDefaultDisplay().getSize(point);
+        }
+        return point.y;
+    }
 
-	}
+    /**
+     * Return the density of screen.
+     *
+     * @return the density of screen
+     */
+    public static float getScreenDensity() {
+        return Extension.getExtension().getApplication().getResources().getDisplayMetrics().density;
+    }
 
-	/**
-	 * 获取当前屏幕截图，不包含状态栏
-	 * 
-	 * @param activity
-	 * @return
-	 */
-	public static Bitmap snapShotWithoutStatusBar(Activity activity)
-	{
-		View view = activity.getWindow().getDecorView();
-		view.setDrawingCacheEnabled(true);
-		view.buildDrawingCache();
-		Bitmap bmp = view.getDrawingCache();
-		Rect frame = new Rect();
-		activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-		int statusBarHeight = frame.top;
+    /**
+     * Return the screen density expressed as dots-per-inch.
+     *
+     * @return the screen density expressed as dots-per-inch
+     */
+    public static int getScreenDensityDpi() {
+        return Extension.getExtension().getApplication().getResources().getDisplayMetrics().densityDpi;
+    }
 
-		int width = getScreenWidth(activity);
-		int height = getScreenHeight(activity);
-		Bitmap bp = null;
-		bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height
-				- statusBarHeight);
-		view.destroyDrawingCache();
-		return bp;
+    /**
+     * Set full screen.
+     *
+     * @param activity The activity.
+     */
+    public static void setFullScreen(@NonNull final Activity activity) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
 
-	}
+    /**
+     * Set the screen to landscape.
+     *
+     * @param activity The activity.
+     */
+    public static void setLandscape(@NonNull final Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
 
+    /**
+     * Set the screen to portrait.
+     *
+     * @param activity The activity.
+     */
+    public static void setPortrait(@NonNull final Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * Return whether screen is landscape.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isLandscape() {
+        return Extension.getExtension().getApplication().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * Return whether screen is portrait.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isPortrait() {
+        return Extension.getExtension().getApplication().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    /**
+     * Return the rotation of screen.
+     *
+     * @param activity The activity.
+     * @return the rotation of screen
+     */
+    public static int getScreenRotation(@NonNull final Activity activity) {
+        switch (activity.getWindowManager().getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_0:
+                return 0;
+            case Surface.ROTATION_90:
+                return 90;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_270:
+                return 270;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Return the bitmap of screen.
+     *
+     * @param activity The activity.
+     * @return the bitmap of screen
+     */
+    public static Bitmap screenShot(@NonNull final Activity activity) {
+        return screenShot(activity, false);
+    }
+
+    /**
+     * Return the bitmap of screen.
+     *
+     * @param activity          The activity.
+     * @param isDeleteStatusBar True to delete status bar, false otherwise.
+     * @return the bitmap of screen
+     */
+    public static Bitmap screenShot(@NonNull final Activity activity, boolean isDeleteStatusBar) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setDrawingCacheEnabled(true);
+        decorView.buildDrawingCache();
+        Bitmap bmp = decorView.getDrawingCache();
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Bitmap ret;
+        if (isDeleteStatusBar) {
+            Resources resources = activity.getResources();
+            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+            int statusBarHeight = resources.getDimensionPixelSize(resourceId);
+            ret = Bitmap.createBitmap(
+                    bmp,
+                    0,
+                    statusBarHeight,
+                    dm.widthPixels,
+                    dm.heightPixels - statusBarHeight
+            );
+        } else {
+            ret = Bitmap.createBitmap(bmp, 0, 0, dm.widthPixels, dm.heightPixels);
+        }
+        decorView.destroyDrawingCache();
+        return ret;
+    }
+
+    /**
+     * Return whether screen is locked.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isScreenLock() {
+        KeyguardManager km =
+                (KeyguardManager) Extension.getExtension().getApplication().getSystemService(Context.KEYGUARD_SERVICE);
+        return km != null && km.inKeyguardRestrictedInputMode();
+    }
+
+    /**
+     * Set the duration of sleep.
+     * <p>Must hold {@code <uses-permission android:name="android.permission.WRITE_SETTINGS" />}</p>
+     *
+     * @param duration The duration.
+     */
+    @RequiresPermission(WRITE_SETTINGS)
+    public static void setSleepDuration(final int duration) {
+        Settings.System.putInt(
+                Extension.getExtension().getApplication().getContentResolver(),
+                Settings.System.SCREEN_OFF_TIMEOUT,
+                duration
+        );
+    }
+
+    /**
+     * Return the duration of sleep.
+     *
+     * @return the duration of sleep.
+     */
+    public static int getSleepDuration() {
+        try {
+            return Settings.System.getInt(
+                    Extension.getExtension().getApplication().getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT
+            );
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return -123;
+        }
+    }
+
+    /**
+     * Return whether device is tablet.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isTablet() {
+        return (Extension.getExtension().getApplication().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    private static float scaledDensity;
+    private static float density;
+
+    /**
+     * Adapt the portrait screen.
+     *
+     * @param designWidthInDp The size of design diagram width, in dp,
+     *                        e.g. the design diagram width is 750px, in XHDPI device,
+     *                        the designWidthInDp = 750 / 2.
+     */
+    public static void adaptPortraitScreen(final float designWidthInDp) {
+        adaptScreen(designWidthInDp, true);
+    }
+
+    /**
+     * Adapt the landscape screen.
+     *
+     * @param designHeightInDp The size of design diagram height, in dp,
+     *                         e.g. the design diagram height is 1920px, in XXHDPI device,
+     *                         the designHeightInDp = 1920 / 3.
+     */
+    public static void adaptLandscapeScreen(final float designHeightInDp) {
+        adaptScreen(designHeightInDp, false);
+    }
+
+    /**
+     * Reference from: https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA
+     *
+     * @param sizeInDp   The size, in dp.
+     * @param isPortrait True to portrait, false otherwise.
+     */
+    private static void adaptScreen(final float sizeInDp,
+                                    final boolean isPortrait) {
+        final DisplayMetrics appDm = Extension.getExtension().getApplication().getResources().getDisplayMetrics();
+        if (density == 0) {
+            density = appDm.density;
+            scaledDensity = appDm.scaledDensity;
+            Extension.getExtension().getApplication().registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(Configuration newConfig) {
+                    if (newConfig != null && newConfig.fontScale > 0) {
+                        scaledDensity = Extension.getExtension().getApplication().getResources().getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {/**/}
+            });
+            Extension.getExtension().getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+                @Override
+                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                    DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
+                    if (isPortrait) {
+                        activityDm.density = appDm.widthPixels / sizeInDp;
+                    } else {
+                        activityDm.density = appDm.heightPixels / sizeInDp;
+                    }
+                    activityDm.scaledDensity = activityDm.density * (scaledDensity / density);
+                    activityDm.densityDpi = (int) (160 * activityDm.density);
+                }
+
+                @Override
+                public void onActivityStarted(Activity activity) {/**/}
+
+                @Override
+                public void onActivityResumed(Activity activity) {/**/}
+
+                @Override
+                public void onActivityPaused(Activity activity) {/**/}
+
+                @Override
+                public void onActivityStopped(Activity activity) {/**/}
+
+                @Override
+                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {/**/}
+
+                @Override
+                public void onActivityDestroyed(Activity activity) {/**/}
+            });
+        }
+    }
 }

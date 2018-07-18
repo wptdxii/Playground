@@ -37,7 +37,7 @@ import static com.wptdxii.framekit.util.Preconditions.checkNotNull;
  * use of {@code Predicate}</a>.
  *
  * @author Kevin Bourrillion
- * @since 2.0 (imported from Google Collections Library)
+ * @since 2.0 (imported from Google CollectionUtils Library)
  */
 @SuppressWarnings("PMD.ExcessivePublicCount")
 public final class Predicates {

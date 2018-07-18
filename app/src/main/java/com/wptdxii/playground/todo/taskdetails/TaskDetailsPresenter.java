@@ -2,7 +2,7 @@ package com.wptdxii.playground.todo.taskdetails;
 
 import android.support.annotation.NonNull;
 
-import com.wptdxii.framekit.util.Strings;
+import com.wptdxii.framekit.util.StringUtils;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.taskdetails.usecase.CheckTask;
 import com.wptdxii.playground.todo.taskdetails.usecase.DeleteTask;
@@ -77,13 +77,13 @@ final class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
 
         String title = task.getTitle();
         String description = task.getDescription();
-        if (Strings.isEmpty(task.getTitle())) {
+        if (StringUtils.isEmpty(task.getTitle())) {
             mTaskDetailsView.hideTaskTitle();
         } else {
             mTaskDetailsView.showTaskTitle(title);
         }
 
-        if (Strings.isEmpty(task.getDescription())) {
+        if (StringUtils.isEmpty(task.getDescription())) {
             mTaskDetailsView.hideTaskDescription();
         } else {
             mTaskDetailsView.showTaskDescription(description);

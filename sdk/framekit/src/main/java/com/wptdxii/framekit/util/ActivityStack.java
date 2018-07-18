@@ -4,17 +4,19 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.wptdxii.framekit.exception.InstantiationException;
+
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Stack;
 
-public class ActivityStack {
+public final class ActivityStack {
 
     private Stack<Activity> mActivityStack = new Stack<>();
 
     private ActivityStack() {
         if (SingletonHolder.INSTANCE != null) {
-            throw new UnsupportedOperationException("already been instantiated");
+            throw new InstantiationException();
         }
     }
 
