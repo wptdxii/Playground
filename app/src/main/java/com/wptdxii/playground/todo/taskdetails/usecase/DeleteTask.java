@@ -2,9 +2,9 @@ package com.wptdxii.playground.todo.taskdetails.usecase;
 
 import android.support.annotation.NonNull;
 
-import com.wptdxii.framekit.executor.PostExecutionThread;
-import com.wptdxii.framekit.executor.ThreadExecutor;
-import com.wptdxii.framekit.interactor.CompletableUseCase;
+import com.wptdxii.framekit.component.executor.PostExecutionThread;
+import com.wptdxii.framekit.component.executor.ThreadExecutor;
+import com.wptdxii.framekit.component.interactor.CompletableUseCase;
 import com.wptdxii.framekit.di.scope.ActivityScoped;
 import com.wptdxii.playground.todo.data.TasksRepository;
 

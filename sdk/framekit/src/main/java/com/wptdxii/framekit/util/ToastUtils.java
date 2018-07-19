@@ -1,6 +1,5 @@
 package com.wptdxii.framekit.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;

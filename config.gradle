@@ -81,4 +81,10 @@ ext {
             logger: "com.orhanobut:logger:2.2.0",
             timber: "com.jakewharton.timber:timber:4.7.1",
     ]
+
+    imageLoader = [
+            glide            : "com.github.bumptech.glide:glide:$versions.glide",
+            glideCompiler    : "com.github.bumptech.glide:compiler:$versions.glide",
+            okhttpIntegration: "com.github.bumptech.glide:okhttp3-integration:$versions.glide",
+    ]
 }

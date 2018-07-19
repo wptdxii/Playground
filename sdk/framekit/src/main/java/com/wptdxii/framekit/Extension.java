@@ -17,6 +17,7 @@ public final class Extension {
     }
 
     public boolean getBuildType() {
+        Preconditions.checkNotNull(mBuildType);
         return mBuildType;
     }
 
@@ -26,7 +27,7 @@ public final class Extension {
     }
 
     /**
-     * only instantiated once
+     * should only instantiated once
      *
      * @param extension
      */

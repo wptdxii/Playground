@@ -14,6 +14,7 @@ buildscript {
             channel    : '1.1.9',
             dagger     : '2.16',
             retrofit   : '2.4.0',
+            glide      : '4.7.1',
             java       : JavaVersion.VERSION_1_8
     ]
 
@@ -33,6 +34,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
     }
 }

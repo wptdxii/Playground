@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.wptdxii.framekit.Extension;
 import com.wptdxii.framekit.exception.InstantiationException;
 
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Stack;
+import java.util.concurrent.Executor;
 
 public final class ActivityStack {
 
@@ -45,7 +47,7 @@ public final class ActivityStack {
         }
     }
 
-    public Activity getActivity(Class<?> cls) {
+    public Activity getActivity(Class<? extends Activity> cls) {
         Activity targetActivity = null;
         for (Activity activity : mActivityStack) {
             if (activity.getClass().equals(cls)) {
@@ -53,7 +55,6 @@ public final class ActivityStack {
                 break;
             }
         }
-
         return targetActivity;
     }
 
@@ -75,7 +76,7 @@ public final class ActivityStack {
         }
     }
 
-    public void finishActivity(Class<?> cls) {
+    public void finishActivity(Class<? extends Activity> cls) {
         for (Activity activity : mActivityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
@@ -95,11 +96,9 @@ public final class ActivityStack {
         mActivityStack.clear();
     }
 
-    public boolean isContainActivity(Class<?> cls) {
+    public boolean containsActivity(Class<? extends Activity> cls) {
         boolean isContain = false;
-        Iterator<Activity> iterator = mActivityStack.iterator();
-        while (iterator.hasNext()) {
-            Activity activity = iterator.next();
+        for (Activity activity : mActivityStack) {
             if (activity.getClass().equals(cls)) {
                 isContain = true;
                 break;
@@ -108,7 +107,8 @@ public final class ActivityStack {
         return isContain;
     }
 
-    public void appExit(Context context) {
+    public void appExit() {
+        Context context = Extension.getExtension().getApplication().getApplicationContext();
         try {
             finishAll();
             ActivityManager activityMgr = (ActivityManager) context

@@ -242,7 +242,6 @@ public final class KeyboardUtils {
      * <p>Copy the following code in ur activity.</p>
      */
     public static void clickBlankArea2HideSoftInput() {
-        Log.i("KeyboardUtils", "Please refer to the following code.");
         /*
         @Override
         public boolean dispatchTouchEvent(MotionEvent ev) {

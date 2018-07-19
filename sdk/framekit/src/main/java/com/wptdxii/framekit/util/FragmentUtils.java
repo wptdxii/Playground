@@ -15,6 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
+import com.wptdxii.framekit.exception.InstantiationException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +37,7 @@ public final class FragmentUtils {
     private static final String ARGS_TAG          = "args_tag";
 
     private FragmentUtils() {
-        throw new UnsupportedOperationException("u can't instantiate me...");
+        throw new InstantiationException();
     }
 
     /**
@@ -177,40 +179,6 @@ public final class FragmentUtils {
                            @AnimRes final int popEnterAnim,
                            @AnimRes final int popExitAnim) {
         add(fm, add, containerId, null, isAddStack, enterAnim, exitAnim, popEnterAnim, popExitAnim);
-    }
-
-    /**
-     * Add fragment.
-     *
-     * @param fm             The manager of fragment.
-     * @param add            The fragment will be add.
-     * @param containerId    The id of container.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void add(@NonNull final FragmentManager fm,
-                           @NonNull final Fragment add,
-                           @IdRes final int containerId,
-                           @NonNull final View... sharedElements) {
-        add(fm, add, containerId, null, false, sharedElements);
-    }
-
-    /**
-     * Add fragment.
-     *
-     * @param fm             The manager of fragment.
-     * @param add            The fragment will be add.
-     * @param containerId    The id of container.
-     * @param isAddStack     True to add fragment in stack, false otherwise.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void add(@NonNull final FragmentManager fm,
-                           @NonNull final Fragment add,
-                           @IdRes final int containerId,
-                           final boolean isAddStack,
-                           @NonNull final View... sharedElements) {
-        add(fm, add, containerId, null, isAddStack, sharedElements);
     }
 
     /**
@@ -399,46 +367,6 @@ public final class FragmentUtils {
         FragmentTransaction ft = fm.beginTransaction();
         putArgs(add, new Args(containerId, tag, false, isAddStack));
         addAnim(ft, enterAnim, exitAnim, popEnterAnim, popExitAnim);
-        operate(TYPE_ADD_FRAGMENT, fm, ft, null, add);
-    }
-
-    /**
-     * Add fragment.
-     *
-     * @param fm             The manager of fragment.
-     * @param add            The fragment will be add.
-     * @param tag            The tag of fragment.
-     * @param containerId    The id of container.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void add(@NonNull final FragmentManager fm,
-                           @NonNull final Fragment add,
-                           @IdRes final int containerId,
-                           final String tag,
-                           @NonNull final View... sharedElements) {
-        add(fm, add, containerId, tag, false, sharedElements);
-    }
-
-    /**
-     * Add fragment.
-     *
-     * @param fm             The manager of fragment.
-     * @param add            The fragment will be add.
-     * @param containerId    The id of container.
-     * @param isAddStack     True to add fragment in stack, false otherwise.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void add(@NonNull final FragmentManager fm,
-                           @NonNull final Fragment add,
-                           @IdRes final int containerId,
-                           final String tag,
-                           final boolean isAddStack,
-                           @NonNull final View... sharedElements) {
-        FragmentTransaction ft = fm.beginTransaction();
-        putArgs(add, new Args(containerId, tag, false, isAddStack));
-        addSharedElement(ft, sharedElements);
         operate(TYPE_ADD_FRAGMENT, fm, ft, null, add);
     }
 
@@ -714,36 +642,6 @@ public final class FragmentUtils {
     /**
      * Replace fragment.
      *
-     * @param srcFragment    The source of fragment.
-     * @param destFragment   The destination of fragment.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void replace(@NonNull final Fragment srcFragment,
-                               @NonNull final Fragment destFragment,
-                               final View... sharedElements) {
-        replace(srcFragment, destFragment, null, false, sharedElements);
-    }
-
-    /**
-     * Replace fragment.
-     *
-     * @param srcFragment    The source of fragment.
-     * @param destFragment   The destination of fragment.
-     * @param isAddStack     True to add fragment in stack, false otherwise.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void replace(@NonNull final Fragment srcFragment,
-                               @NonNull final Fragment destFragment,
-                               final boolean isAddStack,
-                               final View... sharedElements) {
-        replace(srcFragment, destFragment, null, isAddStack, sharedElements);
-    }
-
-    /**
-     * Replace fragment.
-     *
      * @param fm          The manager of fragment.
      * @param fragment    The new fragment to place in the container.
      * @param containerId The id of container.
@@ -865,40 +763,6 @@ public final class FragmentUtils {
                                @AnimRes final int popExitAnim) {
         replace(fm, fragment, containerId, null, isAddStack,
                 enterAnim, exitAnim, popEnterAnim, popExitAnim);
-    }
-
-    /**
-     * Replace fragment.
-     *
-     * @param fm             The manager of fragment.
-     * @param containerId    The id of container.
-     * @param fragment       The new fragment to place in the container.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void replace(@NonNull final FragmentManager fm,
-                               @NonNull final Fragment fragment,
-                               @IdRes final int containerId,
-                               final View... sharedElements) {
-        replace(fm, fragment, containerId, null, false, sharedElements);
-    }
-
-    /**
-     * Replace fragment.
-     *
-     * @param fm             The manager of fragment.
-     * @param containerId    The id of container.
-     * @param fragment       The new fragment to place in the container.
-     * @param isAddStack     True to add fragment in stack, false otherwise.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void replace(@NonNull final FragmentManager fm,
-                               @NonNull final Fragment fragment,
-                               @IdRes final int containerId,
-                               final boolean isAddStack,
-                               final View... sharedElements) {
-        replace(fm, fragment, containerId, null, isAddStack, sharedElements);
     }
 
     /**
@@ -1031,22 +895,6 @@ public final class FragmentUtils {
         Args args = getArgs(srcFragment);
         replace(fm, destFragment, args.id, destTag, isAddStack,
                 enterAnim, exitAnim, popEnterAnim, popExitAnim);
-    }
-
-    /**
-     * Replace fragment.
-     *
-     * @param srcFragment    The source of fragment.
-     * @param destFragment   The destination of fragment.
-     * @param destTag        The destination of fragment's tag.
-     * @param sharedElements A View in a disappearing Fragment to match with a View in an
-     *                       appearing Fragment.
-     */
-    public static void replace(@NonNull final Fragment srcFragment,
-                               @NonNull final Fragment destFragment,
-                               final String destTag,
-                               final View... sharedElements) {
-        replace(srcFragment, destFragment, destTag, false, sharedElements);
     }
 
     /**

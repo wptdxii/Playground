@@ -58,4 +58,7 @@ dependencies {
     api log.logger
     api log.timber
 
+    implementation imageLoader.glide
+    implementation imageLoader.okhttpIntegration
+    annotationProcessor imageLoader.glideCompiler
 }

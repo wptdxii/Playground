@@ -1,7 +1,7 @@
 package com.wptdxii.playground.di.module;
 
 import com.wptdxii.playground.BuildConfig;
-import com.wptdxii.framekit.network.HttpServiceManager;
+import com.wptdxii.framekit.component.network.HttpServiceManager;
 import com.wptdxii.playground.douban.api.MovieApi;
 import com.wptdxii.playground.gank.api.GankApi;
 

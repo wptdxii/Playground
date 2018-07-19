@@ -13,45 +13,21 @@ public final class SizeUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    /**
-     * Value of dp to value of px.
-     *
-     * @param dpValue The value of dp.
-     * @return value of px
-     */
     public static int dp2px(final float dpValue) {
         final float scale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
-    /**
-     * Value of px to value of dp.
-     *
-     * @param pxValue The value of px.
-     * @return value of dp
-     */
     public static int px2dp(final float pxValue) {
         final float scale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
-    /**
-     * Value of sp to value of px.
-     *
-     * @param spValue The value of sp.
-     * @return value of px
-     */
     public static int sp2px(final float spValue) {
         final float fontScale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    /**
-     * Value of px to value of sp.
-     *
-     * @param pxValue The value of px.
-     * @return value of sp
-     */
     public static int px2sp(final float pxValue) {
         final float fontScale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
@@ -84,32 +60,6 @@ public final class SizeUtils {
                 return value * metrics.xdpi * (1.0f / 25.4f);
         }
         return 0;
-    }
-
-    /**
-     * Force get the size of view.
-     * <p>e.g.</p>
-     * <pre>
-     * SizeUtils.forceGetViewSize(view, new SizeUtils.onGetSizeListener() {
-     *     Override
-     *     public void onGetSize(final View view) {
-     *         view.getWidth();
-     *     }
-     * });
-     * </pre>
-     *
-     * @param view     The view.
-     * @param listener The get size listener.
-     */
-    public static void forceGetViewSize(final View view, final onGetSizeListener listener) {
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                if (listener != null) {
-                    listener.onGetSize(view);
-                }
-            }
-        });
     }
 
     /**
@@ -156,10 +106,5 @@ public final class SizeUtils {
         }
         view.measure(widthSpec, heightSpec);
         return new int[]{view.getMeasuredWidth(), view.getMeasuredHeight()};
-    }
-
-
-    public interface onGetSizeListener {
-        void onGetSize(View view);
     }
 }

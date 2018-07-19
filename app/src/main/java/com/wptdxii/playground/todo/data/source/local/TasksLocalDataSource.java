@@ -2,7 +2,7 @@ package com.wptdxii.playground.todo.data.source.local;
 
 import android.support.annotation.NonNull;
 
-import com.wptdxii.framekit.executor.AppExecutors;
+import com.wptdxii.framekit.component.executor.AppExecutors;
 import com.wptdxii.playground.todo.data.source.Task;
 import com.wptdxii.playground.todo.data.source.TasksDataSource;
 

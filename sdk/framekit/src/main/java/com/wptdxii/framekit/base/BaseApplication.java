@@ -3,9 +3,12 @@ package com.wptdxii.framekit.base;
 import android.app.Activity;
 import android.app.Application;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.wptdxii.framekit.Extension;
+import com.wptdxii.framekit.component.imageloader.glide.AppGlide;
 
 import org.jetbrains.annotations.NotNull;
 
