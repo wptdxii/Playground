@@ -36,6 +36,7 @@ dependencies {
     api supports.v7
     api supports.constraint
     api supports.design
+    api supports.recyclerView
     api supports.cardView
 
     api di.dagger
@@ -58,7 +59,14 @@ dependencies {
     api log.logger
     api log.timber
 
-    implementation imageLoader.glide
-    implementation imageLoader.okhttpIntegration
+    implementation(imageLoader.glide) {
+        exclude group: 'com.android.support'
+    }
+    implementation(imageLoader.okhttpIntegration) {
+        transitive = false
+    }
+    implementation(imageLoader.recyclerViewIntegration) {
+        transitive = false
+    }
     annotationProcessor imageLoader.glideCompiler
 }
