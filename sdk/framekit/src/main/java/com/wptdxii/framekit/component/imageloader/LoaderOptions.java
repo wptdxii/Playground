@@ -1,12 +1,11 @@
 package com.wptdxii.framekit.component.imageloader;
 
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.view.View;
-
-import com.wptdxii.framekit.util.Preconditions;
 
 public class LoaderOptions {
 
@@ -17,7 +16,6 @@ public class LoaderOptions {
 
     public boolean asGif = false;
     public boolean asDrawable = true;
-    public boolean asBitmap = false;
 
     public int mTargetWidth;
     public int mTargetHeight;
@@ -35,8 +33,12 @@ public class LoaderOptions {
     public boolean mCenterInside = false;
     public boolean mFitCenter = false;
     public boolean mCircleCrop = false;
+    public boolean mDontTransform = false;
+    public boolean mCrossFade = false;
+    public int mDuration = 0;
 
     public View mTartView;
+    public LoadCallback mLoadCallback;
 
     public LoaderStrategy mLoaderStrategy;
 
@@ -54,12 +56,6 @@ public class LoaderOptions {
 
     public LoaderOptions asGif() {
         asGif = true;
-        return this;
-    }
-
-    public LoaderOptions asBitmap() {
-        asBitmap = true;
-        asGif = false;
         asDrawable = false;
         return this;
     }
@@ -144,6 +140,26 @@ public class LoaderOptions {
         return this;
     }
 
+    public LoaderOptions dontTransform() {
+        mDontTransform = true;
+        mCircleCrop = false;
+        mCenterCrop = false;
+        mCenterInside = false;
+        mFitCenter = false;
+        return this;
+    }
+
+    public LoaderOptions crossFade() {
+        mCrossFade = true;
+        return this;
+    }
+
+    public LoaderOptions crossFade(int duration) {
+        mCrossFade = true;
+        mDuration = duration;
+        return this;
+    }
+
     public LoaderOptions loader(LoaderStrategy loaderStrategy) {
         mLoaderStrategy = loaderStrategy;
         return this;
@@ -151,6 +167,12 @@ public class LoaderOptions {
 
     public void into(@NonNull View targetView) {
         mTartView = targetView;
+        ImageLoader.get().loadOptions(this);
+    }
+
+    public void into(View tartView, @NonNull LoadCallback loadCallback) {
+        mTartView = tartView;
+        mLoadCallback = loadCallback;
         ImageLoader.get().loadOptions(this);
     }
 }
