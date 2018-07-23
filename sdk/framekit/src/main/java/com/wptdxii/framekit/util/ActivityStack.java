@@ -7,10 +7,8 @@ import android.content.Context;
 import com.wptdxii.framekit.Extension;
 import com.wptdxii.framekit.exception.InstantiationException;
 
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Stack;
-import java.util.concurrent.Executor;
 
 public final class ActivityStack {
 
@@ -108,7 +106,7 @@ public final class ActivityStack {
     }
 
     public void appExit() {
-        Context context = Extension.getExtension().getApplication().getApplicationContext();
+        Context context = Extension.get().getApplication().getApplicationContext();
         try {
             finishAll();
             ActivityManager activityMgr = (ActivityManager) context

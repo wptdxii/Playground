@@ -1,178 +1,334 @@
 package com.wptdxii.framekit.component.imageloader;
 
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import java.io.File;
+
 public class LoaderOptions {
 
-    public String mUrl;
-    public Uri mUri;
+    // resource
+    private String mUrl;
+    private Uri mUri;
     @DrawableRes
-    public int mDrawableResId = -1;
+    private int mDrawableResId;
+    private File mFile;
 
-    public boolean asGif = false;
-    public boolean asDrawable = true;
-
-    public int mTargetWidth;
-    public int mTargetHeight;
+    private int mTargetWidth;
+    private int mTargetHeight;
 
     @DrawableRes
-    public int mPlaceHolderResId = -1;
-    public ColorDrawable mPlaceHolderDrawable;
+    private int mPlaceHolderResId;
     @DrawableRes
-    public int mErrorResId = -1;
-    public ColorDrawable mErrorDrawable;
+    private int mErrorResId;
     @DrawableRes
-    public int mFallbackResId = -1;
-    public ColorDrawable mFallbackDrawable;
-    public boolean mCenterCrop = false;
-    public boolean mCenterInside = false;
-    public boolean mFitCenter = false;
-    public boolean mCircleCrop = false;
-    public boolean mDontTransform = false;
-    public boolean mCrossFade = false;
-    public int mDuration = 0;
+    private int mFallbackResId;
 
-    public View mTartView;
-    public LoadCallback mLoadCallback;
+    private boolean mCenterCrop;
+    private boolean mCenterInside;
+    private boolean mFitCenter;
+    private boolean mCircleCrop;
+    private boolean mDontTransform;
+    private boolean mCrossFade;
+    private int mDuration;
+    private boolean mSkipMemoryCache;
 
-    public LoaderStrategy mLoaderStrategy;
 
-    LoaderOptions(String url) {
-        mUrl = url;
+    private float mThumbnailSize;
+
+    private int mRoundingRadius;
+
+    private View mTartView;
+    private LoadCallback mLoadCallback;
+
+    private LoaderStrategy mLoaderStrategy;
+
+    private LoaderOptions(Builder builder) {
+        mUrl = builder.mUrl;
+        mUri = builder.mUri;
+        mDrawableResId = builder.mDrawableResId;
+        mFile = builder.mFile;
+        mTargetWidth = builder.mTargetWidth;
+        mTargetHeight = builder.mTargetHeight;
+        mPlaceHolderResId = builder.mPlaceHolderResId;
+        mErrorResId = builder.mErrorResId;
+        mFallbackResId = builder.mFallbackResId;
+        mCenterCrop = builder.mCenterCrop;
+        mCenterInside = builder.mCenterInside;
+        mFitCenter = builder.mFitCenter;
+        mCircleCrop = builder.mCircleCrop;
+        mCrossFade = builder.mCrossFade;
+        mDuration = builder.mDuration;
+        mThumbnailSize = builder.mThumbnailSize;
+        mDontTransform = builder.mDontTransform;
+        mRoundingRadius = builder.mRoundingRadius;
+        mSkipMemoryCache = builder.mSkipMemoryCache;
+        mTartView = builder.mTartView;
+        mLoadCallback = builder.mLoadCallback;
+        mLoaderStrategy = builder.mLoaderStrategy;
     }
 
-    LoaderOptions(Uri uri) {
-        mUri = uri;
+    public String getUrl() {
+        return mUrl;
     }
 
-    LoaderOptions(@DrawableRes int drawableResId) {
-        mDrawableResId = drawableResId;
+    public Uri getUri() {
+        return mUri;
     }
 
-    public LoaderOptions asGif() {
-        asGif = true;
-        asDrawable = false;
-        return this;
+    public int getDrawableResId() {
+        return mDrawableResId;
     }
 
-    public LoaderOptions override(int width, int height) {
-        mTargetWidth = width;
-        mTargetHeight = height;
-        return this;
+    public File getFile() {
+        return mFile;
     }
 
-    public LoaderOptions override(int size) {
-        mTargetWidth = size;
-        mTargetHeight = size;
-        return this;
+    public boolean isSkipMemoryCache() {
+        return mSkipMemoryCache;
     }
 
-    public LoaderOptions placeHolder(@DrawableRes int placeHolderResId) {
-        mPlaceHolderResId = placeHolderResId;
-        mPlaceHolderDrawable = null;
-        return this;
+    public float getThumbnailSize() {
+        return mThumbnailSize;
     }
 
-    public LoaderOptions placeHolder(ColorDrawable placeHolderDrawable) {
-        mPlaceHolderDrawable = placeHolderDrawable;
-        mPlaceHolderResId = -1;
-        return this;
+    public int getTargetWidth() {
+        return mTargetWidth;
     }
 
-    public LoaderOptions error(@DrawableRes int errorResId) {
-        mErrorResId = errorResId;
-        mErrorDrawable = null;
-        return this;
+    public int getTargetHeight() {
+        return mTargetHeight;
     }
 
-    public LoaderOptions error(ColorDrawable errorDrawable) {
-        mErrorDrawable = errorDrawable;
-        mErrorResId = -1;
-        return this;
+    public int getPlaceHolderResId() {
+        return mPlaceHolderResId;
     }
 
-    public LoaderOptions fallback(@DrawableRes int fallbackResId) {
-        mFallbackResId = fallbackResId;
-        mFallbackDrawable = null;
-        return this;
+    public int getErrorResId() {
+        return mErrorResId;
     }
 
-    public LoaderOptions fallback(ColorDrawable fallbackDrawable) {
-        mFallbackDrawable = fallbackDrawable;
-        mFallbackResId = -1;
-        return this;
+    public int getFallbackResId() {
+        return mFallbackResId;
     }
 
-    public LoaderOptions centerCrop() {
-        mCenterCrop = true;
-        mCenterInside = false;
-        mFitCenter = false;
-        mCircleCrop = false;
-        return this;
+    public boolean isCenterCrop() {
+        return mCenterCrop;
     }
 
-    public LoaderOptions centerInside() {
-        mCenterInside = true;
-        mCenterCrop = false;
-        mFitCenter = false;
-        mCircleCrop = false;
-        return this;
+    public boolean isCenterInside() {
+        return mCenterInside;
     }
 
-    public LoaderOptions fitCenter() {
-        mFitCenter = true;
-        mCenterInside = false;
-        mCenterCrop = false;
-        mCircleCrop = false;
-        return this;
+    public boolean isFitCenter() {
+        return mFitCenter;
     }
 
-    public LoaderOptions circleCrop() {
-        mCircleCrop = true;
-        mCenterCrop = false;
-        mCenterInside = false;
-        mFitCenter = false;
-        return this;
+    public boolean isCircleCrop() {
+        return mCircleCrop;
     }
 
-    public LoaderOptions dontTransform() {
-        mDontTransform = true;
-        mCircleCrop = false;
-        mCenterCrop = false;
-        mCenterInside = false;
-        mFitCenter = false;
-        return this;
+    public boolean isCrossFade() {
+        return mCrossFade;
     }
 
-    public LoaderOptions crossFade() {
-        mCrossFade = true;
-        return this;
+    public int getDuration() {
+        return mDuration;
     }
 
-    public LoaderOptions crossFade(int duration) {
-        mCrossFade = true;
-        mDuration = duration;
-        return this;
+    public boolean isDontTransform() {
+        return mDontTransform;
     }
 
-    public LoaderOptions loader(LoaderStrategy loaderStrategy) {
-        mLoaderStrategy = loaderStrategy;
-        return this;
+    public int getRoundingRadius() {
+        return mRoundingRadius;
     }
 
-    public void into(@NonNull View targetView) {
-        mTartView = targetView;
-        ImageLoader.get().loadOptions(this);
+    public View getTartView() {
+        return mTartView;
     }
 
-    public void into(View tartView, @NonNull LoadCallback loadCallback) {
-        mTartView = tartView;
-        mLoadCallback = loadCallback;
-        ImageLoader.get().loadOptions(this);
+    public LoadCallback getLoadCallback() {
+        return mLoadCallback;
+    }
+
+    public LoaderStrategy getLoaderStrategy() {
+        return mLoaderStrategy;
+    }
+
+    public static final class Builder {
+
+        // resource
+        private String mUrl;
+        private Uri mUri;
+        @DrawableRes
+        private int mDrawableResId = -1;
+        private File mFile;
+
+        // placeholders
+        @DrawableRes
+        private int mPlaceHolderResId = -1;
+        @DrawableRes
+        private int mErrorResId = -1;
+        @DrawableRes
+        private int mFallbackResId = -1;
+
+        // request options
+        private int mTargetWidth;
+        private int mTargetHeight;
+        private float mThumbnailSize = -1f;
+        private boolean mSkipMemoryCache = false;
+
+        // transformations
+        private boolean mCenterCrop = false;
+        private boolean mCenterInside = false;
+        private boolean mFitCenter = false;
+        private boolean mCircleCrop = false;
+        private int mRoundingRadius = 0;
+        private boolean mDontTransform = false;
+
+        // transitions
+        private boolean mCrossFade = false;
+        private int mDuration = 0;
+
+        private View mTartView;
+        private LoadCallback mLoadCallback;
+
+        private LoaderStrategy mLoaderStrategy;
+
+        public Builder(String url) {
+            mUrl = url;
+        }
+
+        public Builder(Uri uri) {
+            mUri = uri;
+        }
+
+        public Builder(@DrawableRes int drawableResId) {
+            mDrawableResId = drawableResId;
+        }
+
+        public Builder(File file) {
+            mFile = file;
+        }
+
+        public Builder override(@IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+            mTargetWidth = width;
+            mTargetHeight = height;
+            return this;
+        }
+
+        public Builder override(@IntRange(from = 0) int size) {
+            mTargetWidth = size;
+            mTargetHeight = size;
+            return this;
+        }
+
+        public Builder placeHolder(@DrawableRes int placeHolderResId) {
+            mPlaceHolderResId = placeHolderResId;
+            return this;
+        }
+
+        public Builder error(@DrawableRes int errorResId) {
+            mErrorResId = errorResId;
+            return this;
+        }
+
+        public Builder fallback(@DrawableRes int fallbackResId) {
+            mFallbackResId = fallbackResId;
+            return this;
+        }
+
+        public Builder centerCrop() {
+            mCenterCrop = true;
+            mCenterInside = false;
+            mFitCenter = false;
+            mCircleCrop = false;
+            mRoundingRadius = 0;
+            return this;
+        }
+
+        public Builder centerInside() {
+            mCenterInside = true;
+            mCenterCrop = false;
+            mFitCenter = false;
+            mCircleCrop = false;
+            mRoundingRadius = 0;
+            return this;
+        }
+
+        public Builder fitCenter() {
+            mFitCenter = true;
+            mCenterInside = false;
+            mCenterCrop = false;
+            mCircleCrop = false;
+            mRoundingRadius = 0;
+            return this;
+        }
+
+        public Builder thumbnail(@FloatRange(from = 0f, to = 1f) float thumbnailSize) {
+            mThumbnailSize = thumbnailSize;
+            return this;
+        }
+
+        public Builder skipMemoryCache() {
+            mSkipMemoryCache = true;
+            return this;
+        }
+
+        public Builder circleCrop() {
+            mCircleCrop = true;
+            mCenterCrop = false;
+            mCenterInside = false;
+            mFitCenter = false;
+            mRoundingRadius = 0;
+            return this;
+        }
+
+        public Builder dontTransform() {
+            mDontTransform = true;
+            mCircleCrop = false;
+            mCenterCrop = false;
+            mCenterInside = false;
+            mFitCenter = false;
+            mRoundingRadius = 0;
+            return this;
+        }
+
+        public Builder crossFade() {
+            mCrossFade = true;
+            return this;
+        }
+
+        public Builder crossFade(int duration) {
+            mCrossFade = true;
+            mDuration = duration;
+            return this;
+        }
+
+        public Builder roundingRadius(int roundingRadius) {
+            mRoundingRadius = roundingRadius;
+            return this;
+        }
+
+        public Builder loader(LoaderStrategy loaderStrategy) {
+            mLoaderStrategy = loaderStrategy;
+            return this;
+        }
+
+        public void into(@NonNull View targetView) {
+            mTartView = targetView;
+            ImageLoader.get().loadOptions(new LoaderOptions(this));
+        }
+
+        public void into(@NonNull View tartView, @NonNull LoadCallback loadCallback) {
+            mTartView = tartView;
+            mLoadCallback = loadCallback;
+            ImageLoader.get().loadOptions(new LoaderOptions(this));
+        }
     }
 }

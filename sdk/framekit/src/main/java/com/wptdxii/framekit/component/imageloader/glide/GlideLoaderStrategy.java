@@ -1,152 +1,139 @@
 package com.wptdxii.framekit.component.imageloader.glide;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.ListPreloader;
+import com.bumptech.glide.TransitionOptions;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.wptdxii.framekit.base.GlideApp;
-import com.wptdxii.framekit.base.GlideRequest;
-import com.wptdxii.framekit.base.GlideRequests;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.wptdxii.framekit.component.imageloader.LoadCallback;
 import com.wptdxii.framekit.component.imageloader.LoaderOptions;
 import com.wptdxii.framekit.component.imageloader.LoaderStrategy;
+import com.wptdxii.framekit.util.Preconditions;
 
 public class GlideLoaderStrategy implements LoaderStrategy {
 
     @Override
     public void load(LoaderOptions loaderOptions) {
+        Preconditions.checkNotNull(loaderOptions.getTartView(), "Target view cannot be empty!");
+        GlideRequests requests = GlideApp.with(loaderOptions.getTartView().getContext());
+        GlideRequest<Drawable> drawableRequest = requests.asDrawable();
+        drawableRequest = applyRequestResource(drawableRequest, loaderOptions)
+                .apply(applyRequestOptions(loaderOptions))
+                .transition(applyDrawableTransitions(loaderOptions));
+        float thumbnailSize = loaderOptions.getThumbnailSize();
+        if (thumbnailSize >= 0f && thumbnailSize <= 1f) {
+            drawableRequest = drawableRequest.thumbnail(loaderOptions.getThumbnailSize());
+        }
 
-        GlideRequests requests = GlideApp.with(loaderOptions.mTartView);
+        applyTargetView(loaderOptions, drawableRequest);
+    }
 
-        if (loaderOptions.asGif) {
-            GlideRequest<GifDrawable> gifRequest = requests.asGif();
-            gifRequest = buildRequestResource(gifRequest, loaderOptions);
-            gifRequest = gifRequest.apply(getRequestOptions(loaderOptions));
-            if (loaderOptions.mTartView instanceof ImageView) {
-                gifRequest.into((ImageView) loaderOptions.mTartView);
-            } else {
-                throw new IllegalArgumentException("TargetView should be ImageView!");
-            }
+    private void applyTargetView(LoaderOptions loaderOptions, GlideRequest<Drawable> drawableRequest) {
+        View targetView = loaderOptions.getTartView();
+        if (targetView instanceof ImageView) {
+            drawableRequest.into((ImageView) loaderOptions.getTartView());
+        } else if (loaderOptions.getLoadCallback() != null) {
+            drawableRequest.into(new DrawableViewTarget(targetView, loaderOptions.getLoadCallback()));
         } else {
-            GlideRequest<Drawable> drawableRequest = requests.asDrawable();
-            drawableRequest = buildRequestResource(drawableRequest, loaderOptions);
-            drawableRequest = drawableRequest.apply(getRequestOptions(loaderOptions));
-            if (loaderOptions.mTartView instanceof ImageView) {
-                drawableRequest.into((ImageView) loaderOptions.mTartView);
-            } else {
-                throw new IllegalArgumentException("TargetView should be ImageView!");
-            }
+            throw new IllegalArgumentException("Target view should be ImageView or LoadingCallback not empty");
         }
     }
 
-    private void loadGifResource(LoaderOptions loaderOptions) {
-        GlideRequests glideRequests = GlideApp.with(loaderOptions.mTartView);
-        GlideRequest<GifDrawable> gifRequest = glideRequests.asGif();
+    private TransitionOptions<?, ? super Drawable> applyDrawableTransitions(LoaderOptions loaderOptions) {
+        DrawableTransitionOptions transitionOptions = new DrawableTransitionOptions();
+        if (loaderOptions.isCrossFade()) {
+            int duration = loaderOptions.getDuration();
+            transitionOptions = duration > 0 ?
+                    transitionOptions.crossFade(duration) : transitionOptions.crossFade();
+        }
+        return transitionOptions;
     }
 
-    private void loadDrawableResource(LoaderOptions loaderOptions) {
-        GlideRequests glideRequests = GlideApp.with(loaderOptions.mTartView);
-        GlideRequest<Drawable> drawableRequest = glideRequests.asDrawable();
-        drawableRequest = buildRequestResource(drawableRequest, loaderOptions);
-        if (loaderOptions.mCrossFade) {
-            if (loaderOptions.mDuration <= 0) {
-                drawableRequest = drawableRequest.transition(
-                        DrawableTransitionOptions.withCrossFade());
-            } else {
-                drawableRequest = drawableRequest.transition(
-                        DrawableTransitionOptions.withCrossFade(loaderOptions.mDuration));
-            }
-        }
-        drawableRequest = drawableRequest.apply(getRequestOptions(loaderOptions));
-        if (loaderOptions.mTartView != null && loaderOptions.mTartView instanceof ImageView) {
-            drawableRequest.into((ImageView) loaderOptions.mTartView);
-        } else {
-        }
-    }
+    private RequestOptions applyRequestOptions(LoaderOptions loaderOptions) {
+        RequestOptions requestOptions = new RequestOptions()
+                .skipMemoryCache(loaderOptions.isSkipMemoryCache());
 
-    private RequestOptions getRequestOptions(LoaderOptions loaderOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (loaderOptions.mPlaceHolderResId != -1) {
-            requestOptions = requestOptions.placeholder(loaderOptions.mPlaceHolderResId);
+        int targetWidth = loaderOptions.getTargetWidth();
+        int targetHeight = loaderOptions.getTargetHeight();
+        if (targetWidth > 0 && targetHeight > 0) {
+            requestOptions = requestOptions.override(targetWidth, targetHeight);
         }
-        if (loaderOptions.mPlaceHolderDrawable != null) {
-            requestOptions = requestOptions.placeholder(loaderOptions.mPlaceHolderDrawable);
-        }
-
-        if (loaderOptions.mErrorResId != -1) {
-            requestOptions = requestOptions.error(loaderOptions.mErrorResId);
-        }
-        if (loaderOptions.mErrorDrawable != null) {
-            requestOptions = requestOptions.error(loaderOptions.mErrorDrawable);
-        }
-
-        if (loaderOptions.mFallbackResId != -1) {
-            requestOptions = requestOptions.fallback(loaderOptions.mFallbackResId);
-        }
-        if (loaderOptions.mFallbackDrawable != null) {
-            requestOptions = requestOptions.fallback(loaderOptions.mFallbackDrawable);
-        }
-
-        if (loaderOptions.mCenterCrop) {
-            requestOptions = requestOptions.centerCrop();
-        }
-        if (loaderOptions.mCenterInside) {
-            requestOptions = requestOptions.centerInside();
-        }
-        if (loaderOptions.mFitCenter) {
-            requestOptions = requestOptions.fitCenter();
-        }
-        if (loaderOptions.mCircleCrop) {
-            requestOptions = requestOptions.circleCrop();
-        }
-
+        requestOptions = applyPlaceHolders(loaderOptions, requestOptions);
+        requestOptions = applyTransformations(loaderOptions, requestOptions);
         return requestOptions;
     }
 
-    private GlideRequest buildRequestResourceType(LoaderOptions loaderOptions) {
-        GlideRequests glideRequests = GlideApp.with(loaderOptions.mTartView);
-        GlideRequest glideRequest;
-        if (loaderOptions.asGif) {
-            glideRequest = glideRequests.asGif();
-            return buildRequestResource(glideRequest, loaderOptions);
-        } else {
-            glideRequest = glideRequests.asDrawable();
-            return buildRequestResource(glideRequest, loaderOptions);
+    private RequestOptions applyTransformations(LoaderOptions loaderOptions, RequestOptions requestOptions) {
+        if (loaderOptions.isDontTransform()) {
+            return requestOptions.dontTransform();
         }
+
+        if (loaderOptions.isCenterCrop()) {
+            requestOptions = requestOptions.centerCrop();
+        } else if (loaderOptions.isCenterInside()) {
+            requestOptions = requestOptions.centerInside();
+        } else if (loaderOptions.isFitCenter()) {
+            requestOptions = requestOptions.fitCenter();
+        } else if (loaderOptions.isCircleCrop()) {
+            requestOptions = requestOptions.circleCrop();
+        } else if (loaderOptions.getRoundingRadius() > 0) {
+            requestOptions = requestOptions.transform(
+                    new RoundedCorners(loaderOptions.getRoundingRadius()));
+        }
+        return requestOptions;
     }
 
-    private <T> GlideRequest<T> buildRequestResource(GlideRequest<T> glideRequest, LoaderOptions loaderOptions) {
-        if (loaderOptions.mUrl != null) {
-            glideRequest = glideRequest.load(loaderOptions.mUrl);
-        } else if (loaderOptions.mUri != null) {
-            glideRequest = glideRequest.load(loaderOptions.mUri);
-        } else if (loaderOptions.mDrawableResId != -1) {
-            glideRequest = glideRequest.load(loaderOptions.mDrawableResId);
+    private RequestOptions applyPlaceHolders(LoaderOptions loaderOptions, RequestOptions requestOptions) {
+        if (loaderOptions.getPlaceHolderResId() != -1) {
+            requestOptions = requestOptions.placeholder(loaderOptions.getDrawableResId());
         }
+
+        if (loaderOptions.getErrorResId() != -1) {
+            requestOptions = requestOptions.error(loaderOptions.getErrorResId());
+        }
+
+        if (loaderOptions.getFallbackResId() != -1) {
+            requestOptions = requestOptions.fallback(loaderOptions.getFallbackResId());
+        }
+        return requestOptions;
+    }
+
+    private <T> GlideRequest<T> applyRequestResource(GlideRequest<T> glideRequest,
+                                                     LoaderOptions loaderOptions) {
+        if (loaderOptions.getUrl() != null) {
+            glideRequest = glideRequest.load(loaderOptions.getUrl());
+        } else if (loaderOptions.getUri() != null) {
+            glideRequest = glideRequest.load(loaderOptions.getUri());
+        } else if (loaderOptions.getDrawableResId() != -1) {
+            glideRequest = glideRequest.load(loaderOptions.getDrawableResId());
+        } else if (loaderOptions.getFile() != null) {
+            glideRequest = glideRequest.load(loaderOptions.getFile());
+        }
+
         return glideRequest;
     }
 
-    private final static class BitmapViewTarget extends ViewTarget<View, Bitmap> {
+    private final static class DrawableViewTarget extends
+            com.bumptech.glide.request.target.ViewTarget<View, Drawable> {
 
         private final LoadCallback mLoadCallback;
 
-        public BitmapViewTarget(@NonNull View view, LoadCallback loadCallback) {
+        DrawableViewTarget(@NonNull View view, LoadCallback loadCallback) {
             super(view);
             mLoadCallback = loadCallback;
         }
 
         @Override
-        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
             mLoadCallback.onResourceReady(resource);
         }
     }
-
 }

@@ -3,17 +3,18 @@ package com.wptdxii.playground.sample.rx;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
-import com.wptdxii.playground.R;
 import com.wptdxii.framekit.base.BaseActivity;
+import com.wptdxii.playground.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class RxSampleActivity extends BaseActivity {
 
@@ -36,16 +37,14 @@ public class RxSampleActivity extends BaseActivity {
         testRx();
     }
 
-    private static final String TAG = "RxSampleActivity";
-
     private void testRx() {
-        Observable.create((ObservableOnSubscribe<Integer>) emitter -> {
+        Disposable disposable = Observable.create((ObservableOnSubscribe<Integer>) emitter -> {
             emitter.onNext(1);
             emitter.onComplete();
         }).subscribeOn(Schedulers.newThread())
-                .doOnNext(integer -> Log.e(TAG, "testRx: " + integer))
+                .doOnNext(integer -> Timber.e("testRx: " + integer))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> Log.e(TAG, "testRx: " + integer));
+                .subscribe(integer -> Timber.e("testRx: " + integer));
 
     }
 

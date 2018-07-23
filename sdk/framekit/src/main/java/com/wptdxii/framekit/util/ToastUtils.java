@@ -219,11 +219,11 @@ public final class ToastUtils {
     }
 
     private static void show(@StringRes final int resId, final int duration) {
-        show(Extension.getExtension().getApplication().getResources().getText(resId).toString(), duration);
+        show(Extension.get().getApplication().getResources().getText(resId).toString(), duration);
     }
 
     private static void show(@StringRes final int resId, final int duration, final Object... args) {
-        show(String.format(Extension.getExtension().getApplication().getResources().getString(resId), args), duration);
+        show(String.format(Extension.get().getApplication().getResources().getString(resId), args), duration);
     }
 
     private static void show(final String format, final int duration, final Object... args) {
@@ -233,7 +233,7 @@ public final class ToastUtils {
     private static void show(final CharSequence text, final int duration) {
         HANDLER.post(() -> {
             cancel();
-            sToast = Toast.makeText(Extension.getExtension().getApplication(), text, duration);
+            sToast = Toast.makeText(Extension.get().getApplication(), text, duration);
             final TextView tvMessage = sToast.getView().findViewById(android.R.id.message);
             if (sMsgColor != COLOR_DEFAULT) {
                 tvMessage.setTextColor(sMsgColor);
@@ -252,7 +252,7 @@ public final class ToastUtils {
     private static void show(final View view, final int duration) {
         HANDLER.post(() -> {
             cancel();
-            sToast = new Toast(Extension.getExtension().getApplication());
+            sToast = new Toast(Extension.get().getApplication());
             sToast.setView(view);
             sToast.setDuration(duration);
             if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
@@ -321,14 +321,14 @@ public final class ToastUtils {
 
     private static View getView(@LayoutRes final int layoutId) {
         LayoutInflater inflate =
-                (LayoutInflater) Extension.getExtension().getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                (LayoutInflater) Extension.get().getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflate != null ? inflate.inflate(layoutId, null) : null;
     }
 
     private static final class ApplicationContextWrapperForApi25 extends ContextWrapper {
 
         ApplicationContextWrapperForApi25() {
-            super(Extension.getExtension().getApplication());
+            super(Extension.get().getApplication());
         }
 
         @Override

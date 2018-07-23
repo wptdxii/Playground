@@ -75,7 +75,7 @@ public final class OkHttpManager {
     @NonNull
     private LoggingInterceptor getLoggingInterceptor() {
         return new LoggingInterceptor.Builder()
-                .loggable(Extension.getExtension().getBuildType())
+                .loggable(Extension.get().isBuildTypeDebug())
                 .setLevel(Level.BASIC)
                 .log(Platform.WARN)
                 .request(TAG_REQUEST)

@@ -14,22 +14,22 @@ public final class SizeUtils {
     }
 
     public static int dp2px(final float dpValue) {
-        final float scale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().density;
+        final float scale = Extension.get().getApplication().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
     public static int px2dp(final float pxValue) {
-        final float scale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().density;
+        final float scale = Extension.get().getApplication().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
     public static int sp2px(final float spValue) {
-        final float fontScale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = Extension.get().getApplication().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
     public static int px2sp(final float pxValue) {
-        final float fontScale = Extension.getExtension().getApplication().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = Extension.get().getApplication().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 
@@ -44,7 +44,7 @@ public final class SizeUtils {
      * metrics depending on its unit.
      */
     public static float applyDimension(final float value, final int unit) {
-        DisplayMetrics metrics = Extension.getExtension().getApplication().getResources().getDisplayMetrics();
+        DisplayMetrics metrics = Extension.get().getApplication().getResources().getDisplayMetrics();
         switch (unit) {
             case TypedValue.COMPLEX_UNIT_PX:
                 return value;

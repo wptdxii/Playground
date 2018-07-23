@@ -87,5 +87,6 @@ ext {
             glideCompiler          : "com.github.bumptech.glide:compiler:$versions.glide",
             okhttpIntegration      : "com.github.bumptech.glide:okhttp3-integration:$versions.glide",
             recyclerViewIntegration: "com.github.bumptech.glide:recyclerview-integration:$versions.glide",
+            transformations        : "jp.wasabeef:glide-transformations:3.3.0"
     ]
 }

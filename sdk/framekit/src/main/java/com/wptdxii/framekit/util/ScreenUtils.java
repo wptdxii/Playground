@@ -36,9 +36,9 @@ public final class ScreenUtils {
      * @return the width of screen, in pixel
      */
     public static int getScreenWidth() {
-        WindowManager wm = (WindowManager) Extension.getExtension().getApplication().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) Extension.get().getApplication().getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) {
-            return Extension.getExtension().getApplication().getResources().getDisplayMetrics().widthPixels;
+            return Extension.get().getApplication().getResources().getDisplayMetrics().widthPixels;
         }
         Point point = new Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -55,9 +55,9 @@ public final class ScreenUtils {
      * @return the height of screen, in pixel
      */
     public static int getScreenHeight() {
-        WindowManager wm = (WindowManager) Extension.getExtension().getApplication().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) Extension.get().getApplication().getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) {
-            return Extension.getExtension().getApplication().getResources().getDisplayMetrics().heightPixels;
+            return Extension.get().getApplication().getResources().getDisplayMetrics().heightPixels;
         }
         Point point = new Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -74,7 +74,7 @@ public final class ScreenUtils {
      * @return the density of screen
      */
     public static float getScreenDensity() {
-        return Extension.getExtension().getApplication().getResources().getDisplayMetrics().density;
+        return Extension.get().getApplication().getResources().getDisplayMetrics().density;
     }
 
     /**
@@ -83,7 +83,7 @@ public final class ScreenUtils {
      * @return the screen density expressed as dots-per-inch
      */
     public static int getScreenDensityDpi() {
-        return Extension.getExtension().getApplication().getResources().getDisplayMetrics().densityDpi;
+        return Extension.get().getApplication().getResources().getDisplayMetrics().densityDpi;
     }
 
     /**
@@ -120,7 +120,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isLandscape() {
-        return Extension.getExtension().getApplication().getResources().getConfiguration().orientation
+        return Extension.get().getApplication().getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
@@ -130,7 +130,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isPortrait() {
-        return Extension.getExtension().getApplication().getResources().getConfiguration().orientation
+        return Extension.get().getApplication().getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_PORTRAIT;
     }
 
@@ -205,7 +205,7 @@ public final class ScreenUtils {
      */
     public static boolean isScreenLock() {
         KeyguardManager km =
-                (KeyguardManager) Extension.getExtension().getApplication().getSystemService(Context.KEYGUARD_SERVICE);
+                (KeyguardManager) Extension.get().getApplication().getSystemService(Context.KEYGUARD_SERVICE);
         return km != null && km.inKeyguardRestrictedInputMode();
     }
 
@@ -218,7 +218,7 @@ public final class ScreenUtils {
     @RequiresPermission(WRITE_SETTINGS)
     public static void setSleepDuration(final int duration) {
         Settings.System.putInt(
-                Extension.getExtension().getApplication().getContentResolver(),
+                Extension.get().getApplication().getContentResolver(),
                 Settings.System.SCREEN_OFF_TIMEOUT,
                 duration
         );
@@ -232,7 +232,7 @@ public final class ScreenUtils {
     public static int getSleepDuration() {
         try {
             return Settings.System.getInt(
-                    Extension.getExtension().getApplication().getContentResolver(),
+                    Extension.get().getApplication().getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT
             );
         } catch (Settings.SettingNotFoundException e) {
@@ -247,7 +247,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isTablet() {
-        return (Extension.getExtension().getApplication().getResources().getConfiguration().screenLayout
+        return (Extension.get().getApplication().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
@@ -285,22 +285,22 @@ public final class ScreenUtils {
      */
     private static void adaptScreen(final float sizeInDp,
                                     final boolean isPortrait) {
-        final DisplayMetrics appDm = Extension.getExtension().getApplication().getResources().getDisplayMetrics();
+        final DisplayMetrics appDm = Extension.get().getApplication().getResources().getDisplayMetrics();
         if (density == 0) {
             density = appDm.density;
             scaledDensity = appDm.scaledDensity;
-            Extension.getExtension().getApplication().registerComponentCallbacks(new ComponentCallbacks() {
+            Extension.get().getApplication().registerComponentCallbacks(new ComponentCallbacks() {
                 @Override
                 public void onConfigurationChanged(Configuration newConfig) {
                     if (newConfig != null && newConfig.fontScale > 0) {
-                        scaledDensity = Extension.getExtension().getApplication().getResources().getDisplayMetrics().scaledDensity;
+                        scaledDensity = Extension.get().getApplication().getResources().getDisplayMetrics().scaledDensity;
                     }
                 }
 
                 @Override
                 public void onLowMemory() {/**/}
             });
-            Extension.getExtension().getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            Extension.get().getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
                 @Override
                 public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                     DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();

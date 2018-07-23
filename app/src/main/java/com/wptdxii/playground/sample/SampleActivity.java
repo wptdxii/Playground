@@ -36,6 +36,7 @@ public class SampleActivity extends BaseListActivity {
         modules.add(new Module(getString(R.string.sample_drawer_title), DrawerActivity.class));
         modules.add(new Module(getString(R.string.sample_dagger_sample_title), DaggerActivity.class));
         modules.add(new Module(getString(R.string.sample_rx_sample_title), RxSampleActivity.class));
+        modules.add(new Module(getString(R.string.sample_glide_sample_title), GlideActivity.class));
         return modules;
     }
 }

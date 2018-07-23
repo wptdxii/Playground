@@ -3,6 +3,7 @@ package com.wptdxii.playground.sample.di;
 import com.wptdxii.framekit.di.scope.ActivityScoped;
 import com.wptdxii.playground.sample.DrawerActivity;
 import com.wptdxii.playground.sample.DrawerFragment;
+import com.wptdxii.playground.sample.GlideActivity;
 import com.wptdxii.playground.sample.LayoutActivity;
 import com.wptdxii.playground.sample.SampleActivity;
 import com.wptdxii.playground.sample.SystemBarActivity;
@@ -39,4 +40,7 @@ public abstract class SampleBindingModule {
 
     @ContributesAndroidInjector
     abstract SystemBarActivity systemBarActivity();
+
+    @ContributesAndroidInjector
+    abstract GlideActivity glideActivity();
 }

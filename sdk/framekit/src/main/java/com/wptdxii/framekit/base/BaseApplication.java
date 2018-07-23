@@ -3,12 +3,11 @@ package com.wptdxii.framekit.base;
 import android.app.Activity;
 import android.app.Application;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.wptdxii.framekit.Extension;
-import com.wptdxii.framekit.component.imageloader.glide.AppGlide;
+import com.wptdxii.framekit.component.imageloader.ImageLoader;
+import com.wptdxii.framekit.component.imageloader.glide.GlideLoaderStrategy;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,10 +25,15 @@ public abstract class BaseApplication extends Application implements HasActivity
 
     @Override
     public void onCreate() {
-        Extension.install(initExtension());
         super.onCreate();
+        Extension.install(initExtension());
         initInjector();
         initLogger();
+        initImageLoader();
+    }
+
+    private void initImageLoader() {
+        ImageLoader.get().setLoaderStrategy(new GlideLoaderStrategy());
     }
 
     protected abstract Extension initExtension();
@@ -41,7 +45,7 @@ public abstract class BaseApplication extends Application implements HasActivity
         Logger.addLogAdapter(new AndroidLogAdapter() {
             @Override
             public boolean isLoggable(int priority, @android.support.annotation.Nullable String tag) {
-                return Extension.getExtension().getBuildType();
+                return Extension.get().isBuildTypeDebug();
             }
         });
 

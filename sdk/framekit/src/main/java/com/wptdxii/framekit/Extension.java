@@ -11,12 +11,12 @@ public final class Extension {
 
     private volatile static Extension sExtension;
 
-    public static Extension getExtension() {
+    public static Extension get() {
         Preconditions.checkNotNull(sExtension);
         return sExtension;
     }
 
-    public boolean getBuildType() {
+    public boolean isBuildTypeDebug() {
         Preconditions.checkNotNull(mBuildType);
         return mBuildType;
     }

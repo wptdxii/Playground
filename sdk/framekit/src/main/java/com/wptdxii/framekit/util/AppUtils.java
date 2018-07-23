@@ -36,7 +36,7 @@ public final class AppUtils {
                                          @NonNull final String category) {
         Intent intent = new Intent(action);
         intent.addCategory(category);
-        PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+        PackageManager pm = Extension.get().getApplication().getPackageManager();
         ResolveInfo info = pm.resolveActivity(intent, 0);
         return info != null;
     }
@@ -62,7 +62,7 @@ public final class AppUtils {
     public static void installApp(final File file) {
         if (!isFileExists(file)) return;
         Intent intent = getInstallAppIntent(file);
-        Extension.getExtension().getApplication().startActivity(intent);
+        Extension.get().getApplication().startActivity(intent);
     }
 
     private static Intent getInstallAppIntent(File file) {
@@ -74,8 +74,8 @@ public final class AppUtils {
             data = Uri.fromFile(file);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            String authority = Extension.getExtension().getApplication().getPackageName() + ".provider";
-            data = FileProvider.getUriForFile(Extension.getExtension().getApplication(), authority, file);
+            String authority = Extension.get().getApplication().getPackageName() + ".provider";
+            data = FileProvider.getUriForFile(Extension.get().getApplication(), authority, file);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(data, type);
@@ -89,7 +89,7 @@ public final class AppUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAppInstalled(@NonNull final String packageName) {
-        Intent intent = Extension.getExtension().getApplication().getPackageManager()
+        Intent intent = Extension.get().getApplication().getPackageManager()
                 .getLaunchIntentForPackage(packageName);
         return !isSpace(packageName) && intent != null;
     }
@@ -101,13 +101,13 @@ public final class AppUtils {
      */
     public static boolean isAppForeground() {
         ActivityManager am =
-                (ActivityManager) Extension.getExtension().getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) Extension.get().getApplication().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) return false;
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         if (info == null || info.size() == 0) return false;
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                return aInfo.processName.equals(Extension.getExtension().getApplication().getPackageName());
+                return aInfo.processName.equals(Extension.get().getApplication().getPackageName());
             }
         }
         return false;
@@ -117,7 +117,7 @@ public final class AppUtils {
      * Relaunch the application.
      */
     public static void relaunchApp() {
-        Application application = Extension.getExtension().getApplication();
+        Application application = Extension.get().getApplication();
         PackageManager packageManager = application.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(application.getPackageName());
         if (intent == null) return;
@@ -133,7 +133,7 @@ public final class AppUtils {
      * @return the application's package name
      */
     public static String getAppPackageName() {
-        return Extension.getExtension().getApplication().getPackageName();
+        return Extension.get().getApplication().getPackageName();
     }
 
     /**
@@ -142,7 +142,7 @@ public final class AppUtils {
      * @return the application's name
      */
     public static String getAppName() {
-        return getAppName(Extension.getExtension().getApplication().getPackageName());
+        return getAppName(Extension.get().getApplication().getPackageName());
     }
 
     /**
@@ -154,7 +154,7 @@ public final class AppUtils {
     public static String getAppName(final String packageName) {
         if (isSpace(packageName)) return "";
         try {
-            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            PackageManager pm = Extension.get().getApplication().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadLabel(pm).toString();
         } catch (PackageManager.NameNotFoundException e) {
@@ -169,7 +169,7 @@ public final class AppUtils {
      * @return the application's version name
      */
     public static String getAppVersionName() {
-        return getAppVersionName(Extension.getExtension().getApplication().getPackageName());
+        return getAppVersionName(Extension.get().getApplication().getPackageName());
     }
 
     /**
@@ -181,7 +181,7 @@ public final class AppUtils {
     public static String getAppVersionName(final String packageName) {
         if (isSpace(packageName)) return "";
         try {
-            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            PackageManager pm = Extension.get().getApplication().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -196,7 +196,7 @@ public final class AppUtils {
      * @return the application's version code
      */
     public static int getAppVersionCode() {
-        return getAppVersionCode(Extension.getExtension().getApplication().getPackageName());
+        return getAppVersionCode(Extension.get().getApplication().getPackageName());
     }
 
     /**
@@ -208,7 +208,7 @@ public final class AppUtils {
     public static int getAppVersionCode(final String packageName) {
         if (isSpace(packageName)) return -1;
         try {
-            PackageManager pm = Extension.getExtension().getApplication().getPackageManager();
+            PackageManager pm = Extension.get().getApplication().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? -1 : pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {

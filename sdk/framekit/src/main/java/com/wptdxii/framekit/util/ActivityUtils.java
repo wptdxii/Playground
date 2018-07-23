@@ -7,15 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.AnimRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.Pair;
-import android.view.View;
 
 import com.wptdxii.framekit.Extension;
 import com.wptdxii.framekit.exception.InstantiationException;
@@ -37,7 +29,7 @@ public final class ActivityUtils {
                                            @NonNull final String cls) {
         Intent intent = new Intent();
         intent.setClassName(pkg, cls);
-        Application application = Extension.getExtension().getApplication();
+        Application application = Extension.get().getApplication();
         return !(application.getPackageManager().resolveActivity(intent, 0) == null ||
                 intent.resolveActivity(application.getPackageManager()) == null ||
                 application.getPackageManager().queryIntentActivities(intent, 0).size() == 0);

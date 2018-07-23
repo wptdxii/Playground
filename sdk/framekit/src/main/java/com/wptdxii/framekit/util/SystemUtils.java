@@ -16,7 +16,7 @@ public final class SystemUtils {
      * Open the settings of wireless.
      */
     public static void openWirelessSettings() {
-        Extension.getExtension().getApplication().startActivity(
+        Extension.get().getApplication().startActivity(
                 new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         );

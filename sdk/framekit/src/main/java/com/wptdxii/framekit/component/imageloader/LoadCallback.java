@@ -1,8 +1,8 @@
 package com.wptdxii.framekit.component.imageloader;
 
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 public interface LoadCallback {
 
-    void onResourceReady(Bitmap rescource);
+    void onResourceReady(Drawable rescource);
 }
