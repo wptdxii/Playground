@@ -9,6 +9,7 @@ import com.wptdxii.playground.R;
 import com.wptdxii.playground.core.base.BaseListActivity;
 import com.wptdxii.playground.core.base.Module;
 import com.wptdxii.playground.sample.dagger.DaggerActivity;
+import com.wptdxii.playground.sample.recyclerview.RecyclerViewActivity;
 import com.wptdxii.playground.sample.rx.RxSampleActivity;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class SampleActivity extends BaseListActivity {
         modules.add(new Module(getString(R.string.sample_dagger_sample_title), DaggerActivity.class));
         modules.add(new Module(getString(R.string.sample_rx_sample_title), RxSampleActivity.class));
         modules.add(new Module(getString(R.string.sample_glide_sample_title), GlideActivity.class));
+        modules.add(new Module(getString(R.string.sample_reyclerview_title), RecyclerViewActivity.class));
         return modules;
     }
 }

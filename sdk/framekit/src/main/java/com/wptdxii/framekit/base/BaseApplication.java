@@ -36,10 +36,6 @@ public abstract class BaseApplication extends Application implements HasActivity
         ImageLoader.get().setLoaderStrategy(new GlideLoaderStrategy());
     }
 
-    protected abstract Extension initExtension();
-
-    protected abstract void initInjector();
-
     private void initLogger() {
 
         Logger.addLogAdapter(new AndroidLogAdapter() {
@@ -64,4 +60,8 @@ public abstract class BaseApplication extends Application implements HasActivity
     public AndroidInjector<Activity> activityInjector() {
         return mActivityInjector;
     }
+
+    protected abstract Extension initExtension();
+
+    protected abstract void initInjector();
 }

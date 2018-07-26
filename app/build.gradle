@@ -36,13 +36,15 @@ android {
         debug {
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.config
+            minifyEnabled false
             useProguard false
         }
 
         release {
             signingConfig signingConfigs.config
-            minifyEnabled false
+            minifyEnabled true
             useProguard true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            postprocessing {
 //                removeUnusedCode true

@@ -1,6 +1,9 @@
 package com.wptdxii.framekit.component.recyclerview;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+
+import com.wptdxii.framekit.component.recyclerview.multitype.IndexProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,30 +15,21 @@ public class TypePoolImpl implements TypePool {
     private final List<IndexProvider> mProviders;
 
 
-    public TypePoolImpl() {
+    TypePoolImpl() {
         mClasses = new ArrayList<>();
         mBinders = new ArrayList<>();
         mProviders = new ArrayList<>();
     }
 
-    public TypePoolImpl(int initilCapacity) {
-        mClasses = new ArrayList<>(initilCapacity);
-        mBinders = new ArrayList<>(initilCapacity);
-        mProviders = new ArrayList<>(initilCapacity);
+    TypePoolImpl(int initialCapacity) {
+        mClasses = new ArrayList<>(initialCapacity);
+        mBinders = new ArrayList<>(initialCapacity);
+        mProviders = new ArrayList<>(initialCapacity);
     }
-
-    public TypePoolImpl(@NonNull List<Class<?>> classes,
-                        @NonNull List<ItemViewBinder<?, ?>> binders,
-                        @NonNull List<IndexProvider> providers) {
-        mClasses = classes;
-        mBinders = binders;
-        mProviders = providers;
-    }
-
 
     @Override
     public <T> void register(@NonNull Class<? extends T> clazz,
-                             @NonNull ItemViewBinder<T, ?> binder,
+                             @NonNull ItemViewBinder<T, ? extends RecyclerView.ViewHolder> binder,
                              @NonNull IndexProvider provider) {
         mClasses.add(clazz);
         mBinders.add(binder);
@@ -51,12 +45,6 @@ public class TypePoolImpl implements TypePool {
             mProviders.remove(index);
             index = mClasses.indexOf(clazz);
         }
-    }
-
-    @NonNull
-    @Override
-    public Class<?> getClass(int index) {
-        return mClasses.get(index);
     }
 
     @NonNull

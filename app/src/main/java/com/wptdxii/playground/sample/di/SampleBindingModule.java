@@ -5,7 +5,7 @@ import com.wptdxii.playground.sample.DrawerActivity;
 import com.wptdxii.playground.sample.DrawerFragment;
 import com.wptdxii.playground.sample.GlideActivity;
 import com.wptdxii.playground.sample.LayoutActivity;
-import com.wptdxii.playground.sample.RecyclerViewActivity;
+import com.wptdxii.playground.sample.recyclerview.RecyclerViewActivity;
 import com.wptdxii.playground.sample.SampleActivity;
 import com.wptdxii.playground.sample.SystemBarActivity;
 import com.wptdxii.playground.sample.dagger.DaggerActivity;

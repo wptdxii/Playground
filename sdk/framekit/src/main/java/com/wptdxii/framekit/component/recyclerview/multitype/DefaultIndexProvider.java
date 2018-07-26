@@ -1,4 +1,4 @@
-package com.wptdxii.framekit.component.recyclerview;
+package com.wptdxii.framekit.component.recyclerview.multitype;
 
 import android.support.annotation.NonNull;
 

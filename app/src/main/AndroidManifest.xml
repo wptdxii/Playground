@@ -74,7 +74,7 @@
         </provider>
 
         <activity android:name=".sample.GlideActivity" />
-        <activity android:name=".sample.RecyclerViewActivity"></activity>
+        <activity android:name=".sample.recyclerview.RecyclerViewActivity"></activity>
     </application>
 
 </manifest>

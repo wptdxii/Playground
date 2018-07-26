@@ -46,5 +46,6 @@
     <string name="sample_dagger_sample_title">DaggerSample</string>
     <string name="sample_rx_sample_title">RxSample</string>
     <string name="sample_glide_sample_title">GlideSample</string>
+    <string name="sample_reyclerview_title">RecyclerViewSample</string>
 
 </resources>

@@ -1,73 +1,102 @@
 package com.wptdxii.framekit.component.recyclerview;
 
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.wptdxii.framekit.component.recyclerview.multitype.DefaultIndexProvider;
+import com.wptdxii.framekit.component.recyclerview.multitype.IndexProvider;
+import com.wptdxii.framekit.component.recyclerview.multitype.Items;
+
+import java.util.Collections;
 import java.util.List;
 
 public class TypeAdapter extends BaseAdapter<Object, ViewHolder> {
 
-    private TypePool mTypePool;
+    private final TypePool mTypePool;
 
-    public TypeAdapter(@NonNull List<Object> items) {
+    public TypeAdapter() {
+        this(new Items());
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public TypeAdapter(@NonNull Items items) {
         this(items, new TypePoolImpl());
     }
 
-    public TypeAdapter(@NonNull List<Object> items, int initialCapacity) {
+    public TypeAdapter(@NonNull Items items, @IntRange(from = 0) int initialCapacity) {
         this(items, new TypePoolImpl(initialCapacity));
     }
 
-    public TypeAdapter(@NonNull List<Object> items, @NonNull TypePool typePool) {
+    public TypeAdapter(@IntRange(from = 0) int initialCapacity) {
+        this(new Items(), new TypePoolImpl(initialCapacity));
+    }
+
+    private TypeAdapter(@NonNull Items items, @NonNull TypePool typePool) {
         super(items);
         mTypePool = typePool;
     }
 
-
-    public <T> void register(@NonNull Class<? extends T> clazz,
-                             @NonNull ItemViewBinder<T, ?> binder) {
+    public <T> TypeAdapter bind(@NonNull Class<? extends T> clazz,
+                                @NonNull ItemViewBinder<T, ? extends RecyclerView.ViewHolder> binder) {
         mTypePool.unregister(clazz);
-        register(clazz, binder, new DefaultIndexProvider<>());
+        bind(clazz, binder, new DefaultIndexProvider<T>());
+        return this;
     }
 
-    public <T> MapperEndpoint<T> register(@NonNull Class<? extends T> clazz) {
+    public <T> MapperFlow<T> bind(@NonNull Class<? extends T> clazz) {
         mTypePool.unregister(clazz);
         return new Mapper<>(this, clazz);
     }
 
-    <T> void register(@NonNull Class<? extends T> clazz,
-                      @NonNull ItemViewBinder<T, ?> binder,
-                      @NonNull IndexProvider<T> indexProvider) {
+    <T> void bind(@NonNull Class<? extends T> clazz,
+                  @NonNull ItemViewBinder<T, ? extends RecyclerView.ViewHolder> binder,
+                  @NonNull IndexProvider indexProvider) {
         mTypePool.register(clazz, binder, indexProvider);
     }
 
     @Override
     public int getItemViewType(int position) {
-        Object item = getItems().get(position);
+        Object item = mItems.get(position);
         return indexInTypesOf(item, position);
     }
 
+    @SuppressWarnings("unchecked")
     private int indexInTypesOf(Object item, int position) {
         int index = mTypePool.firstIndexOf(item.getClass());
         if (index != -1) {
             IndexProvider provider = mTypePool.getProvider(index);
             return index + provider.index(item, position);
         }
-        throw new BinderNotFoundException(item.getClass());
+        throw new RuntimeException(String.format("Bind the class %S with it's binder first!",
+                item.getClass().getSimpleName()));
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater,
+                                            @NonNull ViewGroup parent, int viewType) {
         ItemViewBinder<?, ?> binder = mTypePool.getBinder(viewType);
         return binder.onCreateViewHolder(inflater, parent);
     }
 
     @Override
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull Object item) {
+        onBindViewHolder(holder, item, Collections.emptyList());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull Object item, @NonNull List<Object> payloads) {
-        ItemViewBinder<Object, ViewHolder> binder = mTypePool.getBinder(holder.getItemViewType());
+        ItemViewBinder binder = mTypePool.getBinder(holder.getItemViewType());
         binder.onBindViewHolder(holder, item, payloads);
+    }
+
+    @Override
+    public Items getItems() {
+        return (Items) super.getItems();
     }
 }

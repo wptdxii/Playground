@@ -7,10 +7,6 @@ import com.wptdxii.playground.di.component.DaggerAppComponent;
 
 import timber.log.Timber;
 
-/**
- * Created by wptdxii on 2018/1/16
- */
-
 public class App extends BaseApplication {
 
     @Override
