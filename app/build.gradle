@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'channel'
 
+int MILLIS_IN_MINUTE = 1000 * 60
+int minutesSinceEpoch = System.currentTimeMillis() / MILLIS_IN_MINUTE
+
 android {
     compileSdkVersion versions.compileSdk
 
@@ -16,9 +19,18 @@ android {
         versionCode versions.code
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        vectorDrawables.useSupportLibrary = true
 
+        manifestPlaceholders = [appName: "JPlayground"]
         buildConfigField "String", "BASE_URL_GANK", "\"${BASE_URL_GANK}\""
         buildConfigField "String", "BASE_URL_DOUBAN", "\"${BASE_URL_DOUBAN}\""
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.mergedFlavor.versionCode = minutesSinceEpoch
+            variant.mergedFlavor.versionName = minutesSinceEpoch + "-" + variant.flavorName
+        }
     }
 
     signingConfigs {
@@ -36,15 +48,15 @@ android {
         debug {
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.config
-            minifyEnabled false
+            minifyEnabled true
             useProguard false
+            manifestPlaceholders = [appName: "JPlayground.Debug"]
         }
 
         release {
             signingConfig signingConfigs.config
             minifyEnabled true
-            useProguard true
-            shrinkResources true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            postprocessing {
 //                removeUnusedCode true
@@ -62,6 +74,14 @@ android {
         mock {
             dimension "buildType"
             applicationIdSuffix = ".mock"
+        }
+
+        dev {
+            dimension "buildType"
+            versionNameSuffix "-dev"
+            applicationIdSuffix = ".dev"
+            minSdkVersion 27
+            resConfigs "xxhdpi"
         }
 
         prod {

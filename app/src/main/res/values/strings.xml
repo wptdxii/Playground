@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">JPlayground</string>
     <string name="main_click_again">again to exit!</string>
     <string name="module_main">Playground</string>
     <string name="module_sample">Sample</string>

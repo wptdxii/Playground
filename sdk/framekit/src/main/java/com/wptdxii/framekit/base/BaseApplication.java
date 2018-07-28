@@ -2,6 +2,8 @@ package com.wptdxii.framekit.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
+import android.provider.Settings;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -10,6 +12,9 @@ import com.wptdxii.framekit.component.imageloader.ImageLoader;
 import com.wptdxii.framekit.component.imageloader.glide.GlideLoaderStrategy;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.security.Security;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
