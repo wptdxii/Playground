@@ -19,7 +19,6 @@ android {
         versionCode versions.code
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-//        vectorDrawables.useSupportLibrary = true
 
         manifestPlaceholders = [appName: "JPlayground"]
         buildConfigField "String", "BASE_URL_GANK", "\"${BASE_URL_GANK}\""
@@ -48,8 +47,6 @@ android {
         debug {
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.config
-            minifyEnabled true
-            useProguard false
             manifestPlaceholders = [appName: "JPlayground.Debug"]
         }
 
