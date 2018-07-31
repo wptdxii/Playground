@@ -53,15 +53,9 @@ android {
         release {
             signingConfig signingConfigs.config
             minifyEnabled true
+            shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            postprocessing {
-//                removeUnusedCode true
-//                removeUnusedResources true
-//                obfuscate true
-//                optimizeCode true
-//                proguardFile 'proguard-rules.pro'
-//            }
         }
     }
 
