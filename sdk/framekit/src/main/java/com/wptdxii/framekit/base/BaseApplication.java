@@ -7,6 +7,7 @@ import android.provider.Settings;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
 import com.wptdxii.framekit.Extension;
 import com.wptdxii.framekit.component.imageloader.ImageLoader;
 import com.wptdxii.framekit.component.imageloader.glide.GlideLoaderStrategy;
@@ -35,6 +36,14 @@ public abstract class BaseApplication extends Application implements HasActivity
         initInjector();
         initLogger();
         initImageLoader();
+        initLeakCanary();
+    }
+
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     private void initImageLoader() {

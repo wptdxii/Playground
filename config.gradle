@@ -71,6 +71,7 @@ ext {
 
     net = [
             gson              : "com.google.code.gson:gson:2.8.5",
+            okhttp            : "com.squareup.okhttp3:okhttp:3.11.0",
             retrofit          : "com.squareup.retrofit2:retrofit:$versions.retrofit",
             rxjavaAdapter     : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
             gsonConverter     : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
@@ -88,5 +89,12 @@ ext {
             okhttpIntegration      : "com.github.bumptech.glide:okhttp3-integration:$versions.glide",
             recyclerViewIntegration: "com.github.bumptech.glide:recyclerview-integration:$versions.glide",
             transformations        : "jp.wasabeef:glide-transformations:3.3.0"
+    ]
+
+    tools = [
+            debugLeakCanary   : "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary",
+            releaseLeakCanary : "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakCanary",
+            debugSupportCanary: "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakCanary",
+            permission        : "com.github.tbruyelle:rxpermissions:0.10.2",
     ]
 }

@@ -17,6 +17,7 @@ android {
 
     buildTypes {
         release {
+//            minifyEnabled false
             consumerProguardFiles 'consumer-proguard-rules.pro'
         }
     }
@@ -30,7 +31,6 @@ dependencies {
     api supports.constraint
     api supports.design
     api supports.recyclerView
-    api supports.cardView
 
     api di.dagger
     annotationProcessor di.daggerCompiler
@@ -38,8 +38,11 @@ dependencies {
     api di.daggerAndroidSupport
     annotationProcessor di.daggerAndroidCompiler
 
+    api net.okhttp
     api net.gson
-    api net.retrofit
+    api(net.retrofit) {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
     api net.rxjavaAdapter
     api net.gsonConverter
     api(net.loggingInterceptor) {
@@ -63,4 +66,8 @@ dependencies {
     }
     annotationProcessor imageLoader.glideCompiler
 //    implementation imageLoader.transformations
+
+    debugImplementation tools.debugLeakCanary
+    debugImplementation tools.debugSupportCanary
+    releaseImplementation tools.releaseLeakCanary
 }

@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'channel'
 
-int MILLIS_IN_MINUTE = 1000 * 60
-int minutesSinceEpoch = System.currentTimeMillis() / MILLIS_IN_MINUTE
+//int MILLIS_IN_MINUTE = 1000 * 60
+//int minutesSinceEpoch = System.currentTimeMillis() / MILLIS_IN_MINUTE
 
 android {
     compileSdkVersion versions.compileSdk
@@ -25,12 +25,12 @@ android {
         buildConfigField "String", "BASE_URL_DOUBAN", "\"${BASE_URL_DOUBAN}\""
     }
 
-    applicationVariants.all { variant ->
-        if (variant.buildType.name == "release") {
-            variant.mergedFlavor.versionCode = minutesSinceEpoch
-            variant.mergedFlavor.versionName = minutesSinceEpoch + "-" + variant.flavorName
-        }
-    }
+//    applicationVariants.all { variant ->
+//        if (variant.buildType.name == "release") {
+//            variant.mergedFlavor.versionCode = minutesSinceEpoch
+//            variant.mergedFlavor.versionName = minutesSinceEpoch + "-" + variant.flavorName
+//        }
+//    }
 
     signingConfigs {
         config {
@@ -71,7 +71,6 @@ android {
             dimension "buildType"
             versionNameSuffix "-dev"
             applicationIdSuffix = ".dev"
-            minSdkVersion 27
             resConfigs "xxhdpi"
         }
 
@@ -105,9 +104,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':sdk:framekit')
+    implementation supports.cardView
 
     implementation di.butterknife
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor di.butterknifeCompiler
 
     annotationProcessor di.daggerCompiler
@@ -116,14 +115,13 @@ dependencies {
     implementation room.runtime
     implementation room.rxjava
     annotationProcessor room.compiler
-    testImplementation room.test
-
-//    implementation rx.java
-//    implementation rx.android
+//    testImplementation room.test
 
     implementation channels.vasdolly
 
     testImplementation testings.junit
     androidTestImplementation testings.runner
     androidTestImplementation testings.espresso
+
+    implementation tools.permission
 }
