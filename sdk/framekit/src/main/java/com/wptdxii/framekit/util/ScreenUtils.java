@@ -97,6 +97,16 @@ public final class ScreenUtils {
     }
 
     /**
+     * Cancel full screen
+     *
+     * @param activity The activity
+     */
+    public static void cancelFullScreen(@NonNull final Activity activity) {
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    }
+
+    /**
      * Set the screen to landscape.
      *
      * @param activity The activity.

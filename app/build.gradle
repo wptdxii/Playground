@@ -20,7 +20,7 @@ android {
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders = [appName: "JPlayground"]
+        resValue "string", "app_name", "@string/app_name_prod"
         buildConfigField "String", "BASE_URL_GANK", "\"${BASE_URL_GANK}\""
         buildConfigField "String", "BASE_URL_DOUBAN", "\"${BASE_URL_DOUBAN}\""
     }
@@ -62,16 +62,12 @@ android {
     flavorDimensions "buildType"
     productFlavors {
 
-        mock {
-            dimension "buildType"
-            applicationIdSuffix = ".mock"
-        }
-
         dev {
             dimension "buildType"
             versionNameSuffix "-dev"
             applicationIdSuffix = ".dev"
             resConfigs "xxhdpi"
+            resValue "string", "app_name", "@string/app_name_prod"
         }
 
         prod {
@@ -82,7 +78,7 @@ android {
 
     variantFilter { variant ->
         if ('release' == variant.buildType.name
-                && 'mock' == variant.getFlavors().get(0).name) {
+                && 'dev' == variant.getFlavors().get(0).name) {
             variant.setIgnore(true)
         }
     }

@@ -1,47 +1,46 @@
 package com.wptdxii.playground.home;
 
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import com.wptdxii.framekit.base.BaseActivity;
+import com.wptdxii.framekit.util.ScreenUtils;
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.gank.api.GankApi;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
-import timber.log.Timber;
+import io.reactivex.Flowable;
+import io.reactivex.disposables.Disposable;
 
 public class SplashActivity extends BaseActivity {
 
-    private static final int RESIDENCE_TIME = 1000;
+    private static final int RESIDENCE_TIME = 2;
 
     @Inject
     GankApi mGankApi;
+
+    private Disposable mSubscribe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity_splash);
 
-        getWindow().getDecorView().postDelayed(() -> {
-            cancelFullScreen();
-            HomeActivity.start(this);
-            finish();
-        }, RESIDENCE_TIME);
-
-        Timber.d("hello world");
-        Timber.d("hell world timeber:e");
-        Timber.w("hello wrold timeber:w");
+        mSubscribe = Flowable.timer(RESIDENCE_TIME, TimeUnit.SECONDS)
+                .subscribe(aLong -> {
+                    ScreenUtils.cancelFullScreen(SplashActivity.this);
+                    HomeActivity.start(this);
+                    finish();
+                });
     }
 
-    private void setFullScreen() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
-
-    private void cancelFullScreen() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (!mSubscribe.isDisposed()) {
+            mSubscribe.dispose();
+        }
     }
 }

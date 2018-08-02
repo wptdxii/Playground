@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="spacing_0.3">0.3dp</dimen>
+    <dimen name="spacing_0_3">0.3dp</dimen>
     <dimen name="spacing_4">4dp</dimen>
     <dimen name="spacing_minus_4">-4dp</dimen>
     <dimen name="spacing_5">5dp</dimen>
