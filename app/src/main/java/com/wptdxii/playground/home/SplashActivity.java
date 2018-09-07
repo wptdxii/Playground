@@ -3,6 +3,7 @@ package com.wptdxii.playground.home;
 import android.os.Bundle;
 
 import com.wptdxii.framekit.base.BaseActivity;
+import com.wptdxii.framekit.component.executor.PostExecutionThread;
 import com.wptdxii.framekit.util.ScreenUtils;
 import com.wptdxii.playground.R;
 import com.wptdxii.playground.gank.api.GankApi;
@@ -20,6 +21,8 @@ public class SplashActivity extends BaseActivity {
 
     @Inject
     GankApi mGankApi;
+    @Inject
+    PostExecutionThread mPostExecutionThread;
 
     private Disposable mSubscribe;
 
@@ -29,6 +32,7 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.home_activity_splash);
 
         mSubscribe = Flowable.timer(RESIDENCE_TIME, TimeUnit.SECONDS)
+                .observeOn(mPostExecutionThread.getScheduler())
                 .subscribe(aLong -> {
                     ScreenUtils.cancelFullScreen(SplashActivity.this);
                     HomeActivity.start(this);

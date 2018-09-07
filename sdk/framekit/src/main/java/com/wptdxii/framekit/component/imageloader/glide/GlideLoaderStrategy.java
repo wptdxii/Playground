@@ -93,7 +93,7 @@ public class GlideLoaderStrategy implements LoaderStrategy {
 
     private RequestOptions applyPlaceHolders(LoaderOptions loaderOptions, RequestOptions requestOptions) {
         if (loaderOptions.getPlaceHolderResId() != -1) {
-            requestOptions = requestOptions.placeholder(loaderOptions.getDrawableResId());
+            requestOptions = requestOptions.placeholder(loaderOptions.getPlaceHolderResId());
         }
 
         if (loaderOptions.getErrorResId() != -1) {

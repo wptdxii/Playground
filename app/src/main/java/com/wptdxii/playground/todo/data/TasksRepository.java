@@ -65,7 +65,7 @@ public final class TasksRepository implements TasksDataSource {
             Iterator<Map.Entry<String, Task>> iterator = mTasksCachedDataSource.entrySet()
                     .iterator();
             while (iterator.hasNext()) {
-                if (iterator.next().getValue().isCompleted()) iterator.remove();
+                if (iterator.next().getValue().isCompleted()) { iterator.remove();}
             }
         }
 
@@ -162,11 +162,11 @@ public final class TasksRepository implements TasksDataSource {
     private Flowable<List<Task>> getTasksFromLocal() {
         return mTasksLocalDataSource
                 .getTasks()
-                .flatMap(tasks -> Flowable
-                        .fromIterable(tasks)
-                        .doOnNext(task -> mTasksCachedDataSource.put(task.getId(), task))
-                        .toList()
-                        .toFlowable());
+                .flatMap(tasks ->
+                        Flowable.fromIterable(tasks)
+                                .doOnNext(task -> mTasksCachedDataSource.put(task.getId(), task))
+                                .toList()
+                                .toFlowable());
     }
 
     private void refreshLocal(List<Task> tasks) {
