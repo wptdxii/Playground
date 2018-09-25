@@ -52,9 +52,6 @@ dependencies {
     api rx.java
     api rx.android
 
-    api log.logger
-    api log.timber
-
     implementation(imageLoader.glide) {
         exclude group: 'com.android.support'
     }
@@ -67,6 +64,8 @@ dependencies {
     annotationProcessor imageLoader.glideCompiler
 //    implementation imageLoader.transformations
 
+    api tools.logger
+    api tools.timber
     debugImplementation tools.debugLeakCanary
     debugImplementation tools.debugSupportCanary
     releaseImplementation tools.releaseLeakCanary

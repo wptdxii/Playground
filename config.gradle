@@ -42,6 +42,13 @@ ext {
             recyclerView: "com.android.support:recyclerview-v7:$versions.support",
     ]
 
+    aac = [
+            roomRuntime : "android.arch.persistence.room:runtime:$versions.room",
+            roomCompiler: "android.arch.persistence.room:compiler:$versions.room",
+            roomRxJavaAdapter  : "android.arch.persistence.room:rxjava2:$versions.room",
+            roomTest    : "android.arch.persistence.room:testing:$versions.room",
+    ]
+
     di = [
             butterknife          : "com.jakewharton:butterknife:$versions.butterknife",
             butterknifeCompiler  : "com.jakewharton:butterknife-compiler:$versions.butterknife",
@@ -50,18 +57,6 @@ ext {
             daggerAndroid        : "com.google.dagger:dagger-android:$versions.dagger",
             daggerAndroidSupport : "com.google.dagger:dagger-android-support:$versions.dagger",
             daggerAndroidCompiler: "com.google.dagger:dagger-android-processor:$versions.dagger",
-    ]
-
-    room = [
-            runtime : "android.arch.persistence.room:runtime:$versions.room",
-            compiler: "android.arch.persistence.room:compiler:$versions.room",
-            rxjava  : "android.arch.persistence.room:rxjava2:$versions.room",
-            test    : "android.arch.persistence.room:testing:$versions.room",
-    ]
-
-    channels = [
-            vasdolly: "com.leon.channel:helper:$versions.channel",
-            file    : channelFile,
     ]
 
     rx = [
@@ -78,11 +73,6 @@ ext {
             loggingInterceptor: "com.github.ihsanbal:LoggingInterceptor:2.0.6",
     ]
 
-    log = [
-            logger: "com.orhanobut:logger:2.2.0",
-            timber: "com.jakewharton.timber:timber:4.7.1",
-    ]
-
     imageLoader = [
             glide                  : "com.github.bumptech.glide:glide:$versions.glide",
             glideCompiler          : "com.github.bumptech.glide:compiler:$versions.glide",
@@ -96,5 +86,9 @@ ext {
             releaseLeakCanary : "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakCanary",
             debugSupportCanary: "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakCanary",
             permission        : "com.github.tbruyelle:rxpermissions:0.10.2",
+            logger: "com.orhanobut:logger:2.2.0",
+            timber: "com.jakewharton.timber:timber:4.7.1",
+            vasdolly: "com.leon.channel:helper:$versions.channel",
+            channelFile    : channelFile,
     ]
 }

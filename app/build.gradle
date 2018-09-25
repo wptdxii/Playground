@@ -91,7 +91,7 @@ android {
 
     // for VasDolly
     channel {
-        channelFile = file(channels.file)
+        channelFile = file(tools.channelFile)
         apkNameFormat = 'Playground-v${versionName}-${flavorName}-${buildType}'
         isFastMode = false
     }
@@ -108,16 +108,15 @@ dependencies {
     annotationProcessor di.daggerCompiler
     annotationProcessor di.daggerAndroidCompiler
 
-    implementation room.runtime
-    implementation room.rxjava
-    annotationProcessor room.compiler
-//    testImplementation room.test
-
-    implementation channels.vasdolly
+    implementation aac.roomRuntime
+    implementation aac.roomRxJavaAdapter
+    annotationProcessor aac.roomCompiler
+//    testImplementation aac.roomTest
 
     testImplementation testings.junit
     androidTestImplementation testings.runner
     androidTestImplementation testings.espresso
 
+    implementation tools.vasdolly
     implementation tools.permission
 }
