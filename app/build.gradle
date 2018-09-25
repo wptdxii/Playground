@@ -89,6 +89,10 @@ android {
         }
     }
 
+    lintOptions {
+        check 'Interoperability'
+    }
+
     // for VasDolly
     channel {
         channelFile = file(tools.channelFile)
