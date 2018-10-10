@@ -35,6 +35,7 @@ public class DaggerActivity extends BaseActivity {
     @Inject
     ActivityDependency mActivityDependency;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_activity_dagger_sample);
