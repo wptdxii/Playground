@@ -6,11 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
-import com.wptdxii.playground.R;
 import com.wptdxii.framekit.base.BaseActivity;
 import com.wptdxii.framekit.di.qualifier.AppContext;
+import com.wptdxii.playground.R;
 import com.wptdxii.playground.todo.data.TasksRepository;
 
 import javax.inject.Inject;
@@ -56,11 +55,6 @@ public class DaggerActivity extends BaseActivity {
             transaction.add(R.id.fl_content, mDaggerFragment);
             transaction.commit();
         }
-
-        Log.e(TAG, "AppContext::" + mAppContext);
-        Log.e(TAG, "ActivityContext::" + this);
-        Log.e(TAG, "TasksRepository::" + mTasksRepository);
-        Log.e(TAG, "ActivityDependency::" + mActivityDependency.toString());
     }
 
     private void setupActionBar(ActionBar actionBar) {
